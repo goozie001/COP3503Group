@@ -6,5 +6,7 @@ class Integer :
 public:
 	Integer();
 	~Integer();
+private:
+	int value;
 };
 

@@ -6,5 +6,8 @@ class Fraction :
 public:
 	Fraction();
 	~Fraction();
+private:
+	Number *numerator;
+	Number *denominator;
 };
 

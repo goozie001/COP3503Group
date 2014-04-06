@@ -6,5 +6,8 @@ class Irrational :
 public:
 	Irrational();
 	~Irrational();
+private:
+	float rational;
+	string value;
 };
 

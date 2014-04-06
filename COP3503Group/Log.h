@@ -6,5 +6,8 @@ class Log :
 public:
 	Log();
 	~Log();
+private:
+	Number *base;
+	Number *value;
 };
 
