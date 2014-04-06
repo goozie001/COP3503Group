@@ -5,8 +5,13 @@ class Integer :
 {
 public:
 	Integer();
+	Integer(int value);
 	~Integer();
+
+	int getIntValue();
+	virtual float getFloatValue();
 private:
 	int value;
+	float floatValue;
 };
 

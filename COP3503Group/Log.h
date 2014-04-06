@@ -5,9 +5,15 @@ class Log :
 {
 public:
 	Log();
+	Log(Number* base, Number* argument);
 	~Log();
+
+	Number *getBase();
+	Number *getArgument();
+	virtual float getFloatValue();
 private:
 	Number *base;
-	Number *value;
+	Number *argument;
+	float floatValue;
 };
 
