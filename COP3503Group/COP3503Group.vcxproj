@@ -64,9 +64,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Fraction.h" />
+    <ClInclude Include="Integer.h" />
+    <ClInclude Include="Irrational.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="Number.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Fraction.cpp" />
+    <ClCompile Include="Integer.cpp" />
+    <ClCompile Include="Irrational.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="Number.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
