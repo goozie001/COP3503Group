@@ -22,6 +22,18 @@ Number *Log::getArgument() {
 	return argument;
 }
 
+// Overridden methods
+
 float Log::getFloatValue() {
 	return floatValue;
+}
+
+// TODO: Implement simplify Log method
+Number *Log::simplify() {
+
+}
+
+// TODO: Implement Log toString method
+string Log::toString() {
+
 }

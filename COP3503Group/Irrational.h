@@ -13,6 +13,8 @@ public:
 	Number *getExponent();
 	string getValue();
 	virtual float getFloatValue();
+	virtual Number *simplify();
+	virtual string toString();
 private:
 	Number *base;
 	Number *exponent;

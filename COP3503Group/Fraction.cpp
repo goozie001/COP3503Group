@@ -65,3 +65,8 @@ Number *Fraction::simplify() {
 		
 	}
 }
+
+// TODO: Implement toString method
+string Fraction::toString() {
+
+}

@@ -28,6 +28,18 @@ string Irrational::getValue() {
 	return value;
 }
 
+// Overridden methods
+
 float Irrational::getFloatValue() {
 	return floatValue;
+}
+
+// TODO: Implement simplify Irrational method
+Number *Irrational::simplify() {
+
+}
+
+// TODO: Implement toString method
+string Irrational::toString() {
+
 }

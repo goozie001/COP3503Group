@@ -10,8 +10,10 @@ public:
 
 	int getIntValue();
 	virtual float getFloatValue();
+	virtual Number *simplify();
+	virtual string toString();
 private:
-	int value;
+	int intValue;
 	float floatValue;
 };
 

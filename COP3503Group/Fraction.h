@@ -15,6 +15,7 @@ public:
 	//overridden functions
 	virtual float getFloatValue();
 	virtual Number *simplify();
+	virtual string toString();
 private:
 	Number *numerator;
 	Number *denominator;
