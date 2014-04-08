@@ -70,6 +70,7 @@
     <ClInclude Include="Irrational.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Number.h" />
+    <ClInclude Include="Parse.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Calculate.cpp" />
@@ -78,6 +79,7 @@
     <ClCompile Include="Irrational.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Number.cpp" />
+    <ClCompile Include="Parse.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
