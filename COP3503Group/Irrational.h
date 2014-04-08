@@ -12,6 +12,8 @@ public:
 	Number *getBase();
 	Number *getExponent();
 	string getValue();
+
+	// Overridden values
 	virtual float getFloatValue();
 	virtual Number *simplify();
 	virtual string toString();

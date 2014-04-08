@@ -1,5 +1,8 @@
 #pragma once
-#include "Number.h"
+#include "Integer.h"
+#include "Fraction.h"
+#include "Log.h"
+#include "Irrational.h"
 
 class Calculate
 {

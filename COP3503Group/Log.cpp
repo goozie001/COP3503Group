@@ -30,10 +30,11 @@ float Log::getFloatValue() {
 
 // TODO: Implement simplify Log method
 Number *Log::simplify() {
-
+	return NULL;
 }
 
 // TODO: Implement Log toString method
 string Log::toString() {
-
+	string s;
+	return s;
 }

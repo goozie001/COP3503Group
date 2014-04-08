@@ -10,6 +10,8 @@ public:
 
 	Number *getBase();
 	Number *getArgument();
+
+	// Overridden methods
 	virtual float getFloatValue();
 	virtual Number *simplify();
 	virtual string toString();

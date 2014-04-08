@@ -9,6 +9,8 @@ public:
 	~Integer();
 
 	int getIntValue();
+
+	// Overridden methods
 	virtual float getFloatValue();
 	virtual Number *simplify();
 	virtual string toString();

@@ -50,6 +50,8 @@ Number *Calculate::subtract(Number *numb1, Number *numb2) {
 	Irrational *irr2 = dynamic_cast<Irrational*>(newNumb2);
 	Log *log1 = dynamic_cast<Log*>(newNumb1);
 	Log *log2 = dynamic_cast<Log*>(newNumb2);
+
+	return NULL;
 }
 
 Number *Calculate::multiply(Number *numb1, Number *numb2) {
@@ -64,6 +66,8 @@ Number *Calculate::multiply(Number *numb1, Number *numb2) {
 	Irrational *irr2 = dynamic_cast<Irrational*>(newNumb2);
 	Log *log1 = dynamic_cast<Log*>(newNumb1);
 	Log *log2 = dynamic_cast<Log*>(newNumb2);
+
+	return NULL;
 }
 
 Number *Calculate::divide(Number *numb1, Number *numb2) {
@@ -78,6 +82,8 @@ Number *Calculate::divide(Number *numb1, Number *numb2) {
 	Irrational *irr2 = dynamic_cast<Irrational*>(newNumb2);
 	Log *log1 = dynamic_cast<Log*>(newNumb1);
 	Log *log2 = dynamic_cast<Log*>(newNumb2);
+
+	return NULL;
 }
 
 Number *Calculate::exponentiate(Number *numb1, Number *numb2) {
@@ -92,6 +98,8 @@ Number *Calculate::exponentiate(Number *numb1, Number *numb2) {
 	Irrational *irr2 = dynamic_cast<Irrational*>(newNumb2);
 	Log *log1 = dynamic_cast<Log*>(newNumb1);
 	Log *log2 = dynamic_cast<Log*>(newNumb2);
+
+	return NULL;
 }
 
 Number *Calculate::logarithm(Number *numb1, Number *numb2) {
@@ -106,4 +114,6 @@ Number *Calculate::logarithm(Number *numb1, Number *numb2) {
 	Irrational *irr2 = dynamic_cast<Irrational*>(newNumb2);
 	Log *log1 = dynamic_cast<Log*>(newNumb1);
 	Log *log2 = dynamic_cast<Log*>(newNumb2);
+
+	return NULL;
 }

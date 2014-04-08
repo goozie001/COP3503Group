@@ -36,10 +36,11 @@ float Irrational::getFloatValue() {
 
 // TODO: Implement simplify Irrational method
 Number *Irrational::simplify() {
-
+	return NULL;
 }
 
 // TODO: Implement toString method
 string Irrational::toString() {
-
+	string s;
+	return s;
 }

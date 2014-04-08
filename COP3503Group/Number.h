@@ -11,20 +11,15 @@
 #include <sstream>
 using namespace std;
 
-#include "Integer.h"
-#include "Fraction.h"
-#include "Log.h"
-#include "Irrational.h"
-
 class Number
 {
 public:
 	Number();
 	~Number();
 
-	virtual float getFloatValue();
-	virtual Number *simplify();
-	virtual string toString();
+	virtual float getFloatValue() = 0;
+	virtual Number *simplify() = 0;
+	virtual string toString() = 0;
 private:
 	float e;
 	float pi;
