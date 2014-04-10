@@ -1,7 +1,11 @@
+
+#include <stack>
+
 #include "Parse.h"
 
 Parse::Parse()
 {
+	this->out;
 }
 
 
@@ -9,63 +13,68 @@ Parse::~Parse()
 {
 }
 
-stack<string> Parse::evaluateString(string str) {
+int Parse::pseudoMain(string str) {
+	string newS = removeSpaces(str);
+	newS = negativeCheck(newS);
+	int a = stringToRPN(newS);
+	return a;
+}
+
+int Parse::stringToRPN(string str) {
 
 	// We use the Shunting Yard Algorithm to store the operators separately from the numbers in
 	// order of precedence to do all of the calculations in the future.
-	string modStr = removeSpaces(str);
 	// TODO: Handle exception of unmatching parentheses.
-	if (!matchingParentheses(modStr)) return NULL;
-	stack<string> out;
+	if (!matchingParentheses(str)) return NULL;
 	stack<string> operators;
 
 	unsigned i = 0;
-	while (i < modStr.length()) {
+	while (i < str.length()) {
 		string temp;
-		temp.push_back(modStr[i]);
-		if (isNumber(modStr[i])) {
+		temp.push_back(str[i]);
+		if (isNumber(str[i])) {
 			string numberStr;
-			numberStr.push_back(modStr[i]);
+			numberStr.push_back(str[i]);
+			i++;
 			bool number = true;
 			while (number) {
-				if (isNumber(modStr[i])) {
-					numberStr.push_back(modStr[i]);
+				if (isNumber(str[i])) {
+					numberStr.push_back(str[i]);
 					i++;
 				}
 				else {
-					out.push(numberStr);
+					out.push_back(numberStr);
 					number = false;
-					i++;
 				}
 			}
 		}
-		else if (isOperator(modStr[i])) {
+		else if (isOperator(str[i])) {
 			if (operators.empty()) {
 				operators.push(temp);
 				i++;
 			}
 			else {
 				// o1 == o2
-				if (precedence(operators.top()[0]) == precedence(modStr[i])) {
-					if (isLeftAssociative(modStr[i])) {
-						out.push(operators.top());
+				if (precedence(operators.top()[0]) == precedence(str[i])) {
+					if (isLeftAssociative(str[i])) {
+						out.push_back(operators.top());
 						operators.pop();
 					}
 				}
 				//  o1 < o2
-				else if (precedence(operators.top()[0]) > precedence(modStr[i])) {
-					out.push(operators.top());
+				else if (precedence(operators.top()[0]) > precedence(str[i])) {
+					out.push_back(operators.top());
 					operators.pop();
 				}
 				operators.push(temp);
 				i++;
 			}
 		}
-		else if (isLeftParenthesis(modStr[i])) {
+		else if (isLeftParenthesis(str[i])) {
 			operators.push(temp);
 			i++;
 		}
-		else if (isRightParenthesis(modStr[i])) {
+		else if (isRightParenthesis(str[i])) {
 			bool foundLeft = false;
 			while (!foundLeft) {
 				if (isLeftParenthesis(operators.top()[0])) {
@@ -74,17 +83,88 @@ stack<string> Parse::evaluateString(string str) {
 					foundLeft = true;
 				}
 				else {
-					out.push(operators.top());
+					out.push_back(operators.top());
 					operators.pop();
 				}
 			}
 		}
 	}
 	while (!operators.empty()) {
-		out.push(operators.top());
+		out.push_back(operators.top());
 		operators.pop();
 	}
-	return out;
+	return evaluateRPN();
+}
+
+int Parse::evaluateRPN() {
+	int ans;
+	int i = 0;
+	vector<string> solution;
+	while (i < out.size()) {
+		solution.push_back(out[i]);
+
+		if (solution.size() > 2) {
+			char fin = (solution.back()[0]);
+			if (isOperator(fin) && (solution.back().length() == 1)) {
+				// Deletes operator
+				solution.pop_back();
+
+				// Converts last string to a type int.
+				string last = solution.back();
+				int a;
+				istringstream(last) >> a;
+				solution.pop_back();
+
+				//Converts next string up in the out vector to type int.
+				last = solution.back();
+				int b;
+				istringstream(last) >> b;
+				solution.pop_back();
+
+				if (fin == '+') {
+					int val = b + a;
+
+					stringstream myStringStream;
+					myStringStream << val;
+					string myString = myStringStream.str();
+
+					solution.push_back(myString);
+				}
+				else if (fin == '-') {
+					int val = b - a;
+
+					stringstream myStringStream;
+					myStringStream << val;
+					string myString = myStringStream.str();
+
+					solution.push_back(myString);
+				}
+				else if (fin == '*') {
+					int val = b * a;
+
+					stringstream myStringStream;
+					myStringStream << val;
+					string myString = myStringStream.str();
+
+					solution.push_back(myString);
+				}
+				else if (fin == '^') {
+					int val = b ^ a;
+
+					stringstream myStringStream;
+					myStringStream << val;
+					string myString = myStringStream.str();
+
+					solution.push_back(myString);
+				}
+			}
+		}
+		i++;
+	}
+	string end = solution[0];
+	int z;
+	istringstream(end) >> z;
+	return z;
 }
 
 string Parse::removeSpaces(string str) {
@@ -100,15 +180,17 @@ string Parse::removeSpaces(string str) {
 }
 
 bool Parse::isNumber(char ch) {
-	if (48 <= ch && ch <= 57) return true;
+	int a = (int)ch;
+	if (48 <= a && a <= 57) return true;
 	return false;
 }
 
 bool Parse::isOperator(char ch) {
-	if (42 <= ch && ch <= 43) return true;
-	if (ch == 45) return true;
-	if (ch == 47) return true;
-	if (ch == 94) return true;
+	if (ch == '+') return true;
+	if (ch == '-') return true;
+	if (ch == '*') return true;
+	if (ch == '/') return true;
+	if (ch == '^') return true;
 	return false;
 }
 
@@ -145,5 +227,39 @@ bool Parse::matchingParentheses(string str) {
 
 	if (a == b) return true;
 	else return false;
+}
+
+string Parse::negativeCheck(string str) {
+	string fixedString;
+
+	for (int i = 0; i < (str.length() - 1); i++) {
+		bool isNegative = false;
+		if (i == 0 && str[i] == '-') {
+			if (isLeftParenthesis(str[i + 1])) {
+				fixedString = fixedString + "(-1";
+			}
+			else {
+				fixedString = fixedString + "(-1)(";
+			}
+			isNegative = true;
+		}
+		else if (i < (str.length() - 2) && !isNumber(str[i]) && (str[i + 1]) == '-' && !isRightParenthesis(str[i]) && isNumber(str[i + 2])) {
+			fixedString = fixedString + str[i] + "(-1)(";
+			isNegative = true;
+		}
+		else {
+			fixedString = fixedString + str[i];
+		}
+
+		if (isNegative) {
+			while (i < str.length() - 1 && isNumber(str[i + 1])) {
+				fixedString = fixedString + str[i + 1];
+			}
+			fixedString = fixedString + ')';
+		}
+	}
+	fixedString = fixedString + str[str.length() - 1];
+
+	return fixedString;
 }
 

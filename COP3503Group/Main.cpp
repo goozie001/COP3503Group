@@ -2,9 +2,10 @@
 #include "Parse.h"
 
 int main() {
-	string s = "1 + 3 - 8 * 9 + (6+3)";
+	string s = "1 + 3 + 8 * 9 + (6+3)";
 	Parse *p = new Parse();
-	stack<string> sta = p->evaluateString(s);
+	int str = p->pseudoMain(s);
+	cout << str << endl;
 	int i;
 	cin >> i;
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include <stack>
+#include <vector>
 
 #include "Calculate.h"
 
@@ -9,16 +9,23 @@ public:
 	Parse();
 	~Parse();
 	
-	stack<string> evaluateString(string str);
+	int pseudoMain(string);
 
 private:
-	string removeSpaces(string str);
-	bool isNumber(char ch);
-	bool isOperator(char ch);
-	int precedence(char ch);
-	bool isLeftAssociative(char ch);
-	bool isLeftParenthesis(char ch);
-	bool isRightParenthesis(char ch);
-	bool matchingParentheses(string str);
+	string removeSpaces(string);
+	string negativeCheck(string);
+
+	bool isNumber(char);
+	bool isOperator(char);
+	bool isLeftAssociative(char);
+	bool isLeftParenthesis(char);
+	bool isRightParenthesis(char);
+	bool matchingParentheses(string);
+
+	int precedence(char);
+	int evaluateRPN();
+	int stringToRPN(string);
+
+	vector<string> out;
 };
 
