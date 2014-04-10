@@ -4,6 +4,8 @@
 #include "Log.h"
 #include "Irrational.h"
 
+//Example commit
+
 class Calculate
 {
 public:
