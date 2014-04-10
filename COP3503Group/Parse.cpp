@@ -71,7 +71,16 @@ int Parse::stringToRPN(string str) {
 			}
 		}
 		else if (isLeftParenthesis(str[i])) {
-			operators.push(temp);
+			if (str[i + 1] == '-' && isNumber(str[i + 2])) {
+				temp = '-';
+				i++;
+				while ((i + 1) < str.length() && isNumber(str[i + 1])) {
+					temp = temp + str[i + 1];
+					i++;
+				}
+				out.push_back(temp);
+			}
+			operators.push("(");
 			i++;
 		}
 		else if (isRightParenthesis(str[i])) {
@@ -234,6 +243,7 @@ string Parse::negativeCheck(string str) {
 
 	for (int i = 0; i < (str.length() - 1); i++) {
 		bool isNegative = false;
+		bool changeToPositive = false;
 		if (i == 0 && str[i] == '-') {
 			if (isLeftParenthesis(str[i + 1])) {
 				fixedString = fixedString + "(-1";
@@ -243,8 +253,13 @@ string Parse::negativeCheck(string str) {
 			}
 			isNegative = true;
 		}
+		else if (str[i] == '-' && isNumber(str[i - 1]) && isNumber(str[i + 1])) {
+			fixedString = fixedString + "+((-1)*(";
+			changeToPositive = true;
+			isNegative = true;
+		}
 		else if (i < (str.length() - 2) && !isNumber(str[i]) && (str[i + 1]) == '-' && !isRightParenthesis(str[i]) && isNumber(str[i + 2])) {
-			fixedString = fixedString + str[i] + "(-1)(";
+			fixedString = fixedString + str[i] + "(-1)*(";
 			isNegative = true;
 		}
 		else {
@@ -254,6 +269,10 @@ string Parse::negativeCheck(string str) {
 		if (isNegative) {
 			while (i < str.length() - 1 && isNumber(str[i + 1])) {
 				fixedString = fixedString + str[i + 1];
+				i++;
+			}
+			if (changeToPositive) {
+				fixedString = fixedString + ')';
 			}
 			fixedString = fixedString + ')';
 		}
