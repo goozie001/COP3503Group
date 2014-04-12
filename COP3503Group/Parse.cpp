@@ -5,7 +5,6 @@
 
 Parse::Parse()
 {
-	this->out;
 }
 
 
@@ -16,7 +15,8 @@ Parse::~Parse()
 int Parse::pseudoMain(string str) {
 	string newS = removeSpaces(str);
 	newS = negativeCheck(newS);
-	int a = stringToRPN(newS);
+	stringToObjectArray(newS);
+	int a = 0;
 	return a;
 }
 
@@ -104,6 +104,122 @@ int Parse::stringToRPN(string str) {
 	}
 	return evaluateRPN();
 }
+
+void Parse::stringToObjectArray(string str) {
+
+	// We use the Shunting Yard Algorithm to store the operators separately from the numbers in
+	// order of precedence to do all of the calculations in the future.
+	// TODO: Handle exception of unmatching parentheses.
+	if (!matchingParentheses(str)) return;
+
+	stack<string> operators;
+
+	unsigned i = 0;
+
+	while (i < str.length()) {
+		string temp;
+
+		temp.push_back(str[i]);
+		if (isNumber(str[i])) {
+			string numberStr;
+			numberStr.push_back(str[i]);
+			i++;
+			bool number = true;
+			while (number) {
+				if (isNumber(str[i])) {
+					numberStr.push_back(str[i]);
+					i++;
+				}
+				else {
+					Integer *integer_i = stringToInteger(numberStr);
+					numberRPN.push_back(integer_i);
+					number = false;
+				}
+			}
+		}
+		else if (isOperator(str[i])) {
+			if (operators.empty()) {
+				operators.push(temp);
+				i++;
+			}
+			else {
+				// o1 == o2
+				if (precedence(operators.top()[0]) == precedence(str[i])) {
+					if (isLeftAssociative(str[i])) {
+						Operator *operator_i = stringToOperator(operators.top());
+						numberRPN.push_back(operator_i);
+						operators.pop();
+					}
+				}
+				//  o1 < o2
+				else if (precedence(operators.top()[0]) > precedence(str[i])) {
+					Operator *operator_i = stringToOperator(operators.top());
+					numberRPN.push_back(operator_i);
+					operators.pop();
+				}
+				operators.push(temp);
+				i++;
+			}
+		}
+		else if (isLeftParenthesis(str[i])) {
+			if (str[i + 1] == '-' && isNumber(str[i + 2])) {
+				temp = '-';
+				i++;
+				while ((i + 1) < str.length() && isNumber(str[i + 1])) {
+					temp = temp + str[i + 1];
+					i++;
+				}
+				Operator *operator_i = stringToOperator(temp);
+				numberRPN.push_back(operator_i);
+			}
+			operators.push("(");
+			i++;
+		}
+		else if (isRightParenthesis(str[i])) {
+			bool foundLeft = false;
+			while (!foundLeft) {
+				if (isLeftParenthesis(operators.top()[0])) {
+					operators.pop();
+					i++;
+					foundLeft = true;
+				}
+				else {
+
+					Operator *operator_i = stringToOperator(operators.top());
+					numberRPN.push_back(operator_i);
+					operators.pop();
+				}
+			}
+		}
+		else if (isLog(str, i)) {
+			i += 4;
+			if (isNumber(str[i])) {
+				string numberStr;
+				numberStr.push_back(str[i]);
+				i++;
+				bool number = true;
+				while (number) {
+					if (isNumber(str[i])) {
+						numberStr.push_back(str[i]);
+						i++;
+					}
+					else {
+						Integer *integer_i = stringToInteger(numberStr);
+						numberRPN.push_back(integer_i);
+						number = false;
+					}
+				}
+			}
+		}
+	}
+	while (!operators.empty()) {
+		Operator *operator_i = stringToOperator(operators.top());
+		numberRPN.push_back(operator_i);
+		operators.pop();
+		++i;
+	}
+}
+
 
 int Parse::evaluateRPN() {
 	int ans;
@@ -194,6 +310,17 @@ bool Parse::isNumber(char ch) {
 	return false;
 }
 
+bool Parse::isLog(string str, int i) {
+	if (str[i] == 'L' || str[i] == 'l') {
+		if (str[i + 1] == 'O' || str[i + 1] == 'o') {
+			if (str[i + 2] == 'G' || str[i + 2] == 'g') {
+				if (str[i + 3] == '_') return true;
+			}
+		}
+	}
+	return false;
+}
+
 bool Parse::isOperator(char ch) {
 	if (ch == '+') return true;
 	if (ch == '-') return true;
@@ -280,5 +407,15 @@ string Parse::negativeCheck(string str) {
 	fixedString = fixedString + str[str.length() - 1];
 
 	return fixedString;
+}
+
+Integer *Parse::stringToInteger(string str) {
+	int a;
+	istringstream(str) >> a;
+	return new Integer(a);
+}
+
+Operator *Parse::stringToOperator(string str) {
+	return new Operator(str);
 }
 

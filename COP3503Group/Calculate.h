@@ -3,6 +3,7 @@
 #include "Fraction.h"
 #include "Log.h"
 #include "Irrational.h"
+#include "Operator.h"
 
 class Calculate
 {
