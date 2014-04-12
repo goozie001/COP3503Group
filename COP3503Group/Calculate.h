@@ -5,6 +5,8 @@
 #include "Irrational.h"
 #include "Operator.h"
 
+//Example commit
+
 class Calculate
 {
 public:
