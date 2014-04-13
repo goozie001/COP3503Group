@@ -9,7 +9,7 @@ public:
 	Parse();
 	~Parse();
 	
-	int pseudoMain(string);
+	vector<Number*> pseudoMain(string);
 
 	vector<Number*> numberRPN;
 

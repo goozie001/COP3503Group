@@ -12,12 +12,11 @@ Parse::~Parse()
 {
 }
 
-int Parse::pseudoMain(string str) {
+vector<Number*> Parse::pseudoMain(string str) {
 	string newS = removeSpaces(str);
 	newS = negativeCheck(newS);
 	stringToObjectArray(newS);
-	int a = 0;
-	return a;
+	return numberRPN;
 }
 
 int Parse::stringToRPN(string str) {
@@ -184,7 +183,6 @@ void Parse::stringToObjectArray(string str) {
 					foundLeft = true;
 				}
 				else {
-
 					Operator *operator_i = stringToOperator(operators.top());
 					numberRPN.push_back(operator_i);
 					operators.pop();
@@ -192,6 +190,8 @@ void Parse::stringToObjectArray(string str) {
 			}
 		}
 		else if (isLog(str, i)) {
+			vector<Number*> base;
+			bool isExpression = false;
 			i += 4;
 			if (isNumber(str[i])) {
 				string numberStr;
@@ -205,8 +205,60 @@ void Parse::stringToObjectArray(string str) {
 					}
 					else {
 						Integer *integer_i = stringToInteger(numberStr);
-						numberRPN.push_back(integer_i);
+						base.push_back(integer_i);
 						number = false;
+						++i;
+					}
+				}
+				if (isLeftParenthesis(str[i])) {
+					isExpression = true;
+					if (!isRightParenthesis(str[++i])) {
+						temp = str[i];
+					}
+					int c = 1;
+					while (c != 0) {
+						++i;
+						if (isLeftParenthesis(str[i])) {
+							temp = temp + str[i];
+							c++;
+						}
+						else if (isRightParenthesis(str[i])) {
+							c--;
+							if (c != 0) temp = temp + str[i];
+						}
+						else temp = temp + str[i];
+					}
+					++i;
+					
+				}
+				else if (isNumber(str[i])) {
+					string numberStr;
+					numberStr.push_back(str[i]);
+					i++;
+					bool number = true;
+					while (number) {
+						if (isNumber(str[i])) {
+							numberStr.push_back(str[i]);
+							i++;
+						}
+						else {
+							Integer *integer_i = stringToInteger(numberStr);
+							Log *log_i = new Log(base[0], integer_i);
+							numberRPN.push_back(log_i);
+							number = false;
+						}
+					}
+				}
+				if (isExpression) {
+					vector<Number*> newVector;
+					Parse *inception = new Parse;
+					newVector = inception->pseudoMain(temp);
+					if (newVector.size() == 1) {
+						Log *log_i = new Log(base[0], newVector[0]);
+						numberRPN.push_back(log_i);
+					}
+					else {
+						//TODO: Have expression class store multiple numbers in this vector.
 					}
 				}
 			}
@@ -222,7 +274,6 @@ void Parse::stringToObjectArray(string str) {
 
 
 int Parse::evaluateRPN() {
-	int ans;
 	int i = 0;
 	vector<string> solution;
 	while (i < out.size()) {

@@ -2,10 +2,9 @@
 #include "Parse.h"
 
 int main() {
-	string s = "1 + 3 - 8 * 9 + (6+3)";
+	string s = "log_3:(108)";
 	Parse *p = new Parse();
-	int str = p->pseudoMain(s);
-	cout << str << endl;
+	vector<Number*> vec = p->pseudoMain(s);
 	int i;
 	cin >> i;
 }
