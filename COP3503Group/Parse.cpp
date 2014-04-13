@@ -162,6 +162,7 @@ void Parse::stringToObjectArray(string str) {
 								Integer *integer_i = new Integer(1);
 								Irrational *irrational_i = new Irrational(newVector[0], integer_i, exponent[0]);
 								numberRPN.push_back(irrational_i);
+								number = false;
 							}
 							else {
 								//TODO: Have expression class store multiple numbers in this vector.
