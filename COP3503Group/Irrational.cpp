@@ -5,10 +5,10 @@ Irrational::Irrational()
 {
 }
 
-Irrational::Irrational(Number *base, Number *exponent) {
+Irrational::Irrational(Expression *base, Expression *exponentNumerator, Expression *exponentDenominator) {
 	this->base = base;
-	this->exponent = exponent;
-	this->value = value;
+	this->exponentNumerator = exponentNumerator;
+	this->exponentDenominator = exponentDenominator;
 }
 
 
@@ -16,12 +16,16 @@ Irrational::~Irrational()
 {
 }
 
-Number *Irrational::getBase() {
+Expression *Irrational::getBase() {
 	return base;
 }
 
-Number *Irrational::getExponent() {
-	return exponent;
+Expression *Irrational::getExponentNumerator() {
+	return exponentNumerator;
+}
+
+Expression *Irrational::getExponentDenominator() {
+	return exponentDenominator;
 }
 
 string Irrational::getValue() {
@@ -35,7 +39,7 @@ float Irrational::getFloatValue() {
 }
 
 // TODO: Implement simplify Irrational method
-Number *Irrational::simplify() {
+Expression *Irrational::simplify() {
 	return NULL;
 }
 

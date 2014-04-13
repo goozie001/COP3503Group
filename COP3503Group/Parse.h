@@ -9,9 +9,9 @@ public:
 	Parse();
 	~Parse();
 	
-	vector<Number*> pseudoMain(string);
+	vector<Expression*> pseudoMain(string);
 
-	vector<Number*> numberRPN;
+	vector<Expression*> numberRPN;
 
 private:
 	string removeSpaces(string);
@@ -19,6 +19,7 @@ private:
 
 	bool isNumber(char);
 	bool isLog(string, int);
+	bool isRoot(string, int);
 	bool isOperator(char);
 	bool isLeftAssociative(char);
 	bool isLeftParenthesis(char);

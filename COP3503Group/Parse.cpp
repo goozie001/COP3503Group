@@ -12,7 +12,7 @@ Parse::~Parse()
 {
 }
 
-vector<Number*> Parse::pseudoMain(string str) {
+vector<Expression*> Parse::pseudoMain(string str) {
 	string newS = removeSpaces(str);
 	newS = negativeCheck(newS);
 	stringToObjectArray(newS);
@@ -128,6 +128,49 @@ void Parse::stringToObjectArray(string str) {
 				if (isNumber(str[i])) {
 					numberStr.push_back(str[i]);
 					i++;
+				}
+				else if (isRoot(str, i)) {
+					vector<Expression*> exponent;
+					Integer *integer_i = stringToInteger(numberStr);
+					exponent.push_back(integer_i);
+					bool isExpression = false;
+					i += 3;
+					if (isLeftParenthesis(str[i])) {
+						isExpression = true;
+						if (!isRightParenthesis(str[++i])) {
+							temp = str[i];
+						}
+						int c = 1;
+						while (c != 0) {
+							++i;
+							if (isLeftParenthesis(str[i])) {
+								temp = temp + str[i];
+								c++;
+							}
+							else if (isRightParenthesis(str[i])) {
+								c--;
+								if (c != 0) temp = temp + str[i];
+							}
+							else temp = temp + str[i];
+						}
+						++i;
+						if (isExpression) {
+							vector<Expression*> newVector;
+							Parse *inception = new Parse;
+							newVector = inception->pseudoMain(temp);
+							if (newVector.size() == 1) {
+								Integer *integer_i = new Integer(1);
+								Irrational *irrational_i = new Irrational(newVector[0], integer_i, exponent[0]);
+								numberRPN.push_back(irrational_i);
+							}
+							else {
+								//TODO: Have expression class store multiple numbers in this vector.
+							}
+						}
+					}
+					else if (isNumber(str[i])) {
+
+					}
 				}
 				else {
 					Integer *integer_i = stringToInteger(numberStr);
@@ -250,7 +293,7 @@ void Parse::stringToObjectArray(string str) {
 					}
 				}
 				if (isExpression) {
-					vector<Number*> newVector;
+					vector<Expression*> newVector;
 					Parse *inception = new Parse;
 					newVector = inception->pseudoMain(temp);
 					if (newVector.size() == 1) {
@@ -367,6 +410,15 @@ bool Parse::isLog(string str, int i) {
 			if (str[i + 2] == 'G' || str[i + 2] == 'g') {
 				if (str[i + 3] == '_') return true;
 			}
+		}
+	}
+	return false;
+}
+
+bool Parse::isRoot(string str, int i) {
+	if (str[i] == 'r') {
+		if (str[i + 1] == 't') {
+			if (str[i + 2] == ':') return true;
 		}
 	}
 	return false;

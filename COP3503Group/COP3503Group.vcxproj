@@ -65,7 +65,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Calculate.h" />
-    <ClInclude Include="Fraction.h" />
+    <ClInclude Include="Expression.h" />
     <ClInclude Include="Integer.h" />
     <ClInclude Include="Irrational.h" />
     <ClInclude Include="Log.h" />
@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Calculate.cpp" />
-    <ClCompile Include="Fraction.cpp" />
+    <ClCompile Include="Expression.cpp" />
     <ClCompile Include="Integer.cpp" />
     <ClCompile Include="Irrational.cpp" />
     <ClCompile Include="Log.cpp" />

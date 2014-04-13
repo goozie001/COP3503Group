@@ -5,7 +5,7 @@ Log::Log()
 {
 }
 
-Log::Log(Number* base, Number* argument) {
+Log::Log(Number* base, Expression* argument) {
 	this->base = base;
 	this->argument = argument;
 }
@@ -18,7 +18,7 @@ Number *Log::getBase() {
 	return base;
 }
 
-Number *Log::getArgument() {
+Expression *Log::getArgument() {
 	return argument;
 }
 
