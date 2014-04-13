@@ -65,6 +65,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Calculate.h" />
+    <ClInclude Include="E.h" />
     <ClInclude Include="Expression.h" />
     <ClInclude Include="Integer.h" />
     <ClInclude Include="Irrational.h" />
@@ -72,9 +73,11 @@
     <ClInclude Include="Number.h" />
     <ClInclude Include="Operator.h" />
     <ClInclude Include="Parse.h" />
+    <ClInclude Include="Pi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Calculate.cpp" />
+    <ClCompile Include="E.cpp" />
     <ClCompile Include="Expression.cpp" />
     <ClCompile Include="Integer.cpp" />
     <ClCompile Include="Irrational.cpp" />
@@ -83,6 +86,7 @@
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="Operator.cpp" />
     <ClCompile Include="Parse.cpp" />
+    <ClCompile Include="Pi.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

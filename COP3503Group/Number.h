@@ -22,8 +22,4 @@ public:
 	virtual float getFloatValue() = 0;
 	virtual string toString() = 0;
 	bool isOfTypeNumber() { return true; }
-private:
-	float e;
-	float pi;
-	float floatValue;
 };

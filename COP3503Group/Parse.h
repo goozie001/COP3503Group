@@ -18,6 +18,8 @@ private:
 	string negativeCheck(string);
 
 	bool isNumber(char);
+	bool isPi(string, int);
+	bool isE(char);
 	bool isLog(string, int);
 	bool isRoot(string, int);
 	bool isOperator(char);
