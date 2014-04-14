@@ -10,6 +10,7 @@ public:
 	
 	vector<Number*> pseudoMain(string);
 	vector<Number*> numberRPN;
+	vector<Number*> storedAnswers;
 
 private:
 	string removeSpaces(string);
@@ -37,5 +38,7 @@ private:
 	vector<string> out;
 
 	void stringToObjectArray(string);
+
+	Number *evaluateRPNObject();
 };
 

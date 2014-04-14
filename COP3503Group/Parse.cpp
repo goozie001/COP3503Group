@@ -470,6 +470,55 @@ void Parse::stringToObjectArray(string str) {
 	}
 }
 
+Number *Parse::evaluateRPNObject() {
+	unsigned i = 0;
+	vector<Number*> solution;
+	Calculate *calc = new Calculate();
+
+	while (i < numberRPN.size()) {
+		solution.push_back(numberRPN[i]);
+
+		if (solution.size() > 2) {
+			Number *fin = (solution.back());
+			if (dynamic_cast<Operator*>(fin) != 0) {
+				Operator *op_i = dynamic_cast<Operator*>(fin);
+				// Deletes the operator.
+				solution.pop_back();
+
+				Number *a = solution.back();
+				solution.pop_back();
+
+				Number *b = solution.back();
+				solution.pop_back();
+
+				if (op_i->toString() == "+") {
+					Number *numb_i = calc->add(a, b);
+					solution.push_back(numb_i);
+				}
+				else if (op_i->toString() == "-") {
+					Number *numb_i = calc->subtract(b, a);
+					solution.push_back(numb_i);
+				}
+				else if (op_i->toString() == "*") {
+					Number *numb_i = calc->multiply(b, a);
+					solution.push_back(numb_i);
+				}
+				else if (op_i->toString() == "/") {
+					Number *numb_i = calc->divide(b, a);
+					solution.push_back(numb_i);
+				}
+				else if (op_i->toString() == "^") {
+					Number *numb_i = calc->exponentiate(b, a);
+					solution.push_back(numb_i);
+				}
+			}
+		}
+		++i;
+	}
+	Number *end = solution[0];
+	storedAnswers.push_back(end);
+	return end;
+}
 
 int Parse::evaluateRPN() {
 	unsigned i = 0;
