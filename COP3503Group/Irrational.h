@@ -6,12 +6,11 @@ class Irrational :
 {
 public:
 	Irrational();
-	Irrational(Number *base, Number *exponentNumerator, Number *exponentDenominator);
+	Irrational(Number *base, Number *rootVal);
 	~Irrational();
 
 	Number *getBase();
-	Number *getExponentNumerator();
-	Number *getExponentDenominator();
+	Number *getRootVal();
 	string getValue();
 
 	// Overridden values
@@ -20,8 +19,7 @@ public:
 	virtual string toString();
 private:
 	Number *base;
-	Number *exponentNumerator;
-	Number *exponentDenominator;
+	Number *rootVal;
 	string value;
 	float floatValue;
 };

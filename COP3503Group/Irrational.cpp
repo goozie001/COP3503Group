@@ -5,10 +5,9 @@ Irrational::Irrational()
 {
 }
 
-Irrational::Irrational(Number *base, Number *exponentNumerator, Number *exponentDenominator) {
+Irrational::Irrational(Number *base, Number *rootVal) {
 	this->base = base;
-	this->exponentNumerator = exponentNumerator;
-	this->exponentDenominator = exponentDenominator;
+	this->rootVal = rootVal;
 }
 
 
@@ -20,12 +19,8 @@ Number *Irrational::getBase() {
 	return base;
 }
 
-Number *Irrational::getExponentNumerator() {
-	return exponentNumerator;
-}
-
-Number *Irrational::getExponentDenominator() {
-	return exponentDenominator;
+Number *Irrational::getRootVal() {
+	return rootVal;
 }
 
 string Irrational::getValue() {

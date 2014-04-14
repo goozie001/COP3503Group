@@ -120,7 +120,136 @@ void Parse::stringToObjectArray(string str) {
 		string temp;
 
 		temp.push_back(str[i]);
-		if (isNumber(str[i])) {
+		if (isRoot(str, i)) {
+			vector<Number*> exponent;
+			bool isExpression = false;
+			string negativeBase;
+			if (isNumber(str[i])) {
+				string numberStr;
+				numberStr.push_back(str[i]);
+				i++;
+				bool number = true;
+				while (number) {
+					if (isNumber(str[i])) {
+						numberStr.push_back(str[i]);
+						i++;
+					}
+					else {
+						number = false;
+					}
+				}
+				Integer *integer_i = stringToInteger(numberStr);
+				exponent.push_back(integer_i);
+				i += 3;
+			}
+			// Parenthesis at the base
+			else if (isLeftParenthesis(str[i])) {
+				int c = 1;
+				bool isNegativeBase = false;
+				if (str[i + 2] == '-') {
+					i += 7;
+					isNegativeBase = true;
+					if (isNumber(str[i])) {
+						negativeBase.push_back(str[i]);
+						i++;
+						bool number = true;
+						while (number) {
+							if (isNumber(str[i])) {
+								negativeBase.push_back(str[i]);
+								i++;
+							}
+							else {
+								number = false;
+							}
+						}
+					}
+				}
+				else if (!isRightParenthesis(str[++i])) {
+					if (isLeftParenthesis(str[i])) c++;
+					temp = str[i];
+				}
+				if (!isNegativeBase) {
+					while (c != 0) {
+						++i;
+						if (isLeftParenthesis(str[i])) {
+							temp = temp + str[i];
+							c++;
+						}
+						else if (isRightParenthesis(str[i])) {
+							c--;
+							if (c != 0) temp = temp + str[i];
+						}
+						else temp = temp + str[i];
+					}
+					i += 4;
+				}
+				else {
+					int a;
+					istringstream(negativeBase) >> a;
+					a *= -1;
+					Integer *integer_i = new Integer(a);
+					exponent.push_back(integer_i);
+					i += 5;
+				}
+			}
+			// Parenthesis at the argument
+			if (isLeftParenthesis(str[i])) {
+				isExpression = true;
+				if (!isRightParenthesis(str[++i])) {
+					temp = str[i];
+				}
+				int c = 1;
+				while (c != 0) {
+					++i;
+					if (isLeftParenthesis(str[i])) {
+						temp = temp + str[i];
+						c++;
+					}
+					else if (isRightParenthesis(str[i])) {
+						c--;
+						if (c != 0) temp = temp + str[i];
+					}
+					else temp = temp + str[i];
+				}
+				Parse *inception = new Parse;
+				exponent = inception->pseudoMain(temp);
+				++i;
+			}
+			if (isExpression) {
+				vector<Number*> newVector;
+				Parse *inception = new Parse;
+				newVector = inception->pseudoMain(temp);
+				if (exponent.size() != 1) {
+					int a;
+				}
+				if (newVector.size() == 1) {
+					Irrational *irrational_i = new Irrational(newVector[0], exponent[0]);
+					numberRPN.push_back(irrational_i);
+				}
+				else {
+					//TODO: Have expression class store multiple numbers in this vector.
+				}
+				
+			}
+			else if (isNumber(str[i])) {
+				string numberStr;
+				numberStr.push_back(str[i]);
+				i++;
+				bool number = true;
+				while (number) {
+					if (isNumber(str[i])) {
+						numberStr.push_back(str[i]);
+						i++;
+					}
+					else number = false;
+				}
+				Integer *integer_i = stringToInteger(numberStr);
+				number = false;
+				Irrational *irrational_i = new Irrational(integer_i, exponent[0]);
+				numberRPN.push_back((irrational_i));
+			}
+		}
+		else if (isNumber(str[i])) {
 			string numberStr;
 			numberStr.push_back(str[i]);
 			i++;
@@ -130,56 +259,10 @@ void Parse::stringToObjectArray(string str) {
 					numberStr.push_back(str[i]);
 					i++;
 				}
-				else if (isRoot(str, i)) {
-					vector<Number*> exponent;
-					Integer *integer_i = stringToInteger(numberStr);
-					exponent.push_back(integer_i);
-					bool isExpression = false;
-					i += 3;
-					if (isLeftParenthesis(str[i])) {
-						isExpression = true;
-						if (!isRightParenthesis(str[++i])) {
-							temp = str[i];
-						}
-						int c = 1;
-						while (c != 0) {
-							++i;
-							if (isLeftParenthesis(str[i])) {
-								temp = temp + str[i];
-								c++;
-							}
-							else if (isRightParenthesis(str[i])) {
-								c--;
-								if (c != 0) temp = temp + str[i];
-							}
-							else temp = temp + str[i];
-						}
-						++i;
-						if (isExpression) {
-							vector<Number*> newVector;
-							Parse *inception = new Parse;
-							newVector = inception->pseudoMain(temp);
-							if (newVector.size() == 1) {
-								Integer *integer_i = new Integer(1);
-								Irrational *irrational_i = new Irrational(newVector[0], integer_i, exponent[0]);
-								numberRPN.push_back(irrational_i);
-								number = false;
-							}
-							else {
-								//TODO: Have expression class store multiple numbers in this vector.
-							}
-						}
-					}
-					else if (isNumber(str[i])) {
-
-					}
-				}
-				else {
-					Integer *integer_i = stringToInteger(numberStr);
-					numberRPN.push_back(integer_i);
-					number = false;
-				}
 			}
+			Integer *integer_i = stringToInteger(numberStr);
+			numberRPN.push_back(integer_i);
+			number = false;
 		}
 		else if (isSpecial(str, i)) {
 			if (str[i] == 'P' || str[i] == 'p') {
@@ -286,7 +369,7 @@ void Parse::stringToObjectArray(string str) {
 						else temp = temp + str[i];
 					}
 					++i;
-					
+
 				}
 				else if (isNumber(str[i])) {
 					string numberStr;
@@ -316,6 +399,64 @@ void Parse::stringToObjectArray(string str) {
 					}
 					else {
 						//TODO: Have expression class store multiple numbers in this vector.
+					}
+				}
+			}
+			else if (isSpecial(str, i)) {
+				if (str[i] == 'e') {
+					E *e_i = new E();
+					base.push_back(e_i);
+					i+=2;
+					if (isLeftParenthesis(str[i])) {
+						isExpression = true;
+						if (!isRightParenthesis(str[++i])) {
+							temp = str[i];
+						}
+						int c = 1;
+						while (c != 0) {
+							++i;
+							if (isLeftParenthesis(str[i])) {
+								temp = temp + str[i];
+								c++;
+							}
+							else if (isRightParenthesis(str[i])) {
+								c--;
+								if (c != 0) temp = temp + str[i];
+							}
+							else temp = temp + str[i];
+						}
+						++i;
+
+					}
+					else if (isNumber(str[i])) {
+						string numberStr;
+						numberStr.push_back(str[i]);
+						i++;
+						bool number = true;
+						while (number) {
+							if (isNumber(str[i])) {
+								numberStr.push_back(str[i]);
+								i++;
+							}
+							else {
+								Integer *integer_i = stringToInteger(numberStr);
+								Log *log_i = new Log(base[0], integer_i);
+								numberRPN.push_back(log_i);
+								number = false;
+							}
+						}
+					}
+					if (isExpression) {
+						vector<Number*> newVector;
+						Parse *inception = new Parse;
+						newVector = inception->pseudoMain(temp);
+						if (newVector.size() == 1) {
+							Log *log_i = new Log(base[0], newVector[0]);
+							numberRPN.push_back(log_i);
+						}
+						else {
+							//TODO: Have expression class store multiple numbers in this vector.
+						}
 					}
 				}
 			}
@@ -439,9 +580,29 @@ bool Parse::isLog(string str, int i) {
 }
 
 bool Parse::isRoot(string str, int i) {
-
 	if (isNumber(str[i])) {
-
+		string numberStr;
+		numberStr.push_back(str[i]);
+		i++;
+		bool number = true;
+		while (number) {
+			if (isNumber(str[i])) {
+				numberStr.push_back(str[i]);
+				i++;
+			}
+			else {
+				number = false;
+			}
+		}
+	}
+	else if (isLeftParenthesis(str[i])) {
+		int c = 1;
+		++i;
+		while (c != 0) {
+			if (isLeftParenthesis(str[i])) c++;
+			else if (isRightParenthesis(str[i])) c--;
+			++i;
+		}
 	}
 	if (str[i] == 'r') {
 		if (str[i + 1] == 't') {
@@ -506,7 +667,8 @@ string Parse::negativeCheck(string str) {
 				fixedString = fixedString + "(-1";
 			}
 			else {
-				fixedString = fixedString + "(-1)(";
+				fixedString = fixedString + "((-1)*(";
+				changeToPositive = true;
 			}
 			isNegative = true;
 		}
@@ -560,10 +722,13 @@ bool Parse::isSpecial(string str, int i) {
 }
 
 bool Parse::isPi(string str, int i) {
-	if (str[i] == 'P' || str[i] == 'p') {
-		if (str[i+1] = 'i') {
-			return true;
+	if (i >= 0) {
+		if (str[i] == 'P' || str[i] == 'p') {
+			int a = i + 1;
+			if ((a < (str.size() - 1)) && str[a] == 'i') {
+				return true;
+			}
 		}
-	}	
+	}
 	return false;
 }
