@@ -15,7 +15,7 @@ Parse::~Parse()
 
 vector<Number*> Parse::pseudoMain(string str) {
 	string newS = removeSpaces(str);
-	newS = negativeCheck(newS);
+	//newS = negativeCheck(newS);
 	stringToObjectArray(newS);
 	return numberRPN;
 }
@@ -124,7 +124,7 @@ void Parse::stringToObjectArray(string str) {
 			vector<Number*> exponent;
 			bool isExpression = false;
 			string negativeBase;
-			if (isNumber(str[i])) {
+			if (isPosOrNegNumb(str, i)) {
 				string numberStr;
 				numberStr.push_back(str[i]);
 				i++;
@@ -249,7 +249,7 @@ void Parse::stringToObjectArray(string str) {
 				numberRPN.push_back((irrational_i));
 			}
 		}
-		else if (isNumber(str[i])) {
+		else if (isPosOrNegNumb(str,i)) {
 			string numberStr;
 			numberStr.push_back(str[i]);
 			i++;
@@ -259,10 +259,10 @@ void Parse::stringToObjectArray(string str) {
 					numberStr.push_back(str[i]);
 					i++;
 				}
+				else number = false;
 			}
 			Integer *integer_i = stringToInteger(numberStr);
 			numberRPN.push_back(integer_i);
-			number = false;
 		}
 		else if (isSpecial(str, i)) {
 			if (str[i] == 'P' || str[i] == 'p') {
@@ -779,5 +779,16 @@ bool Parse::isPi(string str, int i) {
 			}
 		}
 	}
+	return false;
+}
+
+bool Parse::isNegativeNumber(string str, int i) {
+	if (str[i] == '-' && isNumber(str[i + 1]) && (i == 0 || !isNumber(str[i - 1]))) return true;
+	if (str[i] == '-' && (str[i + 1] == 'l' || str[i + 1] == 'L') && !isRightParenthesis(str[i - 1]) && !isNumber(str[i - 1])) return true;
+	return false;
+}
+
+bool Parse::isPosOrNegNumb(string str, int i) {
+	if (isNumber(str[i]) || isNegativeNumber(str, i)) return true;
 	return false;
 }

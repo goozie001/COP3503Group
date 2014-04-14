@@ -17,6 +17,8 @@ private:
 	string negativeCheck(string);
 
 	bool isNumber(char);
+	bool isNegativeNumber(string, int);
+	bool isPosOrNegNumb(string, int);
 	bool isPi(string, int);
 	bool isE(char);
 	bool isSpecial(string, int);
