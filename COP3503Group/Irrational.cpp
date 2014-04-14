@@ -5,7 +5,7 @@ Irrational::Irrational()
 {
 }
 
-Irrational::Irrational(Expression *base, Expression *exponentNumerator, Expression *exponentDenominator) {
+Irrational::Irrational(Number *base, Number *exponentNumerator, Number *exponentDenominator) {
 	this->base = base;
 	this->exponentNumerator = exponentNumerator;
 	this->exponentDenominator = exponentDenominator;
@@ -16,15 +16,15 @@ Irrational::~Irrational()
 {
 }
 
-Expression *Irrational::getBase() {
+Number *Irrational::getBase() {
 	return base;
 }
 
-Expression *Irrational::getExponentNumerator() {
+Number *Irrational::getExponentNumerator() {
 	return exponentNumerator;
 }
 
-Expression *Irrational::getExponentDenominator() {
+Number *Irrational::getExponentDenominator() {
 	return exponentDenominator;
 }
 
@@ -39,8 +39,8 @@ float Irrational::getFloatValue() {
 }
 
 // TODO: Implement simplify Irrational method
-Expression *Irrational::simplify() {
-	return NULL;
+Number *Irrational::simplify() {
+	return this;
 }
 
 // TODO: Implement toString method

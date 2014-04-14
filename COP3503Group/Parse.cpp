@@ -1,5 +1,6 @@
 
 #include <stack>
+#include <sstream>
 
 #include "Parse.h"
 
@@ -12,7 +13,7 @@ Parse::~Parse()
 {
 }
 
-vector<Expression*> Parse::pseudoMain(string str) {
+vector<Number*> Parse::pseudoMain(string str) {
 	string newS = removeSpaces(str);
 	newS = negativeCheck(newS);
 	stringToObjectArray(newS);
@@ -130,7 +131,7 @@ void Parse::stringToObjectArray(string str) {
 					i++;
 				}
 				else if (isRoot(str, i)) {
-					vector<Expression*> exponent;
+					vector<Number*> exponent;
 					Integer *integer_i = stringToInteger(numberStr);
 					exponent.push_back(integer_i);
 					bool isExpression = false;
@@ -155,7 +156,7 @@ void Parse::stringToObjectArray(string str) {
 						}
 						++i;
 						if (isExpression) {
-							vector<Expression*> newVector;
+							vector<Number*> newVector;
 							Parse *inception = new Parse;
 							newVector = inception->pseudoMain(temp);
 							if (newVector.size() == 1) {
@@ -178,6 +179,18 @@ void Parse::stringToObjectArray(string str) {
 					numberRPN.push_back(integer_i);
 					number = false;
 				}
+			}
+		}
+		else if (isSpecial(str, i)) {
+			if (str[i] == 'P' || str[i] == 'p') {
+				Pi *pi_i = new Pi();
+				numberRPN.push_back(pi_i);
+				i += 2;
+			}
+			else if (str[i] == 'e') {
+				E *e_i = new E();
+				numberRPN.push_back(e_i);
+				++i;
 			}
 		}
 		else if (isOperator(str[i])) {
@@ -212,8 +225,8 @@ void Parse::stringToObjectArray(string str) {
 					temp = temp + str[i + 1];
 					i++;
 				}
-				Operator *operator_i = stringToOperator(temp);
-				numberRPN.push_back(operator_i);
+				Integer *integer_i = stringToInteger(temp);
+				numberRPN.push_back(integer_i);
 			}
 			operators.push("(");
 			i++;
@@ -294,7 +307,7 @@ void Parse::stringToObjectArray(string str) {
 					}
 				}
 				if (isExpression) {
-					vector<Expression*> newVector;
+					vector<Number*> newVector;
 					Parse *inception = new Parse;
 					newVector = inception->pseudoMain(temp);
 					if (newVector.size() == 1) {
@@ -318,7 +331,7 @@ void Parse::stringToObjectArray(string str) {
 
 
 int Parse::evaluateRPN() {
-	int i = 0;
+	unsigned i = 0;
 	vector<string> solution;
 	while (i < out.size()) {
 		solution.push_back(out[i]);
@@ -390,8 +403,17 @@ int Parse::evaluateRPN() {
 string Parse::removeSpaces(string str) {
 	string newS;
 
-	for (int i = 0; i < str.length(); i++) {
-		if (str.at(i) != ' ') {
+	for (unsigned i = 0; i < str.length(); i++) {
+		if (str[i] == 's') {
+			if (str[++i] == 'q') {
+				if (str[++i] == 'r') {
+					if (str[++i] == 't') {
+						newS = newS + "2rt";
+					}
+				}
+			}
+		}
+		else if (str[i] != ' ') {
 			newS = newS + str.at(i);
 		}
 	}
@@ -417,6 +439,10 @@ bool Parse::isLog(string str, int i) {
 }
 
 bool Parse::isRoot(string str, int i) {
+
+	if (isNumber(str[i])) {
+
+	}
 	if (str[i] == 'r') {
 		if (str[i + 1] == 't') {
 			if (str[i + 2] == ':') return true;
@@ -460,7 +486,7 @@ bool Parse::matchingParentheses(string str) {
 	// a counts left parentheses while b counts right parentheses.
 	int a = 0;
 	int b = 0;
-	for (int i = 0; i < str.length(); i++) {
+	for (unsigned i = 0; i < str.length(); i++) {
 		if (str[i] == '(') a++;
 		else if (str[i] == ')') b++;
 	}
@@ -471,9 +497,9 @@ bool Parse::matchingParentheses(string str) {
 
 string Parse::negativeCheck(string str) {
 	string fixedString;
-
-	for (int i = 0; i < (str.length() - 1); i++) {
-		bool isNegative = false;
+	bool isNegative;
+	for (unsigned i = 0; i < (str.length() - 1); i++) {
+		isNegative = false;
 		bool changeToPositive = false;
 		if (i == 0 && str[i] == '-') {
 			if (isLeftParenthesis(str[i + 1])) {
@@ -484,23 +510,23 @@ string Parse::negativeCheck(string str) {
 			}
 			isNegative = true;
 		}
-		else if (str[i] == '-' && isNumber(str[i - 1]) && isNumber(str[i + 1])) {
+		else if ((str[i] == '-') && (isNumber(str[i - 1]) || isSpecial(str, i - 1) || isPi(str, i - 2)) && (isNumber(str[i + 1]) || isSpecial(str, i + 1))) {
 			fixedString = fixedString + "+((-1)*(";
 			changeToPositive = true;
 			isNegative = true;
 		}
-		else if (i < (str.length() - 2) && !isNumber(str[i]) && (str[i + 1]) == '-' && !isRightParenthesis(str[i]) && isNumber(str[i + 2])) {
+		else if (i < (str.length() - 2) && !(isNumber(str[i]) || isSpecial(str, i) || isPi(str, i - 1)) && (str[i + 1]) == '-' && !isRightParenthesis(str[i]) && (isNumber(str[i + 2]) || isSpecial(str, i + 2) || isPi(str, i + 1))) {
 			fixedString = fixedString + str[i] + "(-1)*(";
 			isNegative = true;
+			++i;
 		}
 		else {
 			fixedString = fixedString + str[i];
 		}
 
 		if (isNegative) {
-			while (i < str.length() - 1 && isNumber(str[i + 1])) {
-				fixedString = fixedString + str[i + 1];
-				i++;
+			while (i < str.length() - 1 && (isNumber(str[i + 1]) || isSpecial(str, i + 1) || isPi(str, i) || str[i+1] == '/')) {
+				fixedString = fixedString + str[++i];
 			}
 			if (changeToPositive) {
 				fixedString = fixedString + ')';
@@ -508,7 +534,9 @@ string Parse::negativeCheck(string str) {
 			fixedString = fixedString + ')';
 		}
 	}
-	fixedString = fixedString + str[str.length() - 1];
+	if (!isNegative || str[str.length() - 1] == ')') {
+		fixedString = fixedString + str[str.length() - 1];
+	}
 
 	return fixedString;
 }
@@ -523,3 +551,19 @@ Operator *Parse::stringToOperator(string str) {
 	return new Operator(str);
 }
 
+bool Parse::isSpecial(string str, int i) {
+	if (str[i] == 'e') return true;
+	else if (str[i] == 'P' || str[i] == 'p') {
+		if (str[i + 1] == 'i') return true;
+	}
+	return false;
+}
+
+bool Parse::isPi(string str, int i) {
+	if (str[i] == 'P' || str[i] == 'p') {
+		if (str[i+1] = 'i') {
+			return true;
+		}
+	}	
+	return false;
+}

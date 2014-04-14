@@ -7,13 +7,10 @@
 #pragma once
 #include <iostream>
 #include <cmath>
-#include <sstream>
+#include <vector>
 using namespace std;
 
-#include "Expression.h"
-
 class Number
-	:public Expression
 {
 public:
 	Number();
@@ -21,5 +18,5 @@ public:
 
 	virtual float getFloatValue() = 0;
 	virtual string toString() = 0;
-	bool isOfTypeNumber() { return true; }
+	virtual Number *simplify() = 0;
 };

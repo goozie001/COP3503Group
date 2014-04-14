@@ -2,9 +2,9 @@
 #include "Parse.h"
 
 int main() {
-	string s = "2rt:(8)";
+	string s = "8^(-4/3) * 4";
 	Parse *p = new Parse();
-	vector<Expression*> vec = p->pseudoMain(s);
+	vector<Number*> vec = p->pseudoMain(s);
 	int i;
 	cin >> i;
 }

@@ -5,11 +5,11 @@ class Log :
 {
 public:
 	Log();
-	Log(Number* base, Expression* argument);
+	Log(Number* base, Number* argument);
 	~Log();
 
 	Number *getBase();
-	Expression *getArgument();
+	Number *getArgument();
 
 	// Overridden methods
 	virtual float getFloatValue();
@@ -17,7 +17,7 @@ public:
 	virtual string toString();
 private:
 	Number *base;
-	Expression *argument;
+	Number *argument;
 	float floatValue;
 };
 

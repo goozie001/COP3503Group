@@ -14,7 +14,7 @@ float Pi::getFloatValue() {
 	return 3.14159265359;
 }
 
-Expression *Pi::simplify() {
+Number *Pi::simplify() {
 	return this;
 }
 

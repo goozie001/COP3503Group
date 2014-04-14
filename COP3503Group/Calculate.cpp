@@ -10,9 +10,9 @@ Calculate::~Calculate()
 {
 }
 
-Expression *Calculate::add(Expression *numb1, Expression *numb2) {
-	Expression *newNumb1 = numb1->simplify();
-	Expression *newNumb2 = numb2->simplify();
+Number *Calculate::add(Number *numb1, Number *numb2) {
+	Number *newNumb1 = numb1->simplify();
+	Number *newNumb2 = numb2->simplify();
 
 	Integer *int1 = dynamic_cast<Integer*>(newNumb1);
 	Integer *int2 = dynamic_cast<Integer*>(newNumb2);
@@ -32,9 +32,9 @@ Expression *Calculate::add(Expression *numb1, Expression *numb2) {
 
 }
 
-Expression *Calculate::subtract(Expression *numb1, Expression *numb2) {
-	Expression *newNumb1 = numb1->simplify();
-	Expression *newNumb2 = numb2->simplify();
+Number *Calculate::subtract(Number *numb1, Number *numb2) {
+	Number *newNumb1 = numb1->simplify();
+	Number *newNumb2 = numb2->simplify();
 
 	Integer *int1 = dynamic_cast<Integer*>(newNumb1);
 	Integer *int2 = dynamic_cast<Integer*>(newNumb2);
@@ -46,9 +46,9 @@ Expression *Calculate::subtract(Expression *numb1, Expression *numb2) {
 	return NULL;
 }
 
-Expression *Calculate::multiply(Expression *numb1, Expression *numb2) {
-	Expression *newNumb1 = numb1->simplify();
-	Expression *newNumb2 = numb2->simplify();
+Number *Calculate::multiply(Number *numb1, Number *numb2) {
+	Number *newNumb1 = numb1->simplify();
+	Number *newNumb2 = numb2->simplify();
 
 	Integer *int1 = dynamic_cast<Integer*>(newNumb1);
 	Integer *int2 = dynamic_cast<Integer*>(newNumb2);
@@ -60,9 +60,9 @@ Expression *Calculate::multiply(Expression *numb1, Expression *numb2) {
 	return NULL;
 }
 
-Expression *Calculate::divide(Expression *numb1, Expression *numb2) {
-	Expression *newNumb1 = numb1->simplify();
-	Expression *newNumb2 = numb2->simplify();
+Number *Calculate::divide(Number *numb1, Number *numb2) {
+	Number *newNumb1 = numb1->simplify();
+	Number *newNumb2 = numb2->simplify();
 
 	Integer *int1 = dynamic_cast<Integer*>(newNumb1);
 	Integer *int2 = dynamic_cast<Integer*>(newNumb2);
@@ -74,9 +74,9 @@ Expression *Calculate::divide(Expression *numb1, Expression *numb2) {
 	return NULL;
 }
 
-Expression *Calculate::exponentiate(Expression *numb1, Expression *numb2) {
-	Expression *newNumb1 = numb1->simplify();
-	Expression *newNumb2 = numb2->simplify();
+Number *Calculate::exponentiate(Number *numb1, Number *numb2) {
+	Number *newNumb1 = numb1->simplify();
+	Number *newNumb2 = numb2->simplify();
 
 	Integer *int1 = dynamic_cast<Integer*>(newNumb1);
 	Integer *int2 = dynamic_cast<Integer*>(newNumb2);
@@ -88,9 +88,9 @@ Expression *Calculate::exponentiate(Expression *numb1, Expression *numb2) {
 	return NULL;
 }
 
-Expression *Calculate::logarithm(Expression *numb1, Expression *numb2) {
-	Expression *newNumb1 = numb1->simplify();
-	Expression *newNumb2 = numb2->simplify();
+Number *Calculate::logarithm(Number *numb1, Number *numb2) {
+	Number *newNumb1 = numb1->simplify();
+	Number *newNumb2 = numb2->simplify();
 
 	Integer *int1 = dynamic_cast<Integer*>(newNumb1);
 	Integer *int2 = dynamic_cast<Integer*>(newNumb2);

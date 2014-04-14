@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 
 #include "Calculate.h"
 
@@ -9,9 +8,8 @@ public:
 	Parse();
 	~Parse();
 	
-	vector<Expression*> pseudoMain(string);
-
-	vector<Expression*> numberRPN;
+	vector<Number*> pseudoMain(string);
+	vector<Number*> numberRPN;
 
 private:
 	string removeSpaces(string);
@@ -20,6 +18,7 @@ private:
 	bool isNumber(char);
 	bool isPi(string, int);
 	bool isE(char);
+	bool isSpecial(string, int);
 	bool isLog(string, int);
 	bool isRoot(string, int);
 	bool isOperator(char);

@@ -8,7 +8,7 @@ public:
 	~E();
 
 	virtual float getFloatValue();
-	virtual Expression *simplify();
+	virtual Number *simplify();
 	virtual string toString();
 };
 

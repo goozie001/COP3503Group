@@ -36,13 +36,13 @@
     <ClInclude Include="Operator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Expression.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Pi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="E.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Expression.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -71,13 +71,13 @@
     <ClCompile Include="Operator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Expression.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Pi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="E.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Expression.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

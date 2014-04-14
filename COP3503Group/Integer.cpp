@@ -1,3 +1,4 @@
+#include <sstream>
 #include "Integer.h"
 
 

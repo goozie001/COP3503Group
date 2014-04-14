@@ -14,7 +14,7 @@ float E::getFloatValue() {
 	return exp(1);
 }
 
-Expression *E::simplify() {
+Number *E::simplify() {
 	return this;
 }
 
