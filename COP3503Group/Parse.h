@@ -11,6 +11,7 @@ public:
 	Number *pseudoMain(string);
 	vector<Number*> numberRPN;
 	vector<Number*> storedAnswers;
+	vector<string> inputs;
 
 private:
 	string removeSpaces(string);

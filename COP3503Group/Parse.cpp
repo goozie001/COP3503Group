@@ -14,6 +14,7 @@ Parse::~Parse()
 }
 
 Number* Parse::pseudoMain(string str) {
+	inputs.push_back(str);
 	string newS = removeSpaces(str);
 	//newS = negativeCheck(newS);
 	stringToObjectArray(newS);
@@ -824,7 +825,7 @@ bool Parse::isSpecial(string str, int i) {
 bool Parse::isPi(string str, int i) {
 	if (i >= 0) {
 		if (str[i] == 'P' || str[i] == 'p') {
-			int a = i + 1;
+			unsigned a = i + 1;
 			if ((a < (str.size() - 1)) && str[a] == 'i') {
 				return true;
 			}

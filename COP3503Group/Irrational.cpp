@@ -53,7 +53,7 @@ Number *Irrational::simplify() {
 		vector<int> insideFactors;
 		vector<int> counter;
 		int max = 0;
-		for (int i = 0; i < primeFactors.size(); i++)
+		for (unsigned i = 0; i < primeFactors.size(); i++)
 		{
 			if (primeFactors.at(i) > max)
 			{
@@ -63,7 +63,7 @@ Number *Irrational::simplify() {
 		}
 		for (int i = 2; i <= max; i++)
 		{
-			for (int j = 0; j < primeFactors.size(); j++)
+			for (unsigned j = 0; j < primeFactors.size(); j++)
 			{
 				if (primeFactors.at(j) == i)
 				{
