@@ -5,8 +5,8 @@
 #include "Operator.h"
 #include "Pi.h"
 #include "E.h"
-
-//Example commit
+#include "Expression.h"
+#include "Parse.h"
 
 class Calculate
 {
@@ -18,8 +18,6 @@ public:
 	Number *subtract(Number *numb1, Number *numb2);
 	Number *multiply(Number *numb1, Number *numb2);
 	Number *divide(Number *numb1, Number *numb2);
-	Number *exponentiate(Number *numb1, Number *numb2);
-	Number *logarithm(Number *numb1, Number *numb2);
 	float toFloat(Number *numb);
-};
 
+};

@@ -8,7 +8,7 @@ public:
 	Parse();
 	~Parse();
 	
-	vector<Number*> pseudoMain(string);
+	Number *pseudoMain(string);
 	vector<Number*> numberRPN;
 	vector<Number*> storedAnswers;
 

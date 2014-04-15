@@ -1,6 +1,9 @@
 #pragma once
 #include "Number.h"
-
+// #include "Expression.h"
+// #include "Integer.h"
+// #include "Operator.h"
+#include <exception>
 class Irrational :
 	public Number
 {
@@ -11,10 +14,12 @@ public:
 
 	Number *getBase();
 	Number *getRootVal();
+	void setBase(Number *newBase);
+	void setRootVal(Number *newRootVal);
 	string getValue();
 
 	// Overridden values
-	virtual float getFloatValue();
+	float getFloatValue();
 	virtual Number *simplify();
 	virtual string toString();
 private:
@@ -23,4 +28,3 @@ private:
 	string value;
 	float floatValue;
 };
-

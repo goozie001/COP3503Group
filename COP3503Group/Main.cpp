@@ -2,9 +2,9 @@
 #include "Parse.h"
 
 int main() {
-	string s = "3rt:-8";
+	string s = "2*sqrt:2 + 3*sqrt:2";
 	Parse *p = new Parse();
-	vector<Number*> vec = p->pseudoMain(s);
+	Number *vec = p->pseudoMain(s);
 	int i;
 	cin >> i;
 }

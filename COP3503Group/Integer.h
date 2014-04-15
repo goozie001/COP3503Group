@@ -9,6 +9,8 @@ public:
 	~Integer();
 
 	int getIntValue();
+	vector<int> getPrimeFactors();
+	vector<int> getPrimeFactorsHelper(int counter, int num, vector<int> temp);
 
 	// Overridden methods
 	virtual float getFloatValue();
@@ -17,5 +19,5 @@ public:
 private:
 	int intValue;
 	float floatValue;
+	vector<int> primeFactors;
 };
-

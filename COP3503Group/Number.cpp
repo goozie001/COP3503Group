@@ -9,3 +9,7 @@ Number::Number()
 Number::~Number()
 {
 }
+
+Number *Number::simplify() {
+	return this;
+}

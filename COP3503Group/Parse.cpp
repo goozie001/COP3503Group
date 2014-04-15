@@ -13,11 +13,12 @@ Parse::~Parse()
 {
 }
 
-vector<Number*> Parse::pseudoMain(string str) {
+Number* Parse::pseudoMain(string str) {
 	string newS = removeSpaces(str);
 	//newS = negativeCheck(newS);
 	stringToObjectArray(newS);
-	return numberRPN;
+	Number *newN = evaluateRPNObject();
+	return newN;
 }
 
 int Parse::stringToRPN(string str) {
@@ -121,7 +122,7 @@ void Parse::stringToObjectArray(string str) {
 
 		temp.push_back(str[i]);
 		if (isRoot(str, i)) {
-			vector<Number*> exponent;
+			Number *exponent;
 			bool isExpression = false;
 			string negativeBase;
 			if (isPosOrNegNumb(str, i)) {
@@ -139,7 +140,7 @@ void Parse::stringToObjectArray(string str) {
 					}
 				}
 				Integer *integer_i = stringToInteger(numberStr);
-				exponent.push_back(integer_i);
+				exponent = integer_i;
 				i += 3;
 			}
 			// Parenthesis at the base
@@ -182,15 +183,21 @@ void Parse::stringToObjectArray(string str) {
 						else temp = temp + str[i];
 					}
 					i += 4;
+					Parse *incep = new Parse();
+					exponent = incep->pseudoMain(temp);
 				}
 				else {
 					int a;
 					istringstream(negativeBase) >> a;
 					a *= -1;
 					Integer *integer_i = new Integer(a);
-					exponent.push_back(integer_i);
+					exponent = integer_i;
 					i += 5;
 				}
+			}
+			else {
+				// TODO: Figure out what to do with this case.
+				exponent = new Integer(0);
 			}
 			// Parenthesis at the argument
 			if (isLeftParenthesis(str[i])) {
@@ -216,22 +223,13 @@ void Parse::stringToObjectArray(string str) {
 				++i;
 			}
 			if (isExpression) {
-				vector<Number*> newVector;
+				Number *newNumb;
 				Parse *inception = new Parse;
-				newVector = inception->pseudoMain(temp);
-				if (exponent.size() != 1) {
-					int a;
-				}
-				if (newVector.size() == 1) {
-					Irrational *irrational_i = new Irrational(newVector[0], exponent[0]);
+				newNumb = inception->pseudoMain(temp);
+					Irrational *irrational_i = new Irrational(newNumb, exponent);
 					numberRPN.push_back(irrational_i);
-				}
-				else {
-					//TODO: Have expression class store multiple numbers in this vector.
-				}
-				
 			}
-			else if (isNumber(str[i])) {
+			else if (isPosOrNegNumb(str, i)) {
 				string numberStr;
 				numberStr.push_back(str[i]);
 				i++;
@@ -245,7 +243,7 @@ void Parse::stringToObjectArray(string str) {
 				}
 				Integer *integer_i = stringToInteger(numberStr);
 				number = false;
-				Irrational *irrational_i = new Irrational(integer_i, exponent[0]);
+				Irrational *irrational_i = new Irrational(integer_i, exponent);
 				numberRPN.push_back((irrational_i));
 			}
 		}
@@ -390,16 +388,13 @@ void Parse::stringToObjectArray(string str) {
 					}
 				}
 				if (isExpression) {
-					vector<Number*> newVector;
+					Number *newNumb;
 					Parse *inception = new Parse;
-					newVector = inception->pseudoMain(temp);
-					if (newVector.size() == 1) {
-						Log *log_i = new Log(base[0], newVector[0]);
-						numberRPN.push_back(log_i);
-					}
-					else {
-						//TODO: Have expression class store multiple numbers in this vector.
-					}
+					newNumb = inception->pseudoMain(temp);
+					inception->numberRPN = base;
+					Number *newNumb_i = inception->evaluateRPNObject();
+					Log *log_i = new Log(newNumb_i, newNumb);
+					numberRPN.push_back(log_i);
 				}
 			}
 			else if (isSpecial(str, i)) {
@@ -447,16 +442,62 @@ void Parse::stringToObjectArray(string str) {
 						}
 					}
 					if (isExpression) {
-						vector<Number*> newVector;
+						Number *newNumb;
 						Parse *inception = new Parse;
-						newVector = inception->pseudoMain(temp);
-						if (newVector.size() == 1) {
-							Log *log_i = new Log(base[0], newVector[0]);
-							numberRPN.push_back(log_i);
+						newNumb = inception->pseudoMain(temp);
+						Log *log_i = new Log(base[0], newNumb);
+						numberRPN.push_back(log_i);
+					}
+				}
+				else if (isPi(str, i)) {
+					Pi *pi_i = new Pi();
+					base.push_back(pi_i);
+					i += 3;
+					if (isLeftParenthesis(str[i])) {
+						isExpression = true;
+						if (!isRightParenthesis(str[++i])) {
+							temp = str[i];
 						}
-						else {
-							//TODO: Have expression class store multiple numbers in this vector.
+						int c = 1;
+						while (c != 0) {
+							++i;
+							if (isLeftParenthesis(str[i])) {
+								temp = temp + str[i];
+								c++;
+							}
+							else if (isRightParenthesis(str[i])) {
+								c--;
+								if (c != 0) temp = temp + str[i];
+							}
+							else temp = temp + str[i];
 						}
+						++i;
+
+					}
+					else if (isNumber(str[i])) {
+						string numberStr;
+						numberStr.push_back(str[i]);
+						i++;
+						bool number = true;
+						while (number) {
+							if (isNumber(str[i])) {
+								numberStr.push_back(str[i]);
+								i++;
+							}
+							else {
+								Integer *integer_i = stringToInteger(numberStr);
+								Log *log_i = new Log(base[0], integer_i);
+								numberRPN.push_back(log_i);
+								number = false;
+							}
+						}
+					}
+					if (isExpression) {
+						Number *newNumb;
+						Parse *inception = new Parse;
+						newNumb = inception->pseudoMain(temp);
+						Log *log_i = new Log(base[0], newNumb);
+						numberRPN.push_back(log_i);
 					}
 				}
 			}
@@ -508,8 +549,8 @@ Number *Parse::evaluateRPNObject() {
 					solution.push_back(numb_i);
 				}
 				else if (op_i->toString() == "^") {
-					Number *numb_i = calc->exponentiate(b, a);
-					solution.push_back(numb_i);
+					// Number *numb_i = calc->exponentiate(b, a);
+					// solution.push_back(numb_i);
 				}
 			}
 		}
@@ -603,8 +644,18 @@ string Parse::removeSpaces(string str) {
 				}
 			}
 		}
+		else if (str[i] == '-' && isSpecial(str, i + 1)) {
+			if (isPi(str, i + 1)) {
+				newS += "-1*Pi";
+				i += 2;
+			}
+			else {
+				newS += "-1*e";
+				++i;
+			}
+		}
 		else if (str[i] != ' ') {
-			newS = newS + str.at(i);
+			newS += str[i];
 		}
 	}
 
