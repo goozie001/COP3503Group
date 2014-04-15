@@ -1055,3 +1055,16 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 		}
 	}
 }
+
+Integer *Calculate::gcd(Integer *x, Integer *y)
+{
+	int a = x->getIntValue();
+	int b = y->getIntValue();
+	if (b != 0) {
+		Integer *newInt = new Integer(a%b);
+		gcd(y, newInt); //recursive call by using arithmetic rules
+	}
+
+	return x; //base case,return x when y equals 0
+
+}
