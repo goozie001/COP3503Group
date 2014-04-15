@@ -66,8 +66,7 @@ vector<int> Integer::getPrimeFactorsHelper(int counter, int num, vector<int> tem
 	}
 	else
 	{
-		counter++;
-		getPrimeFactorsHelper(counter, num, temp);
+		getPrimeFactorsHelper(counter+1, num, temp);
 	}
 
 

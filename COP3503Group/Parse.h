@@ -15,7 +15,6 @@ public:
 
 private:
 	string removeSpaces(string);
-	string negativeCheck(string);
 
 	bool isNumber(char);
 	bool isNegativeNumber(string, int);

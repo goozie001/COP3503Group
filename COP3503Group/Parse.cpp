@@ -16,9 +16,9 @@ Parse::~Parse()
 Number* Parse::pseudoMain(string str) {
 	inputs.push_back(str);
 	string newS = removeSpaces(str);
-	//newS = negativeCheck(newS);
 	stringToObjectArray(newS);
 	Number *newN = evaluateRPNObject();
+	numberRPN.erase(numberRPN.begin(), numberRPN.end());
 	return newN;
 }
 
@@ -559,6 +559,7 @@ Number *Parse::evaluateRPNObject() {
 	}
 	Number *end = solution[0];
 	storedAnswers.push_back(end);
+	// Number *end1 = end->simplify();
 	return end;
 }
 
@@ -755,53 +756,6 @@ bool Parse::matchingParentheses(string str) {
 
 	if (a == b) return true;
 	else return false;
-}
-
-string Parse::negativeCheck(string str) {
-	string fixedString;
-	bool isNegative;
-	for (unsigned i = 0; i < (str.length() - 1); i++) {
-		isNegative = false;
-		bool changeToPositive = false;
-		if (i == 0 && str[i] == '-') {
-			if (isLeftParenthesis(str[i + 1])) {
-				fixedString = fixedString + "(-1";
-			}
-			else {
-				fixedString = fixedString + "((-1)*(";
-				changeToPositive = true;
-			}
-			isNegative = true;
-		}
-		else if ((str[i] == '-') && (isNumber(str[i - 1]) || isSpecial(str, i - 1) || isPi(str, i - 2)) && (isNumber(str[i + 1]) || isSpecial(str, i + 1))) {
-			fixedString = fixedString + "+((-1)*(";
-			changeToPositive = true;
-			isNegative = true;
-		}
-		else if (i < (str.length() - 2) && !(isNumber(str[i]) || isSpecial(str, i) || isPi(str, i - 1)) && (str[i + 1]) == '-' && !isRightParenthesis(str[i]) && (isNumber(str[i + 2]) || isSpecial(str, i + 2) || isPi(str, i + 1))) {
-			fixedString = fixedString + str[i] + "(-1)*(";
-			isNegative = true;
-			++i;
-		}
-		else {
-			fixedString = fixedString + str[i];
-		}
-
-		if (isNegative) {
-			while (i < str.length() - 1 && (isNumber(str[i + 1]) || isSpecial(str, i + 1) || isPi(str, i) || str[i+1] == '/')) {
-				fixedString = fixedString + str[++i];
-			}
-			if (changeToPositive) {
-				fixedString = fixedString + ')';
-			}
-			fixedString = fixedString + ')';
-		}
-	}
-	if (!isNegative || str[str.length() - 1] == ')') {
-		fixedString = fixedString + str[str.length() - 1];
-	}
-
-	return fixedString;
 }
 
 Integer *Parse::stringToInteger(string str) {

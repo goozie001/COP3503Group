@@ -18,6 +18,7 @@ public:
 	Number *subtract(Number *numb1, Number *numb2);
 	Number *multiply(Number *numb1, Number *numb2);
 	Number *divide(Number *numb1, Number *numb2);
+	Number *exponentiate(Number *numb1, Number *numb2);
 	float toFloat(Number *numb);
 
 };

@@ -1,6 +1,9 @@
 #include "Irrational.h"
 #include "Integer.h"
 #include "Expression.h"
+#include "Log.h"
+#include "E.h"
+#include "Pi.h"
 
 
 Irrational::Irrational()
@@ -8,6 +11,61 @@ Irrational::Irrational()
 }
 
 Irrational::Irrational(Number *base, Number *rootVal) {
+	Integer *int1 = dynamic_cast<Integer*>(base);
+	Irrational *irr1 = dynamic_cast<Irrational*>(base);
+	Log *log1 = dynamic_cast<Log*>(base);
+	E *e1 = dynamic_cast<E*>(base);
+	Pi *pi1 = dynamic_cast<Pi*>(base);
+
+	Integer *int2 = dynamic_cast<Integer*>(rootVal);
+
+
+	if (int1 != 0) {
+		if (int1->getFloatValue() < 0) {
+			if (int2 != 0) {
+				if (int2->getIntValue() % 2 == 0){
+					throw invalid_argument("Cannot take an even root of a negative number");
+				}
+			}
+		}
+	}
+	else if (irr1 != 0) {
+		if (irr1->getFloatValue() < 0) {
+			if (int2 != 0) {
+				if (int2->getIntValue() % 2 == 0){
+					throw invalid_argument("Cannot take an even root of a negative number");
+				}
+			}
+		}
+	}
+	else if (log1 != 0) {
+		if (log1->getFloatValue() < 0) {
+			if (int2 != 0) {
+				if (int2->getIntValue() % 2 == 0){
+					throw invalid_argument("Cannot take an even root of a negative number");
+				}
+			}
+		}
+	}
+	else if (e1 != 0) {
+		if (e1->getFloatValue() < 0) {
+			if (int2 != 0) {
+				if (int2->getIntValue() % 2 == 0){
+					throw invalid_argument("Cannot take an even root of a negative number");
+				}
+			}
+		}
+	}
+	else if (pi1 != 0) {
+		if (pi1->getFloatValue() < 0) {
+			if (int2 != 0) {
+				if (int2->getIntValue() % 2 == 0){
+					throw invalid_argument("Cannot take an even root of a negative number");
+				}
+			}
+		}
+	}
+
 	this->base = base;
 	this->rootVal = rootVal;
 }
@@ -32,14 +90,7 @@ string Irrational::getValue() {
 // Overridden methods
 
 float Irrational::getFloatValue() {
-	if (base->getFloatValue() < 0 && (int)(1 / rootVal->getFloatValue()) % 2 == 0)
-	{
-		//throw out_of_range("Can't take even root of negative number!");
-	}
-	else
-	{
-		return pow(base->getFloatValue(), rootVal->getFloatValue());
-	}
+	return pow(base->getFloatValue(), rootVal->getFloatValue());
 }
 
 // TODO: Implement simplify Irrational method
@@ -104,11 +155,11 @@ Number *Irrational::simplify() {
 // TODO: Implement toString method
 string Irrational::toString() {
 	string s;
-	s = "( ";
+	s = rootVal->toString();
+	s += "rt:";
+	s += "(";
 	s += base->toString();
-	s += " ) ^ ( ";
-	s += rootVal->toString();
-	s += " )";
+	s += ")";
 	return s;
 }
 
