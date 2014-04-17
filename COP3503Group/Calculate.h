@@ -21,5 +21,5 @@ public:
 	Number *exponentiate(Number *numb1, Number *numb2);
 	float toFloat(Number *numb);
 
-	Integer *gcd(Integer *num, Integer *denom);
+	int gcd(int, int);
 };
