@@ -113,7 +113,7 @@ void Parse::stringToObjectArray(string str) {
 	// We use the Shunting Yard Algorithm to store the operators separately from the numbers in
 	// order of precedence to do all of the calculations in the future.
 	// TODO: Handle exception of unmatching parentheses.
-	if (!matchingParentheses(str)) return;
+	if (!matchingParentheses(str)) throw invalid_argument("Parentheses do not close properly.");
 
 	stack<string> operators;
 
@@ -221,18 +221,14 @@ void Parse::stringToObjectArray(string str) {
 					}
 					else temp = temp + str[i];
 				}
-				Parse *inception = new Parse;
-				exponent = inception->pseudoMain(temp);
-				delete inception;
-				++i;
 			}
 			if (isExpression) {
 				Parse *inception = new Parse;
-
 				Number *newNumb = inception->pseudoMain(temp);
 					Irrational *irrational_i = new Irrational(newNumb, exponent);
 					numberRPN.push_back(irrational_i);
 					delete inception;
+					++i;
 			}
 			else if (isPosOrNegNumb(str, i)) {
 				string numberStr;
