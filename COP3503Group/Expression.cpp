@@ -8,30 +8,9 @@ Expression::Expression()
 
 Expression::Expression(Number *num1, Number *num2, Operator *oper)
 {
-	Expression *expr1 = dynamic_cast<Expression*>(num1);
-	Expression *expr2 = dynamic_cast<Expression*>(num2);
-	if (expr1){
-		for (size_t i = 0; i < expr1->getVector().size(); i++){
-			this->exprVector.push_back(expr1->getVector()[i]);
-		}
-		if (expr2){
-			exprVector.push_back(oper);
-			for (size_t i = 0; i < expr2->getVector().size(); i++){
-				this->exprVector.push_back(expr2->getVector()[i]);
-			}
-		}
-		else{
-			exprVector.push_back(oper);
-			exprVector.push_back(num2);
-		}
-	}
-	else if (expr2){
-		exprVector.push_back(num1);
-		exprVector.push_back(oper);
-		for (size_t i = 0; i < expr2->getVector().size(); i++){
-			this->exprVector.push_back(expr2->getVector()[i]);
-		}
-	}
+	exprVector.push_back(num1);
+	exprVector.push_back(oper);
+	exprVector.push_back(num2);
 }
 Expression::~Expression()
 {
@@ -47,7 +26,7 @@ string Expression::toString()
 	string temp;
 	for (size_t i = 0; i < exprVector.size(); i++)
 	{
-		temp += exprVector.at(i)->toString();
+		temp += exprVector[i]->toString();
 	}
 	return temp;
 }

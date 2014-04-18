@@ -742,49 +742,25 @@ Number *Calculate::divide(Number *num1, Number *num2)
 	Operator *times = new Operator("*");
 	Operator *quot = new Operator("/");
 
-	/*if (int2){
+	if (int2){
 		if (int2->getIntValue() == 0){
 			throw invalid_argument("Cannot divide by 0");
 		}
-	}*/
+	}
 
 	if (int1)
 	{
 		if (int2)
 		{
-			/*vector<int> tempN = int1->getPrimeFactors();
-			vector<int> tempD = int2->getPrimeFactors();
+			int divisor = gcd(int1->getIntValue(), int2->getIntValue());
 
-			for (int i = 0; i < tempN.size(); i++)
-			{
-				int j = 0;
-				while (j < tempD.size())
-				{
-					if (tempN[i] == tempD[j])
-					{
-						tempN.erase(tempN.begin() + i);
-						tempD.erase(tempD.begin() + j);
-					}
-					else
-					{
-						j++;
-					}
-				}
+			Integer *i = new Integer(int1->getIntValue()/divisor);
+			Integer *j = new Integer(int2->getIntValue()/divisor);
+			if (j->getIntValue() == 1) {
+				delete j;
+				return i;
 			}
-			int temp1 = 1;
-			int temp2 = 1;
-			for (int i = 0; i < tempN.size(); i++)
-			{
-				temp1 *= tempN.at(i);
-			}
-			for (int i = 0; i < tempD.size(); i++)
-			{
-				temp2 *= tempD.at(i);
-			}
-			Integer *i = new Integer(temp1);
-			Integer *j = new Integer(temp2);
-			Expression *t = new Expression(i, j, quot);
-			return t;*/
+			return new Expression(i, j, quot);
 		}
 		else if (irr2)
 		{
