@@ -33,9 +33,6 @@
     <ClInclude Include="Parse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Operator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Pi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -43,6 +40,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Expression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Operator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

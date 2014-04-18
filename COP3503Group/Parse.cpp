@@ -808,8 +808,10 @@ void Parse::throwExceptions(string str) {
 	for (unsigned i = 0; i < str.length(); i++) {
 		if (!(isPosOrNegNumb(str, i) || isSpecial(str, i) || isPi(str, i - 1) || isOperator(str[i])
 			|| isLeftParenthesis(str[i]) || isRightParenthesis(str[i]))) {
-			if (!(isRoot(str, i) || (i > 0 && isRoot(str, i - 1)) || (i > 1 && isRoot(str, i-2))))
+			if (!(isRoot(str, i) || (i > 0 && isRoot(str, i - 1)) || (i > 1 && isRoot(str, i - 2)))) {
+				if (!(isLog(str, i) || (i > 0 && isLog(str, i - 1)) || (i > 1 && isLog(str, i-2)) || (i > 2 && isLog(str, i-3))) && str[i] != ':')
 				throw invalid_argument("Invalid character in string.");
+			}
 		}
 	}
 }
