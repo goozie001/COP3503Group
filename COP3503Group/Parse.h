@@ -40,6 +40,7 @@ private:
 	vector<string> out;
 
 	void stringToObjectArray(string);
+	void throwExceptions(string);
 
 	Number *evaluateRPNObject();
 };

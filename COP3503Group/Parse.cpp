@@ -16,6 +16,7 @@ Parse::~Parse()
 Number* Parse::pseudoMain(string str) {
 	inputs.push_back(str);
 	string newS = removeSpaces(str);
+	throwExceptions(newS);
 	stringToObjectArray(newS);
 	Number *newN = evaluateRPNObject();
 	numberRPN.erase(numberRPN.begin(), numberRPN.end());
@@ -643,9 +644,12 @@ string Parse::removeSpaces(string str) {
 
 	for (unsigned i = 0; i < str.length(); i++) {
 		if (str[i] == 's') {
-			if (str[++i] == 'q') {
-				if (str[++i] == 'r') {
-					if (str[++i] == 't') {
+			++i;
+			if (str[i] == 'q') {
+				++i;
+				if (str[i] == 'r') {
+					++i;
+					if (str[i] == 't') {
 						newS = newS + "2rt";
 					}
 				}
@@ -802,4 +806,14 @@ bool Parse::isNegativeNumber(string str, int i) {
 bool Parse::isPosOrNegNumb(string str, int i) {
 	if (isNumber(str[i]) || isNegativeNumber(str, i)) return true;
 	return false;
+}
+
+void Parse::throwExceptions(string str) {
+	for (unsigned i = 0; i < str.length(); i++) {
+		if (!(isPosOrNegNumb(str, i) || isSpecial(str, i) || isPi(str, i - 1) || isOperator(str[i])
+			|| isLeftParenthesis(str[i]) || isRightParenthesis(str[i]))) {
+			if (!(isRoot(str, i) || (i > 0 && isRoot(str, i - 1)) || (i > 1 && isRoot(str, i-2))))
+				throw invalid_argument("Invalid character in string.");
+		}
+	}
 }
