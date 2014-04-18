@@ -1034,11 +1034,11 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 
 int Calculate::gcd(int x, int y)
 {
-	if (y != 0) {
-		x = x % y;
-		gcd(y, x); //recursive call by using arithmetic rules
+	if (y == 0) {
+		return x; //base case,return x when y equals 0
 	}
-
-	return x; //base case,return x when y equals 0
+	else {
+		return gcd(y,x % y);
+	}
 
 }
