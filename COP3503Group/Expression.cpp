@@ -16,7 +16,7 @@ Expression::~Expression()
 {
 	for (size_t i = 0; i < exprVector.size(); i++)
 	{
-		delete exprVector.at(i);
+		delete exprVector[i];
 	}
 	//delete exprVector;
 }

@@ -186,6 +186,7 @@ void Parse::stringToObjectArray(string str) {
 					i += 4;
 					Parse *incep = new Parse();
 					exponent = incep->pseudoMain(temp);
+					delete incep;
 				}
 				else {
 					int a;
@@ -221,14 +222,16 @@ void Parse::stringToObjectArray(string str) {
 				}
 				Parse *inception = new Parse;
 				exponent = inception->pseudoMain(temp);
+				delete inception;
 				++i;
 			}
 			if (isExpression) {
-				Number *newNumb;
 				Parse *inception = new Parse;
-				newNumb = inception->pseudoMain(temp);
+
+				Number *newNumb = inception->pseudoMain(temp);
 					Irrational *irrational_i = new Irrational(newNumb, exponent);
 					numberRPN.push_back(irrational_i);
+					delete inception;
 			}
 			else if (isPosOrNegNumb(str, i)) {
 				string numberStr;
@@ -553,6 +556,7 @@ Number *Parse::evaluateRPNObject() {
 					// Number *numb_i = calc->exponentiate(b, a);
 					// solution.push_back(numb_i);
 				}
+				delete a, b, op_i;
 			}
 		}
 		++i;
@@ -560,6 +564,7 @@ Number *Parse::evaluateRPNObject() {
 	Number *end = solution[0];
 	storedAnswers.push_back(end);
 	// Number *end1 = end->simplify();
+	delete calc;
 	return end;
 }
 
