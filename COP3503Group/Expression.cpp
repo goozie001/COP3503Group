@@ -55,3 +55,10 @@ vector<Number*> Expression::getVector()
 {
 	return exprVector;
 }
+
+Number *Expression::simplify() {
+	Number *newN1 = exprVector[0]->simplify();
+	Number *newN2 = exprVector[2]->simplify();
+	Operator *newOp = new Operator(dynamic_cast<Operator*>(exprVector[1])->toString());
+	return new Expression(newN1, newN2, newOp);
+}

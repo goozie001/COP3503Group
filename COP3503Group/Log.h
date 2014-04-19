@@ -19,5 +19,6 @@ private:
 	Number *base;
 	Number *argument;
 	float floatValue;
+	int smallestDivisor(int);
 };
 

@@ -11,6 +11,7 @@ public:
 
 	string toString();
 	float getFloatValue();
+	Number *simplify();
 	vector<Number*> getVector();
 private:
 	vector<Number*> exprVector;

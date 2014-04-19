@@ -392,9 +392,8 @@ void Parse::stringToObjectArray(string str) {
 					Number *newNumb;
 					Parse *inception = new Parse;
 					newNumb = inception->pseudoMain(temp);
-					inception->numberRPN = base;
-					Number *newNumb_i = inception->evaluateRPNObject();
-					Log *log_i = new Log(newNumb_i, newNumb);
+					delete inception;
+					Log *log_i = new Log(base[0], newNumb);
 					numberRPN.push_back(log_i);
 				}
 			}
@@ -560,9 +559,10 @@ Number *Parse::evaluateRPNObject() {
 	}
 	Number *end = solution[0];
 	storedAnswers.push_back(end);
-	// Number *end1 = end->simplify();
+	Number *end1 = end->simplify();
 	delete calc;
-	return end;
+	delete end;
+	return end1;
 }
 
 int Parse::evaluateRPN() {

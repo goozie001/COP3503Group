@@ -29,7 +29,7 @@ float Integer::getFloatValue() {
 }
 
 Number *Integer::simplify() {
-	return this;
+	return new Integer(intValue);
 }
 
 string Integer::toString() {
