@@ -121,7 +121,7 @@ Number *Calculate::add(Number *num1, Number *num2) {
 			if (log1->getBase() == log2->getBase() && log1->getArgument() == log2->getArgument())
 			{
 				Integer *temp = new Integer(2);
-				Expression *t = new Expression(log1, temp, times);
+				Expression *t = new Expression(temp, log1, times);
 				//change '+' to a term in order to work correctly with Number
 				return t;
 			}

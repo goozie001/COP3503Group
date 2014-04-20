@@ -558,8 +558,8 @@ Number *Parse::evaluateRPNObject() {
 		++i;
 	}
 	Number *end = solution[0];
-	storedAnswers.push_back(end);
 	Number *end1 = end->simplify();
+	storedAnswers.push_back(end1);
 	delete calc;
 	delete end;
 	return end1;

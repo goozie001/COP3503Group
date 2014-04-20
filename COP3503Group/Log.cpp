@@ -41,7 +41,7 @@ Number *Log::simplify() {
 			int b = argInt->getIntValue();
 			int c = 1;
 			int d = 0;
-			while (a <= b) {
+			while (d <= b) {
 				d = pow(a, c);
 				if (d == b) {
 					return new Integer(c);
@@ -52,15 +52,15 @@ Number *Log::simplify() {
 			}
 			a = baseInt->getIntValue();
 			int divisor = smallestDivisor(b);
-			if (divisor == b) return new Log(baseInt, argInt);
+			if (divisor == b) {
+				return new Log(baseInt, argInt);
+			}
 			else {
 				Log *newLog1 = new Log(baseInt, new Integer(divisor));
 				Log *newLog2 = new Log(baseInt, new Integer(b / divisor));
 				Operator *plus = new Operator("+");
 				Expression *newEx = new Expression(newLog1, newLog2, plus);
-				Number *revisedNumb = newEx->simplify();
-				delete newEx;
-				return revisedNumb;
+				return newEx;
 			}
 		}
 	}
@@ -74,7 +74,7 @@ string Log::toString() {
 
 int Log::smallestDivisor(int number) {
 	int i;
-	for (i = 2; i <sqrt(number); i++)
+	for (i = 2; i < number; i++)
 	{
 		if (number % i == 0)
 		{

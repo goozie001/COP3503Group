@@ -20,48 +20,10 @@ Irrational::Irrational(Number *base, Number *rootVal) {
 	Integer *int2 = dynamic_cast<Integer*>(rootVal);
 
 
-	if (int1 != 0) {
-		if (int1->getFloatValue() < 0) {
-			if (int2 != 0) {
-				if (int2->getIntValue() % 2 == 0){
-					throw invalid_argument("Cannot take an even root of a negative number");
-				}
-			}
-		}
-	}
-	else if (irr1 != 0) {
-		if (irr1->getFloatValue() < 0) {
-			if (int2 != 0) {
-				if (int2->getIntValue() % 2 == 0){
-					throw invalid_argument("Cannot take an even root of a negative number");
-				}
-			}
-		}
-	}
-	else if (log1 != 0) {
-		if (log1->getFloatValue() < 0) {
-			if (int2 != 0) {
-				if (int2->getIntValue() % 2 == 0){
-					throw invalid_argument("Cannot take an even root of a negative number");
-				}
-			}
-		}
-	}
-	else if (e1 != 0) {
-		if (e1->getFloatValue() < 0) {
-			if (int2 != 0) {
-				if (int2->getIntValue() % 2 == 0){
-					throw invalid_argument("Cannot take an even root of a negative number");
-				}
-			}
-		}
-	}
-	else if (pi1 != 0) {
-		if (pi1->getFloatValue() < 0) {
-			if (int2 != 0) {
-				if (int2->getIntValue() % 2 == 0){
-					throw invalid_argument("Cannot take an even root of a negative number");
-				}
+	if (base->getFloatValue() < 0) {
+		if (int2 != 0) {
+			if (int2->getIntValue() % 2 == 0){
+				throw invalid_argument("Cannot take an even root of a negative number");
 			}
 		}
 	}
