@@ -5,6 +5,7 @@
 #include "Pi.h"
 #include "E.h"
 #include "Log.h"
+#include "Calculate.h"
 
 Expression::Expression()
 {
@@ -39,7 +40,12 @@ Expression::Expression(Number *num1, Number *num2, Operator *oper)
 	else if (dynamic_cast<E*>(num1)) {
 		num1 = new E();
 	}
-	else throw exception("Check the Expression constructor.");
+	else if (dynamic_cast<Expression*>(num1)) {
+		Expression *newExp = dynamic_cast<Expression*>(num1);
+		num1 = new Expression(newExp->exprVector[1], newExp->exprVector[3], dynamic_cast<Operator*>(newExp->exprVector[2]));
+	}
+	else throw exception("Error 2534C");
+;
 
 	if (dynamic_cast<Integer*>(num2)) {
 		Integer *newNum2 = dynamic_cast<Integer*>(num2);
@@ -59,7 +65,11 @@ Expression::Expression(Number *num1, Number *num2, Operator *oper)
 	else if (dynamic_cast<E*>(num2)) {
 		num2 = new E();
 	}
-	else throw exception("Check the Expression constructor.");
+	else if (dynamic_cast<Expression*>(num2)) {
+		Expression *newExp = dynamic_cast<Expression*>(num2);
+		num2 = new Expression(newExp->exprVector[1], newExp->exprVector[3], dynamic_cast<Operator*>(newExp->exprVector[2]));
+	}
+	else throw exception("Error 2534C");
 
 	exprVector.push_back(num1);
 	exprVector.push_back(oper);
@@ -113,6 +123,27 @@ vector<Number*> Expression::getVector()
 Number *Expression::simplify() {
 	Number *newN1 = exprVector[0]->simplify();
 	Number *newN2 = exprVector[2]->simplify();
+	Number *newN3;
 	Operator *newOp = new Operator(dynamic_cast<Operator*>(exprVector[1])->toString());
-	return new Expression(newN1, newN2, newOp);
+	Calculate *calc = new Calculate();
+	if (newOp->toString() == "+") {
+		newN3 = calc->add(newN1, newN2);
+	}
+	else if (newOp->toString() == "-") {
+		newN3 = calc->subtract(newN1, newN2);
+	}
+	else if (newOp->toString() == "*") {
+		newN3 = calc->multiply(newN1, newN2);
+	}
+	else if (newOp->toString() == "/") {
+		newN3 = calc->divide(newN1, newN2);
+	}
+	else if (newOp->toString() == "^") {
+		newN3 = calc->exponentiate(newN1, newN2);
+	}
+	else {
+		throw exception("Operator not recognized.");
+	}
+	delete newN1, newN2, newOp, calc;
+	return newN3;
 }
