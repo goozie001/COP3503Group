@@ -1,4 +1,3 @@
-
 #include <stack>
 #include <sstream>
 
@@ -121,12 +120,12 @@ void Parse::stringToObjectArray(string str) {
 
 	while (i < str.length()) {
 		string temp;
-
 		temp.push_back(str[i]);
 		if (isRoot(str, i)) {
-			Number *exponent;
+			Number *root;
 			bool isExpression = false;
 			string negativeBase;
+			// finding the root
 			if (isPosOrNegNumb(str, i)) {
 				string numberStr;
 				numberStr.push_back(str[i]);
@@ -142,10 +141,10 @@ void Parse::stringToObjectArray(string str) {
 					}
 				}
 				Integer *integer_i = stringToInteger(numberStr);
-				exponent = integer_i;
+				root = integer_i;
 				i += 3;
 			}
-			// Parenthesis at the base
+			// Parenthesis at the root
 			else if (isLeftParenthesis(str[i])) {
 				int c = 1;
 				bool isNegativeBase = false;
@@ -186,7 +185,7 @@ void Parse::stringToObjectArray(string str) {
 					}
 					i += 4;
 					Parse *incep = new Parse();
-					exponent = incep->pseudoMain(temp);
+					root = incep->pseudoMain(temp);
 					delete incep;
 				}
 				else {
@@ -194,15 +193,15 @@ void Parse::stringToObjectArray(string str) {
 					istringstream(negativeBase) >> a;
 					a *= -1;
 					Integer *integer_i = new Integer(a);
-					exponent = integer_i;
+					root = integer_i;
 					i += 5;
 				}
 			}
 			else {
 				// TODO: Figure out what to do with this case.
-				exponent = new Integer(0);
+				root = new Integer(0);
 			}
-			// Parenthesis at the argument
+			// Parenthesis at the base.
 			if (isLeftParenthesis(str[i])) {
 				isExpression = true;
 				if (!isRightParenthesis(str[++i])) {
@@ -225,7 +224,7 @@ void Parse::stringToObjectArray(string str) {
 			if (isExpression) {
 				Parse *inception = new Parse;
 				Number *newNumb = inception->pseudoMain(temp);
-					Irrational *irrational_i = new Irrational(newNumb, exponent);
+					Irrational *irrational_i = new Irrational(newNumb, root);
 					numberRPN.push_back(irrational_i);
 					delete inception;
 					++i;
@@ -244,8 +243,18 @@ void Parse::stringToObjectArray(string str) {
 				}
 				Integer *integer_i = stringToInteger(numberStr);
 				number = false;
-				Irrational *irrational_i = new Irrational(integer_i, exponent);
-				numberRPN.push_back((irrational_i));
+				Irrational *irrational_i = new Irrational(integer_i, root);
+				numberRPN.push_back(irrational_i);
+			}
+			else if (isSpecial(str, i)) {
+				if (isPi(str, i)) {
+					numberRPN.push_back(new Irrational(new Pi(), root));
+					i += 2;
+				}
+				else {
+					numberRPN.push_back(new Irrational(new E(), root));
+					++i;
+				}
 			}
 		}
 		else if (isPosOrNegNumb(str,i)) {
@@ -331,16 +340,17 @@ void Parse::stringToObjectArray(string str) {
 		else if (isLog(str, i)) {
 			vector<Number*> base;
 			bool isExpression = false;
+			bool isExpression2 = false;
 			i += 4;
-			if (isNumber(str[i])) {
+			if (isPosOrNegNumb(str, i)) {
 				string numberStr;
 				numberStr.push_back(str[i]);
-				i++;
+				++i;
 				bool number = true;
 				while (number) {
 					if (isNumber(str[i])) {
 						numberStr.push_back(str[i]);
-						i++;
+					++i;
 					}
 					else {
 						Integer *integer_i = stringToInteger(numberStr);
@@ -370,7 +380,7 @@ void Parse::stringToObjectArray(string str) {
 					++i;
 
 				}
-				else if (isNumber(str[i])) {
+				else if (isPosOrNegNumb(str, i)) {
 					string numberStr;
 					numberStr.push_back(str[i]);
 					i++;
@@ -423,7 +433,7 @@ void Parse::stringToObjectArray(string str) {
 						++i;
 
 					}
-					else if (isNumber(str[i])) {
+					else if (isPosOrNegNumb(str, i)) {
 						string numberStr;
 						numberStr.push_back(str[i]);
 						i++;
@@ -474,7 +484,7 @@ void Parse::stringToObjectArray(string str) {
 						++i;
 
 					}
-					else if (isNumber(str[i])) {
+					else if (isPosOrNegNumb(str, i)) {
 						string numberStr;
 						numberStr.push_back(str[i]);
 						i++;
@@ -499,6 +509,78 @@ void Parse::stringToObjectArray(string str) {
 						Log *log_i = new Log(base[0], newNumb);
 						numberRPN.push_back(log_i);
 					}
+				}
+			}
+			// If there is an expression for the base.
+			else if (isLeftParenthesis(str[i])) {
+				if (!isRightParenthesis(str[++i])) {
+					temp = str[i];
+				}
+				int c = 1;
+				while (c != 0) {
+					++i;
+					if (isLeftParenthesis(str[i])) {
+						temp = temp + str[i];
+						c++;
+					}
+					else if (isRightParenthesis(str[i])) {
+						c--;
+						if (c != 0) temp = temp + str[i];
+					}
+					else temp = temp + str[i];
+				}
+				i += 2;
+				Number *newNumb;
+				Parse *inception = new Parse;
+				newNumb = inception->pseudoMain(temp);
+				delete inception;
+				base.push_back(newNumb);
+				if (isLeftParenthesis(str[i])) {
+					isExpression2 = true;
+					if (!isRightParenthesis(str[++i])) {
+						temp = str[i];
+					}
+					int c = 1;
+					while (c != 0) {
+						++i;
+						if (isLeftParenthesis(str[i])) {
+							temp = temp + str[i];
+							c++;
+						}
+						else if (isRightParenthesis(str[i])) {
+							c--;
+							if (c != 0) temp = temp + str[i];
+						}
+						else temp = temp + str[i];
+					}
+					++i;
+
+				}
+				else if (isPosOrNegNumb(str, i)) {
+					string numberStr;
+					numberStr.push_back(str[i]);
+					i++;
+					bool number = true;
+					while (number) {
+						if (isNumber(str[i])) {
+							numberStr.push_back(str[i]);
+							i++;
+						}
+						else {
+							Integer *integer_i = stringToInteger(numberStr);
+							Log *log_i = new Log(base[0], integer_i);
+							numberRPN.push_back(log_i);
+							number = false;
+						}
+					}
+				}
+				if (isExpression2) {
+					Number *newNumb;
+					Parse *inception = new Parse;
+					newNumb = inception->pseudoMain(temp);
+					delete inception;
+					Log *log_i = new Log(base[0], newNumb);
+					numberRPN.push_back(log_i);
 				}
 			}
 		}
@@ -549,8 +631,8 @@ Number *Parse::evaluateRPNObject() {
 					solution.push_back(numb_i);
 				}
 				else if (op_i->toString() == "^") {
-					// Number *numb_i = calc->exponentiate(b, a);
-					// solution.push_back(numb_i);
+					 Number *numb_i = calc->exponentiate(b, a);
+					 solution.push_back(numb_i);
 				}
 				delete a, b, op_i;
 			}
@@ -785,7 +867,7 @@ bool Parse::isPi(string str, int i) {
 	if (i >= 0) {
 		if (str[i] == 'P' || str[i] == 'p') {
 			unsigned a = i + 1;
-			if ((a < (str.size() - 1)) && str[a] == 'i') {
+			if (a < str.size() && str[a] == 'i') {
 				return true;
 			}
 		}

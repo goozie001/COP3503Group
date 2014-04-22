@@ -15,7 +15,7 @@ float E::getFloatValue() {
 }
 
 Number *E::simplify() {
-	return this;
+	return new E();
 }
 
 string E::toString() {

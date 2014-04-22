@@ -42,7 +42,7 @@ Expression::Expression(Number *num1, Number *num2, Operator *oper)
 	}
 	else if (dynamic_cast<Expression*>(num1)) {
 		Expression *newExp = dynamic_cast<Expression*>(num1);
-		num1 = new Expression(newExp->exprVector[1], newExp->exprVector[3], dynamic_cast<Operator*>(newExp->exprVector[2]));
+		num1 = new Expression(newExp->exprVector[0], newExp->exprVector[2], dynamic_cast<Operator*>(newExp->exprVector[1]));
 	}
 	else throw exception("Error 2534C");
 ;
@@ -98,17 +98,17 @@ string Expression::toString()
 float Expression::getFloatValue()
 {
 	float temp = 0;
-	switch (exprVector.at(2)->toString().at(0))
+	switch (exprVector.at(1)->toString().at(0))
 	{
-	case '+': temp = exprVector.at(0)->getFloatValue() + exprVector.at(1)->getFloatValue();
+	case '+': temp = exprVector.at(0)->getFloatValue() + exprVector.at(2)->getFloatValue();
 		break;
-	case '-': temp = exprVector.at(0)->getFloatValue() - exprVector.at(1)->getFloatValue();
+	case '-': temp = exprVector.at(0)->getFloatValue() - exprVector.at(2)->getFloatValue();
 		break;
-	case '*': temp = exprVector.at(0)->getFloatValue() * exprVector.at(1)->getFloatValue();
+	case '*': temp = exprVector.at(0)->getFloatValue() * exprVector.at(2)->getFloatValue();
 		break;
-	case '/': temp = exprVector.at(0)->getFloatValue() / exprVector.at(1)->getFloatValue();
+	case '/': temp = exprVector.at(0)->getFloatValue() / exprVector.at(2)->getFloatValue();
 		break;
-	case '^': temp = pow(exprVector.at(0)->getFloatValue(), exprVector.at(1)->getFloatValue());
+	case '^': temp = pow(exprVector.at(0)->getFloatValue(), exprVector.at(2)->getFloatValue());
 		break;
 	default: break;
 	}
@@ -127,6 +127,9 @@ Number *Expression::simplify() {
 	Operator *newOp = new Operator(dynamic_cast<Operator*>(exprVector[1])->toString());
 	Calculate *calc = new Calculate();
 	if (newOp->toString() == "+") {
+		if (dynamic_cast<Expression*>(exprVector[0])) {
+
+		}
 		newN3 = calc->add(newN1, newN2);
 	}
 	else if (newOp->toString() == "-") {

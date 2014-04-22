@@ -15,7 +15,7 @@ float Pi::getFloatValue() {
 }
 
 Number *Pi::simplify() {
-	return this;
+	return new Pi();
 }
 
 string Pi::toString() {

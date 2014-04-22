@@ -1,5 +1,7 @@
 #include "Calculate.h"
 #include <vector>
+#include <stdexcept>
+#include "Number.h"
 
 Calculate::Calculate()
 {
@@ -17,14 +19,12 @@ Number *Calculate::add(Number *num1, Number *num2) {
 	Irrational *irr2 = dynamic_cast<Irrational*>(num2);
 	Log *log1 = dynamic_cast<Log*>(num1);
 	Log *log2 = dynamic_cast<Log*>(num2);
+	Expression *expr1 = dynamic_cast<Expression*>(num1);
+	Expression *expr2 = dynamic_cast<Expression*>(num2);
 	E *e1 = dynamic_cast<E*>(num1);
 	E *e2 = dynamic_cast<E*>(num2);
 	Pi *pi1 = dynamic_cast<Pi*>(num1);
 	Pi *pi2 = dynamic_cast<Pi*>(num2);
-	Operator *plus = new Operator("+");
-	Operator *minus = new Operator("-");
-	Operator *times = new Operator("*");
-	Operator *divide = new Operator("/");
 
 	if (int1)
 	{
@@ -37,24 +37,24 @@ Number *Calculate::add(Number *num1, Number *num2) {
 		}
 		else if (irr2)
 		{
-			Expression *t = new Expression(int1, irr2, plus);
+			Expression *t = new Expression(int1, irr2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (log2)
 		{
-			Expression *t = new Expression(int1, log2, plus);
+			Expression *t = new Expression(int1, log2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (e2)
 		{
-			Expression *t = new Expression(int1, e2, plus);
+			Expression *t = new Expression(int1, e2, new Operator("+"));
 			return t;
 		}
 		else if (pi2)
 		{
-			Expression *t = new Expression(int1, pi2, plus);
+			Expression *t = new Expression(int1, pi2, new Operator("+"));
 		}
 
 	}
@@ -63,7 +63,7 @@ Number *Calculate::add(Number *num1, Number *num2) {
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(irr1, int2, plus);
+			Expression *t = new Expression(irr1, int2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -72,32 +72,32 @@ Number *Calculate::add(Number *num1, Number *num2) {
 			if (irr1->getBase() == irr2->getBase() && irr1->getRootVal() == irr2->getRootVal())
 			{
 				Integer *temp = new Integer(2);
-				Expression *t = new Expression(irr1, temp, times);
+				Expression *t = new Expression(irr1, temp, new Operator("*"));
 				//Const is not implemented yet
 				//Number *t = new Number(newIrrational);7
 				return t;
 			}
 			else
 			{
-				Expression *t = new Expression(irr1, irr2, plus);
+				Expression *t = new Expression(irr1, irr2, new Operator("+"));
 				//change '+' to a term in order to work correctly with Number
 				return t;
 			}
 		}
 		else if (log2)
 		{
-			Expression *t = new Expression(irr1, log2, plus);
+			Expression *t = new Expression(irr1, log2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (e2)
 		{
-			Expression *t = new Expression(irr1, e2, plus);
+			Expression *t = new Expression(irr1, e2, new Operator("+"));
 			return t;
 		}
 		else if (pi2)
 		{
-			Expression *t = new Expression(irr1, pi2, plus);
+			Expression *t = new Expression(irr1, pi2, new Operator("+"));
 		}
 
 	}
@@ -106,13 +106,13 @@ Number *Calculate::add(Number *num1, Number *num2) {
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(log1, int2, plus);
+			Expression *t = new Expression(log1, int2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (irr2)
 		{
-			Expression *t = new Expression(log1, irr2, plus);
+			Expression *t = new Expression(log1, irr2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -121,25 +121,25 @@ Number *Calculate::add(Number *num1, Number *num2) {
 			if (log1->getBase() == log2->getBase() && log1->getArgument() == log2->getArgument())
 			{
 				Integer *temp = new Integer(2);
-				Expression *t = new Expression(temp, log1, times);
+				Expression *t = new Expression(log1, temp, new Operator("*"));
 				//change '+' to a term in order to work correctly with Number
 				return t;
 			}
 			else
 			{
-				Expression *t = new Expression(log1, log2, plus);
+				Expression *t = new Expression(log1, log2, new Operator("+"));
 				//change '+' to a term in order to work correctly with Number
 				return t;
 			}
 		}
 		else if (e2)
 		{
-			Expression *t = new Expression(log1, e2, plus);
+			Expression *t = new Expression(log1, e2, new Operator("+"));
 			return t;
 		}
 		else if (pi2)
 		{
-			Expression *t = new Expression(log1, pi2, plus);
+			Expression *t = new Expression(log1, pi2, new Operator("+"));
 		}
 
 	}
@@ -147,32 +147,32 @@ Number *Calculate::add(Number *num1, Number *num2) {
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(e1, int2, plus);
+			Expression *t = new Expression(e1, int2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (irr2)
 		{
-			Expression *t = new Expression(e1, irr2, plus);
+			Expression *t = new Expression(e1, irr2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (log2)
 		{
-			Expression *t = new Expression(e1, log2, plus);
+			Expression *t = new Expression(e1, log2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (e2)
 		{
 			Integer *temp = new Integer(2);
-			Expression *t = new Expression(log1, temp, times);
+			Expression *t = new Expression(log1, temp, new Operator("*"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (pi2)
 		{
-			Expression *t = new Expression(e1, pi2, plus);
+			Expression *t = new Expression(e1, pi2, new Operator("+"));
 		}
 
 	}
@@ -180,37 +180,284 @@ Number *Calculate::add(Number *num1, Number *num2) {
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(pi1, int2, plus);
+			Expression *t = new Expression(pi1, int2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (irr2)
 		{
-			Expression *t = new Expression(pi1, irr2, plus);
+			Expression *t = new Expression(pi1, irr2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (log2)
 		{
-			Expression *t = new Expression(pi1, log2, plus);
+			Expression *t = new Expression(pi1, log2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (e2)
 		{
-			Expression *t = new Expression(pi1, e2, plus);
+			Expression *t = new Expression(pi1, e2, new Operator("+"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (pi2)
 		{
 			Integer *temp = new Integer(2);
-			Expression *t = new Expression(pi1, temp, times);
+			Expression *t = new Expression(pi1, temp, new Operator("*"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 
 	}
+
+	/* if(expr1){
+	vector<Number*> exprVector1 = expr1->getVector();
+	if(int2){
+	int a;
+	int j;
+	vector<Number*> tempExprVect;
+	bool intfound = false;
+	for(int i = 0; i < exprVector1.size(); i++){
+	Integer *int3 = dynamic_cast<Integer*>(exprVector1[i]);
+	if(int3){
+	intfound = true;
+	if(i != exprVector1.size()-1){
+	if(exprVector1[i-1] == new Operator("+") || exprVector1[i-1] == new Operator("-")){ //check operation implementation
+	a = int3->getIntValue() + int2->getIntValue();
+	j = i;
+	}
+	}
+	else if(exprVector1[i-1] == new Operator("+")){
+	a = int3->getIntValue() + int2->getIntValue();
+	j = i;
+	}
+	else if(exprVector1[i-1] ==  new Operator("-")){
+	a = int2->getIntValue()-int3->getIntValue();
+	j = i;
+	}
+	}
+	}
+	if(intfound){
+	for(int i = 0; i < j-1; i++){
+	tempExprVect.push_back(exprVector1[i]);
+	}
+	for(int i = j+1; i < exprVector1.size(); i++){
+	tempExprVect.push_back(exprVector1[i]);
+	}
+	Integer *int4 = new Integer(a);
+	tempExprVect.push_back(new Operator("-"));
+	tempExprVect.push_back(int4);
+	Expression *t = new Expression(tempExprVect);
+	return t;
+	}
+	else{
+	Expression *t = new Expression(expr1, int2, new Operator("+"));
+	return t;
+	}
+	}
+	else if(irr2){
+	int a;
+	int j;
+	vector<Number*> tempExprVect;
+	bool irrfound = false;
+	bool coeffound = false;
+	for(int i = 0; i < exprVector1.size(); i++){
+	Irrational *irr3 = dynamic_cast<Irrational*>(exprVector1[i]);
+	if(irr3){
+	irrfound = true;
+	if(irr2->getBase() == irr3->getBase() && irr2->getRootVal() == irr3->getRootVal()){
+	if(i != exprVector1.size()-1){
+	if(exprVector1[i-1] == new Operator("+") || exprVector1[i-1] ==  new Operator("-")){ //check operation implementation
+	if (i != 0) {
+	if(exprVector1[i-1] == new Operator("*")){
+	Integer *int3 = dynamic_cast<Integer*>(exprVector1[i-2]);
+	if(int3){
+	coeffound = true;
+	if(exprVector1[i-3] == new Operator("+")){
+	a = 1+int3->getIntValue();
+	j = i;
+	}
+	else if(exprVector1[i-3] == new Operator("-")){
+	a = 1-int3->getIntValue();
+	j = i;
+	}
+	}
+	}
+	if(exprVector1[i-1] == new Operator("+")){
+	a = 2;
+	j=i;
+	}
+	else if(exprVector1[i-1] == new Operator("-")) {
+	a = 0;
+	j = i;
+	}
+	}
+	}
+	}
+	else{
+	if(exprVector1[i-1] == new Operator("*")){
+	Integer *int3 = dynamic_cast<Integer*>(exprVector1[i-2]);
+	if(int3){
+	coeffound = true;
+	if(exprVector1[i-3] == new Operator("+")){
+	a = 1+int3->getIntValue();
+	j=i;
+	}
+	else if(exprVector1[i-3] == new Operator("-")){
+	a = 1-int3->getIntValue();
+	j=i;
+	}
+	}
+	}
+	if(exprVector1[i-1] == new Operator("+")){
+	a = 2;
+	j=i;
+	}
+	else if(exprVector1[i-1] == new Operator("-")) {
+	a = 0;
+	j = i;
+	}
+	}
+	}
+	}
+	}
+
+	if(irrfound){
+	Irrational *irr3 = dynamic_cast<Irrational*>(exprVector1[j]);
+	if(irr2->getBase() == irr3->getBase() && irr2->getRootVal() == irr3->getRootVal()){
+	if(coeffound){
+	for(int i = 0; i < j-2; i++){
+	tempExprVect.push_back(exprVector1[i]);
+	}
+	for(int i = j+1; i < exprVector1.size(); i++){
+	tempExprVect.push_back(exprVector1[i]);
+	}
+	}
+	else{
+	for(int i = 0; i < j-1; i++){
+	tempExprVect.push_back(exprVector1[i]);
+	}
+	for(int i = j+1; i < exprVector1.size(); i++){
+	tempExprVect.push_back(exprVector1[i]);
+	}
+	}
+	Integer *int4 = new Integer(a);
+	Expression *tempExpr = new Expression(int4, irr2, new Operator("*"));
+	vector<Number*> tempVect = tempExpr->getVector();
+	for(int i = 0; i < 3; i++){
+	tempExprVect.push_back(tempVect[i]);
+	}
+	Expression *t = new Expression(tempExprVect);
+	return t;
+	}
+	}
+
+	else{
+	Expression *t = new Expression(expr1, irr2, new Operator("+"));
+	return t;
+	}
+
+	}
+	else if(log2){
+	int a;
+	int j;
+	vector<Number*> tempExprVect;
+	bool logfound = false;
+	bool coeffound = false;
+	for(int i = 0; i < exprVector1.size(); i++){
+	Log *log3 = dynamic_cast<Log*>(exprVector1[i]);
+	if(log3){
+	logfound = true;
+	if(log3->getBase() == log2->getBase() || log3->getArgument() == log2->getArgument()){
+	if(i != exprVector1.size()-1){
+	if(exprVector1[i-1] == new Operator("+") || exprVector1[i-1] ==  new Operator("-")){ //check operation implementation
+	if(i != 0) {
+	if(exprVector1[i-1] == new Operator("*")){
+	Integer *int3 = dynamic_cast<Integer*>(exprVector1[i-2]);
+	if(int3){
+	coeffound = true;
+	a = int3->getIntValue()+1;
+	j = i;
+	}
+	}
+	else{
+	if(exprVector1[i-1] == new Operator("+")){
+	a = 2;
+	j = i;
+	}
+	else if(exprVector1[i-1] == new Operator("-")){
+	a = 0;
+	j = i;
+	}
+	}
+	}
+	}
+	}
+	else{  // if at the end
+	if(exprVector1[i-1] == new Operator("*")){
+	Integer *int3 = dynamic_cast<Integer*>(exprVector1[i-2]);
+	if(int3){
+	coeffound = true;
+	if(exprVector1[i-3] == new Operator("+")){
+	a = 1+int3->getIntValue();
+	j = i;
+	}
+	else if(exprVector1[i-3] == new Operator("-")){
+	a = 1-int3->getIntValue();
+	j = i;
+	}
+	}
+	}
+	if(exprVector1[i-1] == new Operator("+")){
+	a = 2;
+	j = i;
+	}
+	else if( exprVector1[i-1] ==  new Operator("-")){
+	a = 0;
+	j = i;
+	}
+	}
+	}
+	}
+	}
+
+	if(logfound){
+	Log *log3 = dynamic_cast<Log*>(exprVector1[j]);
+	if(log2->getBase() == log3->getBase() && log2->getArgument() == log3->getArgument()){
+	if(coeffound){
+	for(int i = 0; i < j-2; i++){
+	tempExprVect.push_back(exprVector1[i]);
+	}
+	for(int i = j+1; i < exprVector1.size(); i++){
+	tempExprVect.push_back(exprVector1[i]);
+	}
+	}
+	else{
+	for(int i = 0; i < j-1; i++){
+	tempExprVect.push_back(exprVector1[i]);
+	}
+	for(int i = j+1; i < exprVector1.size(); i++){
+	tempExprVect.push_back(exprVector1[i]);
+	}
+	}
+	Integer *int4 = new Integer(a);
+	Expression *tempExpr = new Expression(int4, log2, new Operator("*"));
+	vector<Number*> tempVect = tempExpr->getVector();
+	for(int i = 0; i < 3; i++){
+	tempExprVect.push_back(tempVect[i]);
+	}
+	Expression *t = new Expression(tempExprVect);
+	return t;
+	}
+	}
+	else{
+	Expression *t = new Expression(expr1, log2, new Operator("+"));
+	return t;
+	}
+	}
+	}*/
 }
 
 Number *Calculate::subtract(Number *num1, Number *num2) {
@@ -225,10 +472,6 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 	E *e2 = dynamic_cast<E*>(num2);
 	Pi *pi1 = dynamic_cast<Pi*>(num1);
 	Pi *pi2 = dynamic_cast<Pi*>(num2);
-	Operator *plus = new Operator("+");
-	Operator *minus = new Operator("-");
-	Operator *times = new Operator("*");
-	Operator *divide = new Operator("/");
 
 	if (int1)
 	{
@@ -241,25 +484,25 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 		}
 		else if (irr2)
 		{
-			Expression *t = new Expression(int1, irr2, minus);
+			Expression *t = new Expression(int1, irr2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (log2)
 		{
-			Expression *t = new Expression(int1, log2, minus);
+			Expression *t = new Expression(int1, log2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (e2)
 		{
-			Expression *t = new Expression(int1, e2, minus);
+			Expression *t = new Expression(int1, e2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (pi2)
 		{
-			Expression *t = new Expression(int1, pi2, minus);
+			Expression *t = new Expression(int1, pi2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -269,7 +512,7 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 	{
 		if (int2)
 		{
-			Number *t = new Expression(irr1, int2, minus);
+			Number *t = new Expression(irr1, int2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -284,26 +527,26 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 			}
 			else
 			{
-				Expression *t = new Expression(irr1, irr2, minus);
+				Expression *t = new Expression(irr1, irr2, new Operator("-"));
 				//change '+' to a term in order to work correctly with Number
 				return t;
 			}
 		}
 		else if (log2)
 		{
-			Expression *t = new Expression(irr1, log2, minus);
+			Expression *t = new Expression(irr1, log2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (e2)
 		{
-			Expression *t = new Expression(irr1, e2, minus);
+			Expression *t = new Expression(irr1, e2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (pi2)
 		{
-			Expression *t = new Expression(e1, pi2, minus);
+			Expression *t = new Expression(e1, pi2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -314,13 +557,13 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(log1, int2, minus);
+			Expression *t = new Expression(log1, int2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (irr2)
 		{
-			Expression *t = new Expression(log1, irr2, minus);
+			Expression *t = new Expression(log1, irr2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -335,20 +578,20 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 			}
 			else
 			{
-				Expression *t = new Expression(log1, log2, minus);
+				Expression *t = new Expression(log1, log2, new Operator("-"));
 				//change '+' to a term in order to work correctly with Number
 				return t;
 			}
 		}
 		else if (e2)
 		{
-			Expression *t = new Expression(log1, e2, minus);
+			Expression *t = new Expression(log1, e2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (pi2)
 		{
-			Expression *t = new Expression(log1, pi2, minus);
+			Expression *t = new Expression(log1, pi2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -357,19 +600,19 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(e1, int2, minus);
+			Expression *t = new Expression(e1, int2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (irr2)
 		{
-			Expression *t = new Expression(e1, irr2, minus);
+			Expression *t = new Expression(e1, irr2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (log2)
 		{
-			Expression *t = new Expression(e1, log2, minus);
+			Expression *t = new Expression(e1, log2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -382,7 +625,7 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 		}
 		else if (pi2)
 		{
-			Expression *t = new Expression(irr1, pi2, minus);
+			Expression *t = new Expression(irr1, pi2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -392,25 +635,25 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(pi1, int2, minus);
+			Expression *t = new Expression(pi1, int2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (irr2)
 		{
-			Expression *t = new Expression(pi1, irr2, minus);
+			Expression *t = new Expression(pi1, irr2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (log2)
 		{
-			Expression *t = new Expression(pi1, log2, minus);
+			Expression *t = new Expression(pi1, log2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		else if (e2)
 		{
-			Expression *t = new Expression(pi1, pi2, minus);
+			Expression *t = new Expression(pi1, pi2, new Operator("-"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -439,11 +682,6 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 	Pi *pi2 = dynamic_cast<Pi*>(num2);
 	Expression *expr1 = dynamic_cast<Expression*>(num1);
 	Expression *expr2 = dynamic_cast<Expression*>(num2);
-	Operator *plus = new Operator("+");
-	Operator *minus = new Operator("-");
-	Operator *times = new Operator("*");
-	Operator *quot = new Operator("/");
-	Operator *power = new Operator("^");
 
 	if (int1)
 	{
@@ -461,7 +699,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			}
 			else
 			{
-				Expression *t = new Expression(int1, irr2, times);
+				Expression *t = new Expression(int1, irr2, new Operator("*"));
 				//change '+' to a term in order to work correctly with Number
 				return t;
 			}
@@ -475,7 +713,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		}
 		else
 		{
-			Expression *t = new Expression(int1, log2, times);
+			Expression *t = new Expression(int1, log2, new Operator("*"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -488,7 +726,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		}
 		else
 		{
-			Expression *t = new Expression(int1, e2, times);
+			Expression *t = new Expression(int1, e2, new Operator("*"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -501,7 +739,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		}
 		else
 		{
-			Expression *t = new Expression(int1, pi2, times);
+			Expression *t = new Expression(int1, pi2, new Operator("*"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -517,7 +755,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			}
 			else
 			{
-				Expression *t = new Expression(irr1, int2, times);
+				Expression *t = new Expression(irr1, int2, new Operator("*"));
 				//change '+' to a term in order to work correctly with Number
 				return t;
 			}
@@ -545,7 +783,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			else
 			{
 				//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-				Expression *t = new Expression(irr1, irr2, times);
+				Expression *t = new Expression(irr1, irr2, new Operator("*"));
 				//Const is not implemented yet
 				//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 				return t;
@@ -554,7 +792,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		else if (log2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(irr1, log2, times);
+			Expression *t = new Expression(irr1, log2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -562,7 +800,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		else if (e2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(irr1, e2, times);
+			Expression *t = new Expression(irr1, e2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -570,7 +808,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		else if (pi2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(irr1, pi2, times);
+			Expression *t = new Expression(irr1, pi2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -588,7 +826,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			else
 			{
 				//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-				Expression *t = new Expression(log1, int2, times);
+				Expression *t = new Expression(log1, int2, new Operator("*"));
 				//Const is not implemented yet
 				//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 				return t;
@@ -597,7 +835,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		if (irr2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(log1, irr2, times);
+			Expression *t = new Expression(log1, irr2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -605,7 +843,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		if (log2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(log1, log2, times);
+			Expression *t = new Expression(log1, log2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -613,7 +851,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		else if (e2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(irr1, e2, times);
+			Expression *t = new Expression(irr1, e2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -621,7 +859,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		else if (pi2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(irr1, pi2, times);
+			Expression *t = new Expression(irr1, pi2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -638,7 +876,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			else
 			{
 				//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-				Expression *t = new Expression(e1, int2, times);
+				Expression *t = new Expression(e1, int2, new Operator("*"));
 				//Const is not implemented yet
 				//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 				return t;
@@ -647,7 +885,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		if (irr2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(e1, irr2, times);
+			Expression *t = new Expression(e1, irr2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -655,7 +893,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		if (log2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(e1, log2, times);
+			Expression *t = new Expression(e1, log2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -663,13 +901,13 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		else if (e2)
 		{
 			Integer *temp = new Integer(2);
-			Expression *t = new Expression(e1, temp, power);
+			Expression *t = new Expression(e1, temp, new Operator("^"));
 			return t;
 		}
 		else if (pi2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(e1, pi2, times);
+			Expression *t = new Expression(e1, pi2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -686,7 +924,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			else
 			{
 				//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-				Expression *t = new Expression(pi1, int2, times);
+				Expression *t = new Expression(pi1, int2, new Operator("*"));
 				//Const is not implemented yet
 				//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 				return t;
@@ -695,7 +933,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		if (irr2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(pi1, irr2, times);
+			Expression *t = new Expression(pi1, irr2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -703,7 +941,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		if (log2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(pi1, log2, times);
+			Expression *t = new Expression(pi1, log2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -711,7 +949,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		else if (e2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(pi1, e2, times);
+			Expression *t = new Expression(pi1, e2, new Operator("*"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -719,7 +957,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 		else if (pi2)
 		{
 			Integer *temp = new Integer(2);
-			Expression *t = new Expression(e1, temp, power);
+			Expression *t = new Expression(e1, temp, new Operator("^"));
 			return t;
 		}
 	}
@@ -737,10 +975,6 @@ Number *Calculate::divide(Number *num1, Number *num2)
 	E *e2 = dynamic_cast<E*>(num2);
 	Pi *pi1 = dynamic_cast<Pi*>(num1);
 	Pi *pi2 = dynamic_cast<Pi*>(num2);
-	Operator *plus = new Operator("+");
-	Operator *minus = new Operator("-");
-	Operator *times = new Operator("*");
-	Operator *quot = new Operator("/");
 
 	if (int2){
 		if (int2->getIntValue() == 0){
@@ -754,22 +988,22 @@ Number *Calculate::divide(Number *num1, Number *num2)
 		{
 			int divisor = gcd(int1->getIntValue(), int2->getIntValue());
 
-			Integer *i = new Integer(int1->getIntValue()/divisor);
-			Integer *j = new Integer(int2->getIntValue()/divisor);
+			Integer *i = new Integer(int1->getIntValue() / divisor);
+			Integer *j = new Integer(int2->getIntValue() / divisor);
 			if (j->getIntValue() == 1) {
 				delete j;
 				return i;
 			}
-			return new Expression(i, j, quot);
+			return new Expression(i, j, new Operator("/"));
 		}
 		else if (irr2)
 		{
-			Expression *t = new Expression(int1, irr2, quot);
+			Expression *t = new Expression(int1, irr2, new Operator("/"));
 			return t;
 		}
 		else if (log2)
 		{
-			Expression *t = new Expression(int1, log2, quot);
+			Expression *t = new Expression(int1, log2, new Operator("/"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -779,7 +1013,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(irr1, int2, quot);
+			Expression *t = new Expression(irr1, int2, new Operator("/"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -813,7 +1047,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 			else
 			{
 				//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-				Expression *t = new Expression(irr1, irr2, quot);
+				Expression *t = new Expression(irr1, irr2, new Operator("/"));
 				//Const is not implemented yet
 				//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 				return t;
@@ -822,7 +1056,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 		else if (log2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(irr1, log2, quot);
+			Expression *t = new Expression(irr1, log2, new Operator("/"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -834,14 +1068,14 @@ Number *Calculate::divide(Number *num1, Number *num2)
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(log1, int2, quot);
+			Expression *t = new Expression(log1, int2, new Operator("/"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		if (irr2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(log1, irr2, quot);
+			Expression *t = new Expression(log1, irr2, new Operator("/"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -857,7 +1091,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 			else
 			{
 				//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-				Expression *t = new Expression(log1, log2, quot);
+				Expression *t = new Expression(log1, log2, new Operator("/"));
 				//Const is not implemented yet
 				//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 				return t;
@@ -866,7 +1100,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 		if (e2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(log1, pi2, quot);
+			Expression *t = new Expression(log1, pi2, new Operator("/"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -874,7 +1108,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 		if (e2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(log1, pi2, quot);
+			Expression *t = new Expression(log1, pi2, new Operator("/"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -884,14 +1118,14 @@ Number *Calculate::divide(Number *num1, Number *num2)
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(e1, int2, quot);
+			Expression *t = new Expression(e1, int2, new Operator("/"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		if (irr2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(e1, irr2, quot);
+			Expression *t = new Expression(e1, irr2, new Operator("/"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -899,7 +1133,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 		if (log2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(e1, log2, quot);
+			Expression *t = new Expression(e1, log2, new Operator("/"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -912,7 +1146,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 		}
 		else if (pi2)
 		{
-			Expression *t = new Expression(e1, pi2, quot);
+			Expression *t = new Expression(e1, pi2, new Operator("/"));
 			return t;
 		}
 	}
@@ -920,14 +1154,14 @@ Number *Calculate::divide(Number *num1, Number *num2)
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(pi1, int2, quot);
+			Expression *t = new Expression(pi1, int2, new Operator("/"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
 		if (irr2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(pi1, irr2, quot);
+			Expression *t = new Expression(pi1, irr2, new Operator("/"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -935,7 +1169,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 		if (log2)
 		{
 			//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-			Expression *t = new Expression(pi1, log2, quot);
+			Expression *t = new Expression(pi1, log2, new Operator("/"));
 			//Const is not implemented yet
 			//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 			return t;
@@ -943,7 +1177,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 		else if (e2)
 		{
 
-			Expression *t = new Expression(pi1, e2, quot);
+			Expression *t = new Expression(pi1, e2, new Operator("/"));
 			return t;
 		}
 		else if (pi2)
@@ -966,12 +1200,6 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 	Pi *pi2 = dynamic_cast<Pi*>(num2);
 	E *e1 = dynamic_cast<E*>(num1);
 	E *e2 = dynamic_cast<E*>(num2);
-
-	Operator *plus = new Operator("+");
-	Operator *minus = new Operator("-");
-	Operator *times = new Operator("*");
-	Operator *quot = new Operator("/");
-	Operator *power = new Operator("^");
 
 	if (int1)
 	{
@@ -1007,7 +1235,7 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(log1, int2, power);
+			Expression *t = new Expression(log1, int2, new Operator("^"));
 			return t;
 		}
 	}
@@ -1016,7 +1244,7 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 	{
 		if (int2)
 		{
-			Expression *t = new Expression(e1, int2, power);
+			Expression *t = new Expression(e1, int2, new Operator("^"));
 			return t;
 		}
 		if (log2)
@@ -1038,7 +1266,6 @@ int Calculate::gcd(int x, int y)
 		return x; //base case,return x when y equals 0
 	}
 	else {
-		return gcd(y,x % y);
+		return gcd(y, x % y);
 	}
-
 }
