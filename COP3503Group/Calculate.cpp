@@ -1200,6 +1200,8 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 	Pi *pi2 = dynamic_cast<Pi*>(num2);
 	E *e1 = dynamic_cast<E*>(num1);
 	E *e2 = dynamic_cast<E*>(num2);
+	Expression *expr1 = dynamic_cast<Expression*>(num1);
+	Expression *expr2 = dynamic_cast<Expression*>(num2);
 
 	if (int1)
 	{
@@ -1207,12 +1209,21 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 		if (int2)
 		{
 			int b = 1;
-			for (int i = 0; i < int2->getIntValue(); i++)
+			for (int i = 0; i < abs(int2->getIntValue()); i++)
 			{
 				b = b*a;
 			}
-			Integer *t = new Integer(b);
-			return t;
+			if (int2->getIntValue() < 0)
+				return new Expression(new Integer(1), new Integer(b), new Operator("/"));
+			else {
+				return new Integer(b);
+			}
+		}
+		if (expr2) {
+			if (expr2->getVector()[1]->toString() == "/" && dynamic_cast<Integer*>(expr2->getVector()[0])) {
+				Number *newNumb = new Irrational(new Integer((int)pow(a, dynamic_cast<Integer*>(expr2->getVector()[0])->getIntValue())), expr2->getVector()[2]);
+				return newNumb;
+			}
 		}
 	}
 

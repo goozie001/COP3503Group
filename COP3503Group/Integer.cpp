@@ -62,11 +62,11 @@ vector<int> Integer::getPrimeFactorsHelper(int counter, int num, vector<int> tem
 	{
 		num = num / counter;
 		temp.push_back(counter);
-		getPrimeFactorsHelper(counter, num, temp);
+		return getPrimeFactorsHelper(counter, num, temp);
 	}
 	else
 	{
-		getPrimeFactorsHelper(counter+1, num, temp);
+		return getPrimeFactorsHelper(counter+1, num, temp);
 	}
 
 
