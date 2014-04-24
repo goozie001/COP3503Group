@@ -59,7 +59,7 @@ Number *Calculate::add(Number *num1, Number *num2) {
 
 	}
 
-	if (irr1)
+	else if (irr1)
 	{
 		if (int2)
 		{
@@ -102,7 +102,7 @@ Number *Calculate::add(Number *num1, Number *num2) {
 
 	}
 
-	if (log1)
+	else if (log1)
 	{
 		if (int2)
 		{
@@ -143,7 +143,7 @@ Number *Calculate::add(Number *num1, Number *num2) {
 		}
 
 	}
-	if (e1)
+	else if (e1)
 	{
 		if (int2)
 		{
@@ -176,7 +176,7 @@ Number *Calculate::add(Number *num1, Number *num2) {
 		}
 
 	}
-	if (pi1)
+	else if (pi1)
 	{
 		if (int2)
 		{
@@ -211,6 +211,8 @@ Number *Calculate::add(Number *num1, Number *num2) {
 		}
 
 	}
+
+	return new Expression(num1, num2, new Operator("+"));
 
 	/* if(expr1){
 	vector<Number*> exprVector1 = expr1->getVector();
@@ -703,6 +705,9 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 				//change '+' to a term in order to work correctly with Number
 				return t;
 			}
+		}
+		else if (expr2) {
+			return new Expression(multiply(int1, expr2->getVector()[0]), expr2->getVector()[2], dynamic_cast<Operator*>(expr2->getVector()[1]));
 		}
 	}
 	else if (log2)

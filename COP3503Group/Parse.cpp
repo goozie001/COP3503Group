@@ -615,7 +615,7 @@ Number *Parse::evaluateRPNObject() {
 				solution.pop_back();
 
 				if (op_i->toString() == "+") {
-					Number *numb_i = calc->add(a, b);
+					Number *numb_i = calc->add(b, a);
 					solution.push_back(numb_i);
 				}
 				else if (op_i->toString() == "-") {
@@ -635,9 +635,9 @@ Number *Parse::evaluateRPNObject() {
 					 solution.push_back(numb_i);
 				}
 				delete op_i;
-				if (dynamic_cast<Expression*>(solution[0]) == 0) {
-					if (&solution[0] != &a) delete a;
-					if (&solution[0] != &b) delete b;
+				if (dynamic_cast<Expression*>(solution.back()) == 0) {
+					if (&solution.back() != &a) delete a;
+					if (&solution.back() != &b) delete b;
 				}
 			}
 		}
