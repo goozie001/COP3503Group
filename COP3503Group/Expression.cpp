@@ -14,66 +14,13 @@ Expression::Expression()
 
 Expression::Expression(Number *num1, Number *num2, Operator *oper)
 {
-	/*
-	I'm deleting every Number object from the NumberRPN in Parse, and in
-	the Calculate class, when we put objects in to form an Expression, they're
-	the original Numbers. Therefore, in order for the Expression class to not
-	create a vector of pointers that will soon point to nothing, I am creating
-	new objects. The excpetion to this rule is the Operator object, which is
-	created in Calculate.
-	*/
-	if (dynamic_cast<Integer*>(num1)) {
-		Integer *newNum1 = dynamic_cast<Integer*>(num1);
-		num1 = new Integer(newNum1->getIntValue());
-	}
-	else if (dynamic_cast<Irrational*>(num1)) {
-		Irrational *newNum1 = dynamic_cast<Irrational*>(num1);
-		num1 = new Irrational(newNum1->getBase(), newNum1->getRootVal());
-	}
-	else if (dynamic_cast<Log*>(num1)) {
-		Log *newLog = dynamic_cast<Log*>(num1);
-		num1 = new Log(newLog->getBase(), newLog->getArgument());
-	}
-	else if (dynamic_cast<Pi*>(num1)) {
-		num1 = new Pi();
-	}
-	else if (dynamic_cast<E*>(num1)) {
-		num1 = new E();
-	}
-	else if (dynamic_cast<Expression*>(num1)) {
-		Expression *newExp = dynamic_cast<Expression*>(num1);
-		num1 = new Expression(newExp->exprVector[0], newExp->exprVector[2], dynamic_cast<Operator*>(newExp->exprVector[1]));
-	}
-	else throw exception("Error 2534C");
-;
-
-	if (dynamic_cast<Integer*>(num2)) {
-		Integer *newNum2 = dynamic_cast<Integer*>(num2);
-		num2 = new Integer(newNum2->getIntValue());
-	}
-	else if (dynamic_cast<Irrational*>(num2)) {
-		Irrational *newNum2 = dynamic_cast<Irrational*>(num2);
-		num2 = new Irrational(newNum2->getBase(), newNum2->getRootVal());
-	}
-	else if (dynamic_cast<Log*>(num2)) {
-		Log *newLog = dynamic_cast<Log*>(num2);
-		num2 = new Log(newLog->getBase(), newLog->getArgument());
-	}
-	else if (dynamic_cast<Pi*>(num2)) {
-		num2 = new Pi();
-	}
-	else if (dynamic_cast<E*>(num2)) {
-		num2 = new E();
-	}
-	else if (dynamic_cast<Expression*>(num2)) {
-		Expression *newExp = dynamic_cast<Expression*>(num2);
-		num2 = new Expression(newExp->exprVector[1], newExp->exprVector[3], dynamic_cast<Operator*>(newExp->exprVector[2]));
-	}
-	else throw exception("Error 2534C");
-
 	exprVector.push_back(num1);
 	exprVector.push_back(oper);
 	exprVector.push_back(num2);
+}
+
+Expression::Expression(vector<Number*> vec) {
+	this->exprVector = vec;
 }
 
 Expression::~Expression()
@@ -82,7 +29,7 @@ Expression::~Expression()
 	{
 		delete exprVector[i];
 	}
-	//delete exprVector;
+	//delete all items in exprVector.
 }
 
 string Expression::toString()

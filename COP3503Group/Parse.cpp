@@ -634,7 +634,11 @@ Number *Parse::evaluateRPNObject() {
 					 Number *numb_i = calc->exponentiate(b, a);
 					 solution.push_back(numb_i);
 				}
-				delete a, b, op_i;
+				delete op_i;
+				if (dynamic_cast<Expression*>(solution[0]) == 0) {
+					if (&solution[0] != &a) delete a;
+					if (&solution[0] != &b) delete b;
+				}
 			}
 		}
 		++i;

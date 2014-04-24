@@ -7,6 +7,7 @@ class Expression :
 public:
 	Expression();
 	Expression(Number*, Number*, Operator*);
+	Expression(vector<Number*>);
 	~Expression();
 
 	string toString();
