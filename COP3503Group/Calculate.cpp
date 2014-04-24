@@ -1187,6 +1187,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 			return t;
 		}
 	}
+	return new Expression(num1, num2, new Operator("/"));
 }
 
 Number *Calculate::exponentiate(Number *num1, Number *num2){
@@ -1220,21 +1221,23 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 			}
 		}
 		if (expr2) {
-			if (expr2->getVector()[1]->toString() == "/" && dynamic_cast<Integer*>(expr2->getVector()[0])) {
-				Number *newNumb = new Irrational(new Integer((int)pow(a, dynamic_cast<Integer*>(expr2->getVector()[0])->getIntValue())), expr2->getVector()[2]);
-				return newNumb;
+			if (expr2->getFloatValue() < 0) {
+				if (expr2->getVector()[1]->toString() == "/" && dynamic_cast<Integer*>(expr2->getVector()[2])) {
+					return new Expression(new Integer(1), new Irrational(new Integer((int)pow(a, abs(dynamic_cast<Integer*>(expr2->getVector()[0])->getIntValue()))), new Integer((int)abs(dynamic_cast<Integer*>(expr2->getVector()[2])->getIntValue()))), new Operator("/"));
+				}
+			}
+			else {
+				if (expr2->getVector()[1]->toString() == "/" && dynamic_cast<Integer*>(expr2->getVector()[0])) {
+					return new Irrational(new Integer((int)pow(a, dynamic_cast<Integer*>(expr2->getVector()[0])->getIntValue())), expr2->getVector()[2]);
+				}
 			}
 		}
 	}
 
-	if (irr1)
+	else if (irr1)
 	{
 		if (int2)
 		{
-
-			int a = int1->getIntValue() * int2->getIntValue();
-			Integer *t = new Integer(a);
-			return t;
 
 			Number *newRootVal = multiply(irr1->getRootVal(), int2);
 			Irrational *newIrr = new Irrational(irr1->getBase(), newRootVal);
@@ -1242,7 +1245,7 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 		}
 	}
 
-	if (log1)
+	else if (log1)
 	{
 		if (int2)
 		{
@@ -1251,7 +1254,7 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 		}
 	}
 
-	if (e1)
+	else if (e1)
 	{
 		if (int2)
 		{
@@ -1269,6 +1272,15 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 			}
 		}
 	}
+	else if (expr1) {
+		if (expr2) {
+
+		}
+		else {
+
+		}
+	}
+	return new Expression(num1, num2, new Operator("^"));
 }
 
 int Calculate::gcd(int x, int y)

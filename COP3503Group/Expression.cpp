@@ -37,7 +37,12 @@ string Expression::toString()
 	string temp;
 	for (size_t i = 0; i < exprVector.size(); i++)
 	{
-		temp += exprVector[i]->toString();
+		if (dynamic_cast<Expression*>(exprVector[i])) {
+			temp += "(" + exprVector[i]->toString() + ")";
+		}
+		else {
+			temp += exprVector[i]->toString();
+		}
 	}
 	return temp;
 }
@@ -94,6 +99,10 @@ Number *Expression::simplify() {
 	else {
 		throw exception("Operator not recognized.");
 	}
-	delete newN1, newN2, newOp, calc;
+	delete newOp, calc;
+	if (!dynamic_cast<Expression*>(newN3)) {
+		if (&newN1 != &newN3) delete newN1;
+		if (&newN2 != &newN3) delete newN2;
+	}
 	return newN3;
 }
