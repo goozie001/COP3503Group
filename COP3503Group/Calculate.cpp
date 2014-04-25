@@ -668,6 +668,7 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 		}
 
 	}
+	return new Expression(num1, num2, new Operator("-"));
 }
 
 Number *Calculate::multiply(Number *num1, Number *num2)
@@ -684,6 +685,55 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 	Pi *pi2 = dynamic_cast<Pi*>(num2);
 	Expression *expr1 = dynamic_cast<Expression*>(num1);
 	Expression *expr2 = dynamic_cast<Expression*>(num2);
+
+	if (expr1) {
+		if (expr1->getVector()[1]->toString() == "+") {
+			return new Expression(multiply(num2, expr1->getVector()[0]), multiply(num2, expr1->getVector()[2]), new Operator("+"));
+		}
+		else if (expr1->getVector()[1]->toString() == "-") {
+			return new Expression(multiply(num2, expr1->getVector()[0]), multiply(num2, expr1->getVector()[2]), new Operator("-"));
+		}
+		else if (expr1->getVector()[1]->toString() == "*") {
+			Number *nu2 = multiply(num2, expr1->getVector()[2]);
+			if (!dynamic_cast<Expression*>(nu2)) {
+				return new Expression(expr1->getVector()[0], nu2, new Operator("*"));
+			}
+			delete nu2;
+			Number *nu1 = multiply(num2, expr1->getVector()[0]);
+			return new Expression(nu1, expr1->getVector()[2], new Operator("*"));
+		}
+		else if (expr1->getVector()[1]->toString() == "/") {
+			return new Expression(multiply(expr1->getVector()[0], num2), expr1->getVector()[2], new Operator("/"));
+		}
+		else if (expr1->getVector()[1]->toString() == "^") {
+			return new Expression(num2, expr1, new Operator("*"));
+		}
+		else throw exception("Operator not recognized.");
+	}
+	else if (expr2) {
+		if (expr2->getVector()[1]->toString() == "+") {
+			return new Expression(multiply(num1, expr2->getVector()[0]), multiply(num1, expr2->getVector()[2]), new Operator("+"));
+		}
+		else if (expr2->getVector()[1]->toString() == "-") {
+			return new Expression(multiply(num1, expr2->getVector()[0]), multiply(num1, expr2->getVector()[2]), new Operator("-"));
+		}
+		else if (expr2->getVector()[1]->toString() == "*") {
+			Number *nu2 = multiply(num1, expr2->getVector()[2]);
+			if (!dynamic_cast<Expression*>(nu2)) {
+				return new Expression(expr2->getVector()[0], nu2, new Operator("*"));
+			}
+			delete nu2;
+			Number *nu1 = multiply(num1, expr2->getVector()[0]);
+			return new Expression(nu1, expr2->getVector()[2], new Operator("*"));
+		}
+		else if (expr2->getVector()[1]->toString() == "/") {
+			return new Expression(multiply(expr2->getVector()[0], num1), expr2->getVector()[2], new Operator("/"));
+		}
+		else if (expr2->getVector()[1]->toString() == "^") {
+			return new Expression(num1, expr2, new Operator("*"));
+		}
+		else throw exception("Operator not recognized.");
+	}
 
 	if (int1)
 	{
@@ -706,21 +756,20 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 				return t;
 			}
 		}
-		else if (expr2) {
-			return new Expression(multiply(int1, expr2->getVector()[0]), expr2->getVector()[2], dynamic_cast<Operator*>(expr2->getVector()[1]));
-		}
 	}
-	else if (log2)
+	if (log2)
 	{
-		if (int1->getIntValue() == 1)
-		{
-			return log2;
-		}
-		else
-		{
-			Expression *t = new Expression(int1, log2, new Operator("*"));
-			//change '+' to a term in order to work correctly with Number
-			return t;
+		if (int1) {
+			if (int1->getIntValue() == 1)
+			{
+				return log2;
+			}
+			else
+			{
+				Expression *t = new Expression(int1, log2, new Operator("*"));
+				//change '+' to a term in order to work correctly with Number
+				return t;
+			}
 		}
 	}
 	else if (e2)
@@ -966,6 +1015,26 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			return t;
 		}
 	}
+	/*else if (expr1) {
+		if (int2) {
+			if (expr1->getVector()[1]->toString() == "+") {
+				return new Expression(multiply(int2, expr1->getVector()[0]), multiply(int2, expr1->getVector()[2]), new Operator("+"));
+			}
+			else if (expr1->getVector()[1]->toString() == "-") {
+				return new Expression(multiply(int2, expr1->getVector()[0]), multiply(int2, expr1->getVector()[2]), new Operator("-"));
+			}
+			else if (expr1->getVector()[1]->toString() == "*") {
+				Number *nu2 = multiply(int2, expr1->getVector()[2]);
+				if (!dynamic_cast<Expression*>(nu2)) {
+					return new Expression(expr1->getVector()[0], nu2, new Operator("*"));
+				}
+				delete nu2;
+				Number *nu1 = multiply(int2, expr1->getVector()[0]);
+				return new Expression(nu1, expr1->getVector()[2], new Operator("*"));
+			}
+		}
+	}*/
+	return new Expression(int1, num2, new Operator("*"));
 }
 
 Number *Calculate::divide(Number *num1, Number *num2)

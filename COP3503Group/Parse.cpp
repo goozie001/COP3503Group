@@ -647,7 +647,9 @@ Number *Parse::evaluateRPNObject() {
 	Number *end1 = end->simplify();
 	storedAnswers.push_back(end1);
 	delete calc;
-	delete end;
+	if (&end != &end1) {
+		delete end;
+	}
 	return end1;
 }
 
