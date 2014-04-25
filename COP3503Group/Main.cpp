@@ -49,11 +49,12 @@ int main() {
 		{
 					bool exit2 = false;
 					while (!exit2){
+						cout << "Previous Expressions and Answers:" << endl;
 						for (int i = 0; i < p->storedAnswers.size(); i++){
-							cout << "Input " << i + 1 << ":  " << endl;
-							cout << p->inputs[i] << endl;
-							cout << "Output " << i + 1 << ":  " << endl;
-							cout << p->storedAnswers[i]->toString() << endl;
+							cout << '\t' << "Input " << i + 1 << ":  " << endl;
+							cout << '\t' << p->inputs[i] << endl;
+							cout << '\t' << "Output " << i + 1 << ":  " << endl;
+							cout << '\t' << p->storedAnswers[i]->toString() << endl;
 						}
 						cout << "1) Show floating-point form for an answer" << endl;
 						cout << "2) Set ans keyword to a previous expression's answer" << endl;
@@ -96,7 +97,7 @@ int main() {
 										}
 									}
 									float result = p->storedAnswers[n - 1]->getFloatValue();
-									cout << "Float value of ans" << n << " is:  " << result << endl;
+									cout << "Float value of Output" << n << " is:  " << result << endl << endl;
 									break;
 						}
 						case '2':
@@ -123,7 +124,7 @@ int main() {
 										}
 									}
 									ans = p->storedAnswers[n - 1]->toString();
-									cout << "Keyword ans is now:  " << ans << endl;
+									cout << "Keyword ans is now:  " << ans << endl << endl;
 									break;
 						}
 						case '3':
@@ -151,7 +152,7 @@ int main() {
 					}
 					catch (exception &exc){
 						cerr << exc.what() << endl << endl;
-						input[0] = '4';
+						input[0] = '5';
 					}
 					switch (input[0]) {
 					case '1':
@@ -174,8 +175,8 @@ int main() {
 								cout << "use the / operator to divide" << endl;
 								cout << "any number of parentheses () are supported by this program" << endl;
 								cout << "Press enter to exit." << endl;
-								char a;
-								a = cin.get(); // try just cin.get() if this doesn't work
+								system ("pause");
+								 // try just cin.get() if this doesn't work
 								break;
 					}
 					case '3':

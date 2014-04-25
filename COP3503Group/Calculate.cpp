@@ -31,19 +31,64 @@ Number *Calculate::add(Number *num1, Number *num2) {
 	}
 	if (expr1) {
 		if (expr1->getVector()[1]->toString() == "+") {
-
+			Number *newN = add(expr1->getVector()[2], num2);
+			if (!dynamic_cast<Expression*>(newN)) {
+				return add(expr1->getVector()[0], newN);
+			}
+			if (newN != expr1->getVector()[2] && newN != num2) {
+				delete newN;
+			}
+			return add(add(expr1->getVector()[0], num2), expr1->getVector()[0]);
 		}
 		else if (expr1->getVector()[1]->toString() == "-") {
-
+			Number *newN = add(expr1->getVector()[2], num2);
+			if (!dynamic_cast<Expression*>(newN)) {
+				return subtract(expr1->getVector()[0], newN);
+			}
+			if (newN != expr1->getVector()[2] && newN != num2) {
+				delete newN;
+			}
+			return subtract(add(expr1->getVector()[0], num2), expr1->getVector()[2]);
 		}
 		else if (expr1->getVector()[1]->toString() == "*") {
-
+			
 		}
 		else if (expr1->getVector()[1]->toString() == "^") {
 
 		}
 		else if (expr1->getVector()[1]->toString() == "/") {
+			return new Expression(add(multiply(expr1->getVector()[2], num2), expr1->getVector()[0]), expr1->getVector()[2], new Operator("/"));
+		}
+	}
+	if (expr2) {
+		if (expr2->getVector()[1]->toString() == "+") {
+			Number *newN = add(expr2->getVector()[2], num1);
+			if (!dynamic_cast<Expression*>(newN)) {
+				return add(expr2->getVector()[0], newN);
+			}
+			if (newN != expr2->getVector()[2] && newN != num1) {
+				delete newN;
+			}
+			return add(add(expr2->getVector()[0], num1), expr2->getVector()[0]);
+		}
+		else if (expr2->getVector()[1]->toString() == "-") {
+			Number *newN = add(expr2->getVector()[2], num1);
+			if (!dynamic_cast<Expression*>(newN)) {
+				return subtract(expr2->getVector()[0], newN);
+			}
+			if (newN != expr2->getVector()[2] && newN != num1) {
+				delete newN;
+			}
+			return subtract(add(expr2->getVector()[0], num1), expr2->getVector()[2]);
+		}
+		else if (expr2->getVector()[1]->toString() == "*") {
 
+		}
+		else if (expr2->getVector()[1]->toString() == "^") {
+
+		}
+		else if (expr2->getVector()[1]->toString() == "/") {
+			return new Expression(add(multiply(expr2->getVector()[2], num1), expr2->getVector()[0]), expr2->getVector()[2], new Operator("/"));
 		}
 	}
 
@@ -503,10 +548,24 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 	}
 	if (expr1) {
 		if (expr1->getVector()[1]->toString() == "+") {
-
+			Number *newN = subtract(expr1->getVector()[2], num2);
+			if (!dynamic_cast<Expression*>(newN)) {
+				return add(expr1->getVector()[0], newN);
+			}
+			if (newN != expr1->getVector()[2] && newN != num2) {
+				delete newN;
+			}
+			return add(subtract(expr1->getVector()[0], num2), expr1->getVector()[0]);
 		}
 		else if (expr1->getVector()[1]->toString() == "-") {
-
+			Number *newN = subtract(expr1->getVector()[2], num2);
+			if (!dynamic_cast<Expression*>(newN)) {
+				return subtract(expr1->getVector()[0], newN);
+			}
+			if (newN != expr1->getVector()[2] && newN != num2) {
+				delete newN;
+			}
+			return subtract(subtract(expr1->getVector()[0], num2), expr1->getVector()[2]);
 		}
 		else if (expr1->getVector()[1]->toString() == "*") {
 
@@ -515,7 +574,38 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 
 		}
 		else if (expr1->getVector()[1]->toString() == "/") {
+			return new Expression(subtract(expr1->getVector()[0], multiply(expr1->getVector()[2], num2)), expr1->getVector()[2], new Operator("/"));
+		}
+	}
+	if (expr2) {
+		if (expr2->getVector()[1]->toString() == "+") {
+			Number *newN = subtract(num1, expr2->getVector()[2]);
+			if (!dynamic_cast<Expression*>(newN)) {
+				return add(expr2->getVector()[0], newN);
+			}
+			if (newN != num1 && newN != expr2->getVector()[2]) {
+				delete newN;
+			}
+			return add(subtract(num1, expr2->getVector()[0]), expr2->getVector()[2]);
+		}
+		else if (expr2->getVector()[1]->toString() == "-") {
+			Number *newN = subtract(num1, expr2->getVector()[2]);
+			if (!dynamic_cast<Expression*>(newN)) {
+				return subtract(expr2->getVector()[0], newN);
+			}
+			if (newN != num1 && newN != expr2->getVector()[2]) {
+				delete newN;
+			}
+			return subtract(subtract(num1, expr2->getVector()[0]), expr2->getVector()[2]);
+		}
+		else if (expr2->getVector()[1]->toString() == "*") {
 
+		}
+		else if (expr2->getVector()[1]->toString() == "^") {
+
+		}
+		else if (expr2->getVector()[1]->toString() == "/") {
+			return new Expression(subtract(multiply(expr2->getVector()[2], num1), expr2->getVector()[0]), expr2->getVector()[2], new Operator("/"));
 		}
 	}
 
