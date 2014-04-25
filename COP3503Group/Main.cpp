@@ -5,6 +5,7 @@
 int main() {
 	int i = 0;
 	Parse *p = new Parse();
+	string ans;
 	while (i == 0) {
 		string input;
 		cout << "1) Compute New Expression" << endl;
@@ -17,6 +18,7 @@ int main() {
 			cin.clear();
 			cin >> input;
 			if (cin.fail() || !((int)input[0] >= 49 && (int)input[0] <= 52) || input.size() > 1) {
+				cin.clear();
 				throw invalid_argument("Only 1, 2, 3, or 4 may be input");
 			}
 		}
@@ -34,25 +36,72 @@ int main() {
 						cin >> in1;
 						Number *num = p->pseudoMain(in1);
 						cout << num->toString() << endl << endl;
+						ans = num->toString();
 					}
 					catch (exception &e) {
 						cerr << e.what() << endl << endl;
+						p->inputs.pop_back();
 					}
 					break;
-					
+
 		}
 		case '2':
 		{
-					for (int i = 0; i < p->storedAnswers.size(); i++){
-						cout << "Input:" << endl;
-						cout << p->inputs[i] << endl;
-						cout << "Output:" << endl;
-						cout << p->storedAnswers[i]->toString() << endl;
+					bool exit2 = false;
+					while (!exit2){
+						for (int i = 0; i < p->storedAnswers.size(); i++){
+							cout << "Input " << i + 1 << ":  " << endl;
+							cout << p->inputs[i] << endl;
+							cout << "Output " << i + 1 << ":  " << endl;
+							cout << p->storedAnswers[i]->toString() << endl;
+						}
+						cout << "1) Show floating-point form for an answer" << endl;
+						cout << "2) Set ans keyword to a previous expression's answer" << endl;
+						cout << "3) Return to main menu" << endl;
+						cout << "Please Select a Menu Option by entering an integer from 1-3" << endl;
+						int a;
+						cin >> a;
+						if (a == 1){
+							int n = 0;
+							bool exit = false;
+							while (!exit){
+								cout << "Which output would you like to see Floating-Point form of?" << endl;
+								cin >> n;
+								if (n < 1 || n > p->storedAnswers.size()){
+									cout << "Invalid entry, please try again." << endl;
+								}
+								else{
+									exit = true;
+								}
+							}
+							float result = p->storedAnswers[n - 1]->getFloatValue();
+							cout << "Float value of ans" << n << " is:  " << result << endl;
+						}
+						else if (a == 2){
+							bool exit = false;
+							int n = 0;
+							while (!exit){
+								cout << "Which expression's answer would you like to set as keyword ans" << endl;
+								
+								if (n < 1 || n > p->storedAnswers.size()){
+									cout << "Invalid entry, please try again." << endl;
+								}
+								else{
+									exit = true;
+								}
+							}
+							ans = p->storedAnswers[n - 1]->toString();
+							cout << "Keyword ans is now:  " << ans << endl;
+						}
+						else if (a == 3){
+							cout << "Returning to Main Menu." << endl;
+							exit2 = true;
+						}
+						else{
+							cout << "Invalid input, please enter an integer from 1-3." << endl;
+						}
+						break;
 					}
-					cout << "Press enter to exit." << endl;
-					string a;
-					cin >> a;
-					break;
 		}
 		case '3':
 		{
@@ -87,17 +136,17 @@ int main() {
 					}
 					case'3':
 					{
-								cout << "In order to use this program, simply select 1 at the first menu in order to enter Calculation mode" << endl;
-								cout << "this will allow you to enter in an equation to be computed by the calculator" << endl;
-								cout << "You can select option 2 on the first menu to see your previous answers and inputs in a list" << endl;
-								cout << "Select option 4 on the first menu to exit the program" << endl;
-								cout << "Press enter to exit." << endl;
-								char a;
-								cin >> a;
-								break;
-								break;
+							   cout << "In order to use this program, simply select 1 at the first menu in order to enter Calculation mode" << endl;
+							   cout << "this will allow you to enter in an equation to be computed by the calculator" << endl;
+							   cout << "You can select option 2 on the first menu to see your previous answers and inputs in a list" << endl;
+							   cout << "Select option 4 on the first menu to exit the program" << endl;
+							   cout << "Press enter to exit." << endl;
+							   char a;
+							   cin >> a;
+							   break;
+							   break;
 					}
-		}
+					}
 		case '4':
 		{
 					i = 1;

@@ -1129,6 +1129,9 @@ Number *Calculate::divide(Number *num1, Number *num2)
 	{
 		if (int2)
 		{
+			if (int1->getIntValue() == int2->getIntValue()) {
+				return new Integer(1);
+			}
 			int divisor = gcd(int1->getIntValue(), int2->getIntValue());
 
 			Integer *i = new Integer(int1->getIntValue() / divisor);
@@ -1388,15 +1391,7 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 		}
 	}
 
-	else if (log1)
-	{
-		if (int2)
-		{
-			Expression *t = new Expression(log1, int2, new Operator("^"));
-			return t;
-		}
-	}
-
+	
 	else if (e1)
 	{
 		if (int2)
@@ -1415,12 +1410,13 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 			}
 		}
 	}
-	else if (expr1) {
-		if (expr2) {
-
+	if (expr2) {
+		string expr2op = expr2->getVector()[1]->toString();
+		if (expr2op == "+") {
+			return add(exponentiate(num1, expr2->getVector()[0]), exponentiate(num1, expr2->getVector()[2]));
 		}
-		else {
-
+		else if (expr2op == "-") {
+			return subtract(exponentiate(num1, expr2->getVector()[0]), exponentiate(num1, expr2->getVector()[2]));
 		}
 	}
 	return new Expression(num1, num2, new Operator("^"));
