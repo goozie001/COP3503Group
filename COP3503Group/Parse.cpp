@@ -636,8 +636,8 @@ Number *Parse::evaluateRPNObject() {
 				}
 				delete op_i;
 				if (dynamic_cast<Expression*>(solution.back()) == 0) {
-					if (&solution.back() != &a) delete a;
-					if (&solution.back() != &b) delete b;
+					if (solution.back() != a) delete a;
+					if (solution.back() != b) delete b;
 				}
 			}
 		}

@@ -686,6 +686,27 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 	Expression *expr1 = dynamic_cast<Expression*>(num1);
 	Expression *expr2 = dynamic_cast<Expression*>(num2);
 
+	if (expr1 && expr2) {
+		// FOIL
+		string a = expr1->getVector()[1]->toString();
+		string b = expr2->getVector()[1]->toString();
+		Number *n1 = expr1->getVector()[0];
+		Number *n2 = expr1->getVector()[2];
+		Number *n3 = expr2->getVector()[0];
+		Number *n4 = expr2->getVector()[2];
+		if (a == "+" && b == "+") {
+			return add(add(multiply(n1, n3), multiply(n1, n4)), add(multiply(n2, n3), multiply(n2, n4)));
+		}
+		else if (a == "+" && b == "-") {
+			return add(subtract(multiply(n1, n3), multiply(n1, n4)), subtract(multiply(n2, n3), multiply(n2, n4)));
+		}
+		else if (a == "-" && b == "+") {
+			return subtract(add(multiply(n1, n3), multiply(n1, n4)), subtract(multiply(n2, n3), multiply(n2, n4)));
+		}
+		else if (a == "-" && b == "-") {
+			return subtract(subtract(multiply(n1, n3), multiply(n1, n4)), add(multiply(n2, n3), multiply(n2, n4)));
+		}
+	}
 	if (expr1) {
 		if (expr1->getVector()[1]->toString() == "+") {
 			return new Expression(multiply(num2, expr1->getVector()[0]), multiply(num2, expr1->getVector()[2]), new Operator("+"));
@@ -774,31 +795,34 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 	}
 	else if (e2)
 	{
-		if (int1->getIntValue() == 1)
-		{
-			return e2;
-		}
-		else
-		{
-			Expression *t = new Expression(int1, e2, new Operator("*"));
-			//change '+' to a term in order to work correctly with Number
-			return t;
+		if (int1) {
+			if (int1->getIntValue() == 1)
+			{
+				return e2;
+			}
+			else
+			{
+				Expression *t = new Expression(int1, e2, new Operator("*"));
+				//change '+' to a term in order to work correctly with Number
+				return t;
+			}
 		}
 	}
 	else if (pi2)
 	{
-		if (int1->getIntValue() == 1)
-		{
-			return pi2;
-		}
-		else
-		{
-			Expression *t = new Expression(int1, pi2, new Operator("*"));
-			//change '+' to a term in order to work correctly with Number
-			return t;
+		if (int1) {
+			if (int1->getIntValue() == 1)
+			{
+				return pi2;
+			}
+			else
+			{
+				Expression *t = new Expression(int1, pi2, new Operator("*"));
+				//change '+' to a term in order to work correctly with Number
+				return t;
+			}
 		}
 	}
-
 	if (irr1)
 	{
 		if (int2)
@@ -930,7 +954,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			else
 			{
 				//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-				Expression *t = new Expression(e1, int2, new Operator("*"));
+				Expression *t = new Expression(int2, e1, new Operator("*"));
 				//Const is not implemented yet
 				//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 				return t;
@@ -978,7 +1002,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			else
 			{
 				//Irrational *newIrrational = new Irrational(irr1->getBase(), irr1->getRootVal, newconst);
-				Expression *t = new Expression(pi1, int2, new Operator("*"));
+				Expression *t = new Expression(int2, pi1, new Operator("*"));
 				//Const is not implemented yet
 				//Number *t = new Number(newIrrational, irr2); //unsure how Number is going to deal with multiplication operator
 				return t;
@@ -1015,7 +1039,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			return t;
 		}
 	}
-	return new Expression(int1, num2, new Operator("*"));
+	return new Expression(num1, num2, new Operator("*"));
 }
 
 Number *Calculate::divide(Number *num1, Number *num2)
