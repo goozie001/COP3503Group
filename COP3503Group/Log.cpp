@@ -30,7 +30,7 @@ Number *Log::getArgument() {
 // Overridden methods
 
 float Log::getFloatValue() {
-	return floatValue;
+	return log(argument->getFloatValue()) / log(base->getFloatValue());
 }
 
 // TODO: Implement simplify Log method

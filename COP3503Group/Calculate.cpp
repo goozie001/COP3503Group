@@ -26,6 +26,27 @@ Number *Calculate::add(Number *num1, Number *num2) {
 	Pi *pi1 = dynamic_cast<Pi*>(num1);
 	Pi *pi2 = dynamic_cast<Pi*>(num2);
 
+	if (expr1 && expr2) {
+
+	}
+	if (expr1) {
+		if (expr1->getVector()[1]->toString() == "+") {
+
+		}
+		else if (expr1->getVector()[1]->toString() == "-") {
+
+		}
+		else if (expr1->getVector()[1]->toString() == "*") {
+
+		}
+		else if (expr1->getVector()[1]->toString() == "^") {
+
+		}
+		else if (expr1->getVector()[1]->toString() == "/") {
+
+		}
+	}
+
 	if (int1)
 	{
 		if (int2)
@@ -474,6 +495,29 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 	E *e2 = dynamic_cast<E*>(num2);
 	Pi *pi1 = dynamic_cast<Pi*>(num1);
 	Pi *pi2 = dynamic_cast<Pi*>(num2);
+	Expression *expr1 = dynamic_cast<Expression*>(num1);
+	Expression *expr2 = dynamic_cast<Expression*>(num2);
+
+	if (expr1 && expr2) {
+
+	}
+	if (expr1) {
+		if (expr1->getVector()[1]->toString() == "+") {
+
+		}
+		else if (expr1->getVector()[1]->toString() == "-") {
+
+		}
+		else if (expr1->getVector()[1]->toString() == "*") {
+
+		}
+		else if (expr1->getVector()[1]->toString() == "^") {
+
+		}
+		else if (expr1->getVector()[1]->toString() == "/") {
+
+		}
+	}
 
 	if (int1)
 	{

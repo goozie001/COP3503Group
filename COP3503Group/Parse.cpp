@@ -615,8 +615,14 @@ Number *Parse::evaluateRPNObject() {
 				solution.pop_back();
 
 				if (op_i->toString() == "+") {
-					Number *numb_i = calc->add(b, a);
-					solution.push_back(numb_i);
+					if (dynamic_cast<Expression*>(a) && !dynamic_cast<Expression*>(b)) {
+						Number *numb_i = calc->add(a, b);
+						solution.push_back(numb_i);
+					}
+					else {
+						Number *numb_i = calc->add(b, a);
+						solution.push_back(numb_i);
+					}
 				}
 				else if (op_i->toString() == "-") {
 					Number *numb_i = calc->subtract(b, a);
