@@ -19,5 +19,5 @@ Number *Pi::simplify() {
 }
 
 string Pi::toString() {
-	return "Pi";
+	return "pi";
 }

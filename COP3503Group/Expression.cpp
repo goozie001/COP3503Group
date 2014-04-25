@@ -38,7 +38,7 @@ string Expression::toString()
 	for (size_t i = 0; i < exprVector.size(); i++)
 	{
 		if (dynamic_cast<Expression*>(exprVector[i])) {
-			if ((i > 0 && (dynamic_cast<Operator*>(exprVector[i - 1])->toString() != "+" || dynamic_cast<Operator*>(exprVector[i - 1])->toString() != "-")) && (i < exprVector.size() - 1 && (dynamic_cast<Operator*>(exprVector[i - 1])->toString() != "+" || dynamic_cast<Operator*>(exprVector[i - 1])->toString() != "-")))
+			if ((i > 0 && (dynamic_cast<Operator*>(exprVector[i - 1])->toString() != "+" || dynamic_cast<Operator*>(exprVector[i - 1])->toString() != "-")) && (i < exprVector.size() - 1 && (dynamic_cast<Operator*>(exprVector[i + 1])->toString() != "+" || dynamic_cast<Operator*>(exprVector[i + 1])->toString() != "-")))
 				temp += "(" + exprVector[i]->toString() + ")";
 			else
 				temp += exprVector[i]->toString();
