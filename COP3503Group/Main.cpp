@@ -36,8 +36,8 @@ int main() {
 					string in1;
 					cout << "Please input the expression to be calculated." << endl;
 					try{
-						cin.clear();
-						cin >> in1;
+						cin.ignore();
+						getline(cin, in1);
 						Number *num = p->pseudoMain(in1);
 						cout << num->toString() << endl << endl;
 						ans = num->toString();
