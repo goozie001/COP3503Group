@@ -1340,7 +1340,7 @@ Number *Calculate::divide(Number *num1, Number *num2)
 			if (int1->getIntValue() == int2->getIntValue()) {
 				return new Integer(1);
 			}
-			int divisor = gcd(int1->getIntValue(), int2->getIntValue());
+			int divisor = abs(gcd(int1->getIntValue(), int2->getIntValue()));
 
 			Integer *i = new Integer(int1->getIntValue() / divisor);
 			Integer *j = new Integer(int2->getIntValue() / divisor);
