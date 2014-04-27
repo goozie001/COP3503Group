@@ -80,6 +80,18 @@ vector<Number*> Expression::getVector()
 Number *Expression::simplify() {
 	Number *newN1 = exprVector[0]->simplify();
 	Number *newN2 = exprVector[2]->simplify();
+	if (exprVector[1]->toString() == "/") {
+		if (newN1->getFloatValue() > 0.0 && newN2->getFloatValue() < 0.0) {
+			Integer *neg = new Integer(-1);
+			Calculate *calc = new Calculate();
+			newN1 = calc->multiply(neg, newN1);
+			newN2 = calc->multiply(neg, newN2);
+			delete calc;
+			if (neg != newN1 && neg != newN2) {
+				delete neg;
+			}
+		}
+	}
 	Number *newN3;
 	Operator *newOp = new Operator(dynamic_cast<Operator*>(exprVector[1])->toString());
 	Calculate *calc = new Calculate();

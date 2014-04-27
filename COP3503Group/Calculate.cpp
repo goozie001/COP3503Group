@@ -30,62 +30,136 @@ Number *Calculate::add(Number *num1, Number *num2) {
 
 	}
 	if (expr1) {
-		if (expr1->getVector()[1]->toString() == "+") {
+		if (expr1->getVector()[1]->toString() == "+") { // should be working properly
 			Number *newN = add(expr1->getVector()[2], num2);
-			if (!dynamic_cast<Expression*>(newN)) {
+			Expression *expr3 = dynamic_cast<Expression*>(newN);
+			if (expr3) { // if it is an expression
+				if (expr3->getVector()[1]->toString() == "*"){
+					return add(expr1->getVector()[0], newN);
+				}
+				else{
+					return add(add(expr1->getVector()[0], num2), expr1->getVector()[2]);
+				}
+			}
+			else{
 				return add(expr1->getVector()[0], newN);
 			}
-			if (newN != expr1->getVector()[2] && newN != num2) {
-				delete newN;
-			}
-			return add(add(expr1->getVector()[0], num2), expr1->getVector()[0]);
 		}
-		else if (expr1->getVector()[1]->toString() == "-") {
+		else if (expr1->getVector()[1]->toString() == "-") { // should be working properly
 			Number *newN = add(expr1->getVector()[2], num2);
-			if (!dynamic_cast<Expression*>(newN)) {
-				return subtract(expr1->getVector()[0], newN);
+			Expression *expr3 = dynamic_cast<Expression*>(newN);
+			Integer *int3 = dynamic_cast<Integer*>(newN);
+			if (expr3) {
+				if (expr3->getVector()[1]->toString() == "*"){
+					return add(expr1->getVector()[0], subtract(num2, expr1->getVector()[2]));
+				}
+				else{
+					return subtract(add(expr1->getVector()[0], num2), expr1->getVector()[2]);
+				}
 			}
-			if (newN != expr1->getVector()[2] && newN != num2) {
-				delete newN;
+			if (int3){
+				Number *newN2 = subtract(num2, expr1->getVector()[2]);
+				Integer *int4 = dynamic_cast<Integer*>(newN2);
+				if (int4->getIntValue() == 0){
+					return expr1->getVector()[0];
+				}
+				else{
+					if (int4->getIntValue() < 0){
+						Integer *i = new Integer(-1);
+						return new Expression(expr1->getVector()[0], multiply(i, newN2), new Operator("-"));
+					}
+					if (int4->getIntValue() > 0){
+						return new Expression(expr1->getVector()[0], newN2, new Operator("+"));
+					}
+				}
 			}
-			return subtract(add(expr1->getVector()[0], num2), expr1->getVector()[2]);
 		}
-		else if (expr1->getVector()[1]->toString() == "*") {
-			
+		else if (expr1->getVector()[1]->toString() == "*") { // should be working properly
+			Number *newN = add(expr1->getVector()[2], num2);
+			Expression *expr3 = dynamic_cast<Expression*>(newN);
+			if (expr3){ // if it is an expression
+				if (expr3->getVector()[1]->toString() == "*"){ // if the expression has a multiply, must have been pi + pi = 2*pi or etc.
+					Integer *int3 = dynamic_cast<Integer*>(expr1->getVector()[0]);
+					if (int3){ // if the first term is an integer
+						Integer *i = new Integer(1);
+						return new Expression(add(expr1->getVector()[0], i), expr1->getVector()[2], new Operator("*")); // return int+1 * pi/log/etc. 
+					}
+				}
+			}
+			else{
+				return new Expression(num2, expr1, new Operator("+"));
+			}
 		}
 		else if (expr1->getVector()[1]->toString() == "^") {
-
+			return new Expression(expr1, num2, new Operator("+"));  // an add with an expression that has a ^ should never combine essentially.  log2 ^ 2 can't add with log2, etc.
 		}
 		else if (expr1->getVector()[1]->toString() == "/") {
 			return new Expression(add(multiply(expr1->getVector()[2], num2), expr1->getVector()[0]), expr1->getVector()[2], new Operator("/"));
 		}
 	}
-	if (expr2) {
+	if (expr2) { // actually seemingly unable to test these, or just can't think of a way, usually defaults to add(expr,term) I think.
 		if (expr2->getVector()[1]->toString() == "+") {
 			Number *newN = add(expr2->getVector()[2], num1);
-			if (!dynamic_cast<Expression*>(newN)) {
+			Expression *expr3 = dynamic_cast<Expression*>(newN);
+			if (expr3) {
+				if (expr3->getVector()[1]->toString() == "*"){
+					return add(expr2->getVector()[0], newN);
+				}
+				else{
+					return add(add(expr2->getVector()[0], num2), expr2->getVector()[2]);
+				}
+			}
+			else{
 				return add(expr2->getVector()[0], newN);
 			}
-			if (newN != expr2->getVector()[2] && newN != num1) {
-				delete newN;
-			}
-			return add(add(expr2->getVector()[0], num1), expr2->getVector()[0]);
 		}
 		else if (expr2->getVector()[1]->toString() == "-") {
 			Number *newN = add(expr2->getVector()[2], num1);
-			if (!dynamic_cast<Expression*>(newN)) {
-				return subtract(expr2->getVector()[0], newN);
+			Expression *expr3 = dynamic_cast<Expression*>(newN);
+			Integer *int3 = dynamic_cast<Integer*>(newN);
+			if (expr3) {
+				if (expr3->getVector()[1]->toString() == "*"){
+					return add(expr2->getVector()[0], subtract(num1, expr2->getVector()[2]));
+				}
+				else{
+					return subtract(add(expr2->getVector()[0], num1), expr2->getVector()[2]);
+				}
 			}
-			if (newN != expr2->getVector()[2] && newN != num1) {
-				delete newN;
+			if (int3){
+				Number *newN2 = subtract(num1, expr2->getVector()[2]);
+				Integer *int4 = dynamic_cast<Integer*>(newN2);
+				if (int4->getIntValue() == 0){
+					return expr2->getVector()[0];
+				}
+				else{
+					if (int4->getIntValue() < 0){
+						Integer *i = new Integer(-1);
+						return new Expression(expr2->getVector()[0], multiply(i, newN2), new Operator("-"));
+					}
+					if (int4->getIntValue() > 0){
+						return new Expression(expr2->getVector()[0], newN2, new Operator("+"));
+					}
+				}
 			}
-			return subtract(add(expr2->getVector()[0], num1), expr2->getVector()[2]);
 		}
 		else if (expr2->getVector()[1]->toString() == "*") {
-
+			Number *newN = add(expr2->getVector()[2], num1);
+			Expression *expr3 = dynamic_cast<Expression*>(newN);
+			if (expr3){
+				if (expr3->getVector()[1]->toString() == "*"){
+					Integer *int3 = dynamic_cast<Integer*>(expr2->getVector()[0]);
+					if (int3){
+						Integer *i = new Integer(1);
+						return new Expression(add(expr2->getVector()[0], i), expr1->getVector()[2], new Operator("*"));
+					}
+				}
+			}
+			else{
+				return new Expression(num1, expr1, new Operator("+"));
+			}
 		}
 		else if (expr2->getVector()[1]->toString() == "^") {
-
+			return new Expression(expr2, num1, new Operator("+"));
 		}
 		else if (expr2->getVector()[1]->toString() == "/") {
 			return new Expression(add(multiply(expr2->getVector()[2], num1), expr2->getVector()[0]), expr2->getVector()[2], new Operator("/"));
@@ -232,7 +306,7 @@ Number *Calculate::add(Number *num1, Number *num2) {
 		else if (e2)
 		{
 			Integer *temp = new Integer(2);
-			Expression *t = new Expression(log1, temp, new Operator("*"));
+			Expression *t = new Expression(temp, e1, new Operator("*"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -852,7 +926,7 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			Number *nu2 = multiply(num2, expr1->getVector()[2]);
 			if (!dynamic_cast<Expression*>(nu2)) {
 				return new Expression(expr1->getVector()[0], nu2, new Operator("*"));
-			} 
+			}
 			delete nu2;
 			Number *nu1 = multiply(num2, expr1->getVector()[0]);
 			return new Expression(nu1, expr1->getVector()[2], new Operator("*"));
@@ -1525,7 +1599,7 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 		}
 	}
 
-	
+
 	else if (e1)
 	{
 		if (int2)

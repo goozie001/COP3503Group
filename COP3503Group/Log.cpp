@@ -2,6 +2,7 @@
 #include "Integer.h"
 #include "Expression.h"
 #include "Operator.h"
+#include "E.h"
 
 
 Log::Log()
@@ -9,7 +10,7 @@ Log::Log()
 }
 
 Log::Log(Number* base, Number* argument) {
-	if (argument->getFloatValue() <= 0 || base->getFloatValue() <= 0) 
+	if (argument->getFloatValue() <= 0 || base->getFloatValue() <= 0)
 		throw out_of_range("The argument and base of log must be greater than zero.");
 	this->base = base;
 	this->argument = argument;
@@ -80,7 +81,7 @@ Number *Log::simplify() {
 					++i;
 				}
 			}
-			
+
 			// Simplify logs that aren't rational to logs containing smaller arguments.
 			baseVal = baseInt->getIntValue();
 			int divisor = smallestDivisor(argVal);
@@ -95,6 +96,17 @@ Number *Log::simplify() {
 				Number *numb = newEx->simplify();
 				delete newEx;
 				return numb;
+			}
+		}
+	}
+	if (dynamic_cast<E*>(base) != 0) {
+		if (dynamic_cast<Expression*>(argument) != 0){
+			Expression *argExpr = dynamic_cast<Expression*>(argument);
+			if (dynamic_cast<E*>(argExpr->getVector()[0]) != 0){
+				Operator *argOper = dynamic_cast<Operator*>(argExpr->getVector()[1]);
+				if (argOper->toString() == "^"){
+					return argExpr->getVector()[2];
+				}
 			}
 		}
 	}
