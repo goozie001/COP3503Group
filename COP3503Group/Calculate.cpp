@@ -82,7 +82,7 @@ Number *Calculate::add(Number *num1, Number *num2) {
 					Integer *int3 = dynamic_cast<Integer*>(expr1->getVector()[0]);
 					if (int3){ // if the first term is an integer
 						Integer *i = new Integer(1);
-						return new Expression(add(expr1->getVector()[0], i), expr1->getVector()[2], new Operator("*")); // return int+1 * pi/log/etc. 
+						return new Expression(add(expr1->getVector()[0], i), expr1->getVector()[2], new Operator("*")); // return int+1 * pi/log/etc.
 					}
 				}
 			}
@@ -345,7 +345,7 @@ Number *Calculate::add(Number *num1, Number *num2) {
 		else if (pi2)
 		{
 			Integer *temp = new Integer(2);
-			Expression *t = new Expression(pi1, temp, new Operator("*"));
+			Expression *t = new Expression(temp, pi1, new Operator("*"));
 			//change '+' to a term in order to work correctly with Number
 			return t;
 		}
@@ -629,7 +629,7 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 			if (newN != expr1->getVector()[2] && newN != num2) {
 				delete newN;
 			}
-			return add(subtract(expr1->getVector()[0], num2), expr1->getVector()[0]);
+			return add(subtract(expr1->getVector()[0], num2), expr1->getVector()[2]);
 		}
 		else if (expr1->getVector()[1]->toString() == "-") {
 			Number *newN = subtract(expr1->getVector()[2], num2);
@@ -1621,10 +1621,10 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 	if (expr2) {
 		string expr2op = expr2->getVector()[1]->toString();
 		if (expr2op == "+") {
-			return add(exponentiate(num1, expr2->getVector()[0]), exponentiate(num1, expr2->getVector()[2]));
+			return multiply(exponentiate(num1, expr2->getVector()[0]), exponentiate(num1, expr2->getVector()[2]));
 		}
 		else if (expr2op == "-") {
-			return subtract(exponentiate(num1, expr2->getVector()[0]), exponentiate(num1, expr2->getVector()[2]));
+			return divide(exponentiate(num1, expr2->getVector()[0]), exponentiate(num1, expr2->getVector()[2]));
 		}
 	}
 	return new Expression(num1, num2, new Operator("^"));
