@@ -605,6 +605,10 @@ Number *Parse::evaluateRPNObject() {
 			Number *fin = (solution.back());
 			if (dynamic_cast<Operator*>(fin) != 0) {
 				Operator *op_i = dynamic_cast<Operator*>(fin);
+				if (op_i->toString() == "-" && i < numberRPN.size() - 1 && numberRPN[i + 1]->toString() == "-") {
+					delete op_i;
+					op_i = new Operator("+");
+				}
 				// Deletes the operator.
 				solution.pop_back();
 
