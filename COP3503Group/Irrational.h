@@ -23,6 +23,8 @@ public:
 	virtual Number *simplify();
 	virtual string toString();
 private:
+	Number *simplifyNegRootVal(Number*);
+
 	Number *base;
 	Number *rootVal;
 	string value;

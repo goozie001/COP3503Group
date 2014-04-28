@@ -40,8 +40,11 @@ string Expression::toString()
 		if (dynamic_cast<Expression*>(exprVector[i])) {
 			// How do you like this name?
 			string incepVecOpString = dynamic_cast<Operator*>(dynamic_cast<Expression*>(exprVector[i])->getVector()[1])->toString();
-			if ((dynamic_cast<Operator*>(exprVector[1])->toString() == "/" || dynamic_cast<Operator*>(exprVector[1])->toString() == "^") && (incepVecOpString == "+" || incepVecOpString == "-"))
+			if ((dynamic_cast<Operator*>(exprVector[1])->toString() == "/" || dynamic_cast<Operator*>(exprVector[1])->toString() == "^"))
 				temp += "(" + exprVector[i]->toString() + ")";
+			else if (dynamic_cast<Irrational*>(exprVector[i]) && dynamic_cast<Operator*>(exprVector[1])->toString() == "/") {
+				temp += "(" + exprVector[i]->toString() + ")";
+			}
 			else
 				temp += exprVector[i]->toString();
 		}
