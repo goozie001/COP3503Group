@@ -395,6 +395,13 @@ Number *Calculate::subtract(Number *num1, Number *num2) {
 	if (expr1 && expr2) {
 
 	}
+	if (int2) {
+		if (int2->getFloatValue() < 0.0) {
+			Integer *newInt = new Integer(abs(int2->getIntValue()));
+			delete int2;
+			return add(newInt, num1);
+		}
+	}
 	if (expr1) {
 		if (expr1->getVector()[1]->toString() == "+") { // should be good
 			Number *newN = subtract(expr1->getVector()[2], num2);
@@ -746,6 +753,14 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			return new Expression(multiply(num2, expr1->getVector()[0]), multiply(num2, expr1->getVector()[2]), new Operator("-"));
 		}
 		else if (expr1->getVector()[1]->toString() == "*") {
+			if (dynamic_cast<Pi*>(num2) || dynamic_cast<E*>(num2)) {
+				if ((dynamic_cast<Pi*>(expr1->getVector()[0]) && dynamic_cast<Pi*>(num2)) || (dynamic_cast<E*>(num2) && dynamic_cast<E*>(expr1->getVector()[0]))) {
+					return multiply(expr1->getVector()[2], exponentiate(num2, new Integer(2)));
+				}
+				else if ((dynamic_cast<Pi*>(expr1->getVector()[2]) && dynamic_cast<Pi*>(num2)) || (dynamic_cast<E*>(num2) && dynamic_cast<E*>(expr1->getVector()[2]))) {
+					return multiply(expr1->getVector()[0], exponentiate(num2, new Integer(2)));
+				}
+			}
 			Number *nu2 = multiply(num2, expr1->getVector()[2]);
 			if (!dynamic_cast<Expression*>(nu2)) {
 				return new Expression(expr1->getVector()[0], nu2, new Operator("*"));
@@ -758,6 +773,9 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			return new Expression(multiply(expr1->getVector()[0], num2), expr1->getVector()[2], new Operator("/"));
 		}
 		else if (expr1->getVector()[1]->toString() == "^") {
+			if ((dynamic_cast<Pi*>(expr1->getVector()[0]) && dynamic_cast<Pi*>(num2)) || (dynamic_cast<E*>(expr1->getVector()[0]) && dynamic_cast<E*>(num2))) {
+				return exponentiate(expr1->getVector()[0], add(expr1->getVector()[2], new Integer(1)));
+			}
 			return new Expression(num2, expr1, new Operator("*"));
 		}
 		else throw invalid_argument("Operator not recognized.");
@@ -770,6 +788,14 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			return new Expression(multiply(num1, expr2->getVector()[0]), multiply(num1, expr2->getVector()[2]), new Operator("-"));
 		}
 		else if (expr2->getVector()[1]->toString() == "*") {
+			if (dynamic_cast<Pi*>(num1) || dynamic_cast<E*>(num1)) {
+				if ((dynamic_cast<Pi*>(expr2->getVector()[0]) && dynamic_cast<Pi*>(num1)) || (dynamic_cast<E*>(num1) && dynamic_cast<E*>(expr2->getVector()[0]))) {
+					return multiply(expr2->getVector()[2], exponentiate(num1, new Integer(2)));
+				}
+				else if ((dynamic_cast<Pi*>(expr2->getVector()[2]) && dynamic_cast<Pi*>(num1)) || (dynamic_cast<E*>(num1) && dynamic_cast<E*>(expr2->getVector()[2]))) {
+					return multiply(expr2->getVector()[0], exponentiate(num1, new Integer(2)));
+				}
+			}
 			Number *nu2 = multiply(num1, expr2->getVector()[2]);
 			if (!dynamic_cast<Expression*>(nu2)) {
 				return new Expression(expr2->getVector()[0], nu2, new Operator("*"));
@@ -782,6 +808,9 @@ Number *Calculate::multiply(Number *num1, Number *num2)
 			return new Expression(multiply(expr2->getVector()[0], num1), expr2->getVector()[2], new Operator("/"));
 		}
 		else if (expr2->getVector()[1]->toString() == "^") {
+			if ((dynamic_cast<Pi*>(expr2->getVector()[0]) && dynamic_cast<Pi*>(num1)) || (dynamic_cast<E*>(expr2->getVector()[0]) && dynamic_cast<E*>(num1))) {
+				return exponentiate(expr2->getVector()[0], add(expr2->getVector()[2], new Integer(1)));
+			}
 			return new Expression(num1, expr2, new Operator("*"));
 		}
 		else throw invalid_argument("Operator not recognized.");
