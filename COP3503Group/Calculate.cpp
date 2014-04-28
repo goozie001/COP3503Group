@@ -27,7 +27,6 @@ Number *Calculate::add(Number *num1, Number *num2) {
 	Pi *pi2 = dynamic_cast<Pi*>(num2);
 
 	if (expr1 && expr2) {
-		int a = 0;
 		if (expr2->getVector()[1]->toString() == "+"){
 			return add(add(expr1, expr2->getVector()[0]), expr2->getVector()[2]);
 		}
@@ -35,17 +34,180 @@ Number *Calculate::add(Number *num1, Number *num2) {
 			return subtract(add(expr1, expr2->getVector()[0]), expr2->getVector()[2]);
 		}
 		else if (expr2->getVector()[1]->toString() == "*"){ // going to need to run mass if statements, checking if they are the same expression
-			if (&expr1->getVector() == &expr2->getVector()){
-				a = 1;
+			if (expr1->getVector()[1]->toString() == "+"){
+				return add(add(expr1->getVector()[0], expr2), expr1->getVector()[2]);
 			}
-			int b = 0;
+			if (expr1->getVector()[1]->toString() == "-"){
+				return add(subtract(expr1->getVector()[0], expr2), expr1->getVector()[2]);
+			}
+			if (expr1->getVector()[1]->toString() == "*"){
+				Integer *intA = dynamic_cast<Integer*>(expr1->getVector()[2]);
+				Integer *intB = dynamic_cast<Integer*>(expr2->getVector()[2]);
+				Irrational *irrA = dynamic_cast<Irrational*>(expr1->getVector()[2]);
+				Irrational *irrB = dynamic_cast<Irrational*>(expr2->getVector()[2]);
+				Log *logA = dynamic_cast<Log*>(expr1->getVector()[2]);
+				Log *logB = dynamic_cast<Log*>(expr2->getVector()[2]);
+				Expression *exprA = dynamic_cast<Expression*>(expr1->getVector()[2]);
+				Expression *exprB = dynamic_cast<Expression*>(expr2->getVector()[2]);
+				E *eA = dynamic_cast<E*>(expr1->getVector()[2]);
+				E *eB = dynamic_cast<E*>(expr2->getVector()[2]);
+				Pi *piA = dynamic_cast<Pi*>(expr1->getVector()[2]);
+				Pi *piB = dynamic_cast<Pi*>(expr2->getVector()[2]);
+				if (intA){
+					if (intB){
+						return multiply(add(expr1->getVector()[0], expr2->getVector()[0]), add(intA, intB));
+					}
+				}
+				if (eA){
+					if (eB){
+						return multiply(add(expr1->getVector()[0], expr2->getVector()[0]), eA);
+					}
+				}
+				if (irrA){
+					if (irrB){
+						if (irrA->getBase()->getFloatValue() == irrB->getBase()->getFloatValue() && irrA->getRootVal()->getFloatValue() == irrB->getRootVal()->getFloatValue()){
+							return multiply(add(expr1->getVector()[0], expr2->getVector()[0]), irrA);
+						}
+					}
+				}
+				if (logA){
+					if (logB){
+						if (logA->getBase()->getFloatValue() == logB->getBase()->getFloatValue() && logA->getArgument()->getFloatValue() == logB->getArgument()->getFloatValue()){
+							return multiply(add(expr1->getVector()[0], expr2->getVector()[0]), logA);
+						}
+					}
+				}
+				if (piA){
+					if (piB){
+						return multiply(add(expr1->getVector()[0], expr2->getVector()[0]), piA);
+					}
+				}
+				else{
+					return new Expression(expr1, expr2, new Operator("+"));
+				}
+
+			}
 		}
 		else if (expr2->getVector()[1]->toString() == "/"){
+			if (expr1->getVector()[1]->toString() == "+"){
+				return add(add(expr1->getVector()[0], expr2), expr1->getVector()[2]);
+			}
+			if (expr1->getVector()[1]->toString() == "-"){
+				return add(subtract(expr1->getVector()[0], expr2), expr1->getVector()[2]);
+			}
+			if (expr1->getVector()[1]->toString() == "/"){
+				Integer *intA = dynamic_cast<Integer*>(expr1->getVector()[2]);
+				Integer *intB = dynamic_cast<Integer*>(expr2->getVector()[2]);
+				Irrational *irrA = dynamic_cast<Irrational*>(expr1->getVector()[2]);
+				Irrational *irrB = dynamic_cast<Irrational*>(expr2->getVector()[2]);
+				Log *logA = dynamic_cast<Log*>(expr1->getVector()[2]);
+				Log *logB = dynamic_cast<Log*>(expr2->getVector()[2]);
+				Expression *exprA = dynamic_cast<Expression*>(expr1->getVector()[2]);
+				Expression *exprB = dynamic_cast<Expression*>(expr2->getVector()[2]);
+				E *eA = dynamic_cast<E*>(expr1->getVector()[2]);
+				E *eB = dynamic_cast<E*>(expr2->getVector()[2]);
+				Pi *piA = dynamic_cast<Pi*>(expr1->getVector()[2]);
+				Pi *piB = dynamic_cast<Pi*>(expr2->getVector()[2]);
+				if (intA){
+					if (intB){
+						return divide(add(multiply(expr1->getVector()[0], intB), multiply(expr2->getVector()[0], intA)), multiply(intA, intB));
+					}
+				}
+				if (eA){
+					if (eB){
+						return divide(add(expr1->getVector()[0], expr2->getVector()[0]), eA);
+					}
+				}
+				if (irrA){
+					if (irrB){
+						if (irrA->getBase()->getFloatValue() == irrB->getBase()->getFloatValue() && irrA->getRootVal()->getFloatValue() == irrB->getRootVal()->getFloatValue()){
+							return divide(add(expr1->getVector()[0], expr2->getVector()[0]), irrA);
+						}
+					}
+				}
+				if (logA){
+					if (logB){
+						if (logA->getBase()->getFloatValue() == logB->getBase()->getFloatValue() && logA->getArgument()->getFloatValue() == logB->getArgument()->getFloatValue()){
+							return divide(add(expr1->getVector()[0], expr2->getVector()[0]), logA);
+						}
+					}
+				}
+				if (piA){
+					if (piB){
+						return divide(add(expr1->getVector()[0], expr2->getVector()[0]), piA);
+					}
+				}
+				else{
+					return new Expression(expr1, expr2, new Operator("+"));
+				}
 
+			}
 		}
+		/*
 		else if (expr2->getVector()[1]->toString() == "^"){
-
+		if (expr1->getVector()[1]->toString() == "^"){
+		Integer *intA2 = dynamic_cast<Integer*>(expr1->getVector()[2]);
+		Integer *intB2= dynamic_cast<Integer*>(expr2->getVector()[2]);
+		Irrational *irrA2 = dynamic_cast<Irrational*>(expr1->getVector()[2]);
+		Irrational *irrB2 = dynamic_cast<Irrational*>(expr2->getVector()[2]);
+		Log *logA2 = dynamic_cast<Log*>(expr1->getVector()[2]);
+		Log *logB2 = dynamic_cast<Log*>(expr2->getVector()[2]);
+		E *eA2 = dynamic_cast<E*>(expr1->getVector()[2]);
+		E *eB2 = dynamic_cast<E*>(expr2->getVector()[2]);
+		Pi *piA2 = dynamic_cast<Pi*>(expr1->getVector()[2]);
+		Pi *piB2 = dynamic_cast<Pi*>(expr2->getVector()[2]);
+		Integer *intA = dynamic_cast<Integer*>(expr1->getVector()[0]);
+		Integer *intB = dynamic_cast<Integer*>(expr2->getVector()[0]);
+		Irrational *irrA = dynamic_cast<Irrational*>(expr1->getVector()[0]);
+		Irrational *irrB = dynamic_cast<Irrational*>(expr2->getVector()[0]);
+		Log *logA = dynamic_cast<Log*>(expr1->getVector()[0]);
+		Log *logB = dynamic_cast<Log*>(expr2->getVector()[0]);
+		Expression *exprA = dynamic_cast<Expression*>(expr1->getVector()[0]);
+		Expression *exprB = dynamic_cast<Expression*>(expr2->getVector()[0]);
+		E *eA = dynamic_cast<E*>(expr1->getVector()[0]);
+		E *eB = dynamic_cast<E*>(expr2->getVector()[0]);
+		Pi *piA = dynamic_cast<Pi*>(expr1->getVector()[0]);
+		Pi *piB = dynamic_cast<Pi*>(expr2->getVector()[0]);
+		if (intA2 && intB2 || irrA2 && irrB2 || logA2 && logB2 || eA2 && eB2 || piA2 && piB2){
+		if (intA2->getIntValue() == intB2->getIntValue() || irrA2->getBase()->getFloatValue() == irrB2->getBase()->getFloatValue() && irrA2->getRootVal()->getFloatValue() == irrB2->getBase()->getFloatValue())
 		}
+		if (intA){
+		if (intB){
+		if (intA->getIntValue() == intB->getIntValue()){
+		return exponentiate(add(multiply(expr1->getVector()[0], intB), multiply(expr2->getVector()[0], intA)), multiply(intA, intB));
+		}
+		}
+		}
+		if (eA){
+		if (eB){
+		return divide(add(expr1->getVector()[0], expr2->getVector()[0]), eA);
+		}
+		}
+		if (irrA){
+		if (irrB){
+		if (irrA->getBase()->getFloatValue() == irrB->getBase()->getFloatValue() && irrA->getRootVal()->getFloatValue() == irrB->getRootVal()->getFloatValue()){
+		return divide(add(expr1->getVector()[0], expr2->getVector()[0]), irrA);
+		}
+		}
+		}
+		if (logA){
+		if (logB){
+		if (logA->getBase()->getFloatValue() == logB->getBase()->getFloatValue() && logA->getArgument()->getFloatValue() == logB->getArgument()->getFloatValue()){
+		return divide(add(expr1->getVector()[0], expr2->getVector()[0]), logA);
+		}
+		}
+		}
+		if (piA){
+		if (piB){
+		return divide(add(expr1->getVector()[0], expr2->getVector()[0]), piA);
+		}
+		}
+		}
+		else{
+		return add(add(expr1->getVector()[0], expr2), expr1->getVector()[2]);
+		}
+		}
+		*/
 		Number *testNum = add(expr1, expr2->getVector()[0]);
 		Expression *testExpr = dynamic_cast<Expression*>(testNum);
 		return testExpr;
