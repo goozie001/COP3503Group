@@ -93,7 +93,7 @@ Number *Irrational::simplify() {
 			else if (modf(-base->getFloatValue(), &intpart) == 0.0 || modf(-base->getFloatValue(), &intpart) > .9999999999 || modf(-base->getFloatValue(), &intpart) < .000001){
 				int intBase = -base->getFloatValue();
 				int j = 1;
-				for (int i = 2; i < intBase; i++){
+				for (int i = 2; i <= intBase; i++){
 					if (intBase % i == 0){
 						double baseRoot = pow((double)i, 1 / -(double)rootVal->getFloatValue());
 						if (modf(baseRoot, &intpart) == 0.0 || modf(baseRoot, &intpart) > .9999999999 || modf(baseRoot, &intpart) < .000001){
@@ -283,7 +283,7 @@ Number *Irrational::simplify() {
 		else if (modf(base->getFloatValue(), &intpart) == 0.0 || modf(base->getFloatValue(), &intpart) > .999999999999 || modf(base->getFloatValue(), &intpart) < .000001){
 			int intBase = base->getFloatValue();
 			int j = 1;
-			for (int i = 2; i < intBase; i++){
+			for (int i = 2; i <= intBase; i++){
 				if (intBase % i == 0){
 					double baseRoot = pow((double)i, 1 / -(double)rootVal->getFloatValue());
 					if (modf(baseRoot, &intpart) == 0.0 || modf(baseRoot, &intpart) > .999999999999 || modf(baseRoot, &intpart) < .000001){
@@ -297,6 +297,9 @@ Number *Irrational::simplify() {
 				return simplifyNegRootVal(new Irrational(base, new Integer(-rootVal->getFloatValue())));
 			}
 			else{
+				if (intBase == 1){
+					return simplifyNegRootVal(new Integer(j));
+				}
 				return simplifyNegRootVal(new Expression(new Integer(j), new Irrational(new Integer((int)intBase), new Integer(-rootVal->getFloatValue())), new Operator("*")));
 			}
 		}
@@ -320,7 +323,7 @@ Number *Irrational::simplify() {
 			else if (modf(-base->getFloatValue(), &intpart) == 0.0 || modf(-base->getFloatValue(), &intpart) > .999999999999 || modf(-base->getFloatValue(), &intpart) < .000001){
 				int intBase = -base->getFloatValue();
 				int j = 1;
-				for (int i = 2; i < intBase; i++){
+				for (int i = 2; i <= intBase; i++){
 					if (intBase % i == 0){
 						double baseRoot = pow((double)i, 1 / (double)rootVal->getFloatValue());
 						if (modf(baseRoot, &intpart) == 0.0 || modf(baseRoot, &intpart) > .999999999999 || modf(baseRoot, &intpart) < .000001){
@@ -469,7 +472,7 @@ Number *Irrational::simplify() {
 		else if (modf(base->getFloatValue(), &intpart) == 0.0 || modf(base->getFloatValue(), &intpart) > .999999999999 || modf(base->getFloatValue(), &intpart) < .000001){
 			int intBase = base->getFloatValue();
 			int j = 1;
-			for (int i = 2; i < intBase; i++){
+			for (int i = 2; i <= intBase; i++){
 				if (intBase % i == 0){
 					double baseRoot = pow((double)i, 1 / (double)rootVal->getFloatValue());
 					if (modf(baseRoot, &intpart) == 0.0 || modf(baseRoot, &intpart) > .999999999999 || modf(baseRoot, &intpart) < .000001){
@@ -483,6 +486,9 @@ Number *Irrational::simplify() {
 				return new Irrational(base, rootVal);
 			}
 			else{
+				if (intBase == 1){
+					return new Integer(j);
+				}
 				return new Expression(new Integer(j), new Irrational(new Integer((int)intBase), rootVal), new Operator("*"));
 			}
 		}

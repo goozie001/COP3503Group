@@ -1592,12 +1592,14 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 		if (expr2) {
 			if (expr2->getFloatValue() < 0) {
 				if (expr2->getVector()[1]->toString() == "/" && dynamic_cast<Integer*>(expr2->getVector()[2])) {
-					return new Expression(new Integer(1), new Irrational(new Integer((int)pow(a, abs(dynamic_cast<Integer*>(expr2->getVector()[0])->getIntValue()))), new Integer((int)abs(dynamic_cast<Integer*>(expr2->getVector()[2])->getIntValue()))), new Operator("/"));
+					Number *newBase = exponentiate(int1, new Integer(expr2->getVector()[0]->getFloatValue()));
+					return new Irrational(newBase, new Integer(expr2->getVector()[2]->getFloatValue()));
 				}
 			}
 			else {
 				if (expr2->getVector()[1]->toString() == "/" && dynamic_cast<Integer*>(expr2->getVector()[0])) {
-					return new Irrational(new Integer((int)pow(a, dynamic_cast<Integer*>(expr2->getVector()[0])->getIntValue())), expr2->getVector()[2]);
+					Number *newBase = exponentiate(int1, new Integer(expr2->getVector()[0]->getFloatValue()));
+					return new Irrational(newBase, new Integer(expr2->getVector()[2]->getFloatValue()));
 				}
 			}
 		}
