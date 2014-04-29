@@ -892,7 +892,7 @@ bool Parse::isPi(string str, int i) {
 }
 
 bool Parse::isNegativeNumber(string str, int i) {
-	if (str[i] == '-' && isNumber(str[i + 1]) && (i == 0 || !(isNumber(str[i - 1]) || isPi(str, i-2) || isSpecial(str, i-1)))) return true;
+	if (str[i] == '-' && isNumber(str[i + 1]) && (i == 0 || !(isNumber(str[i - 1]) || isPi(str, i-2) || isSpecial(str, i-1) || isRightParenthesis(str[i-1])))) return true;
 	if (str[i] == '-' && (str[i + 1] == 'l' || str[i + 1] == 'L') && !isRightParenthesis(str[i - 1]) && !isNumber(str[i - 1])) return true;
 	return false;
 }
