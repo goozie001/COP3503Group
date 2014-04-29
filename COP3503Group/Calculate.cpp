@@ -1602,14 +1602,12 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 			}
 		}
 	}
-
 	else if (irr1)
 	{
 		if (int2)
 		{
-
-			Number *newRootVal = multiply(irr1->getRootVal(), int2);
-			Irrational *newIrr = new Irrational(irr1->getBase(), newRootVal);
+			Number *newBase = exponentiate(irr1->getBase(), int2);
+			Irrational *newIrr = new Irrational(newBase, irr1->getRootVal());
 			return newIrr;
 		}
 	}
@@ -1633,7 +1631,201 @@ Number *Calculate::exponentiate(Number *num1, Number *num2){
 			}
 		}
 	}
-	if (expr2) {
+	else if (expr1){
+		if (int2){
+			if (expr1->getVector()[1]->toString() == "*"){
+				if (dynamic_cast<Integer*>(expr1->getVector()[0])){
+					Number *newInt = exponentiate(expr1->getVector()[0], int2);
+					if (dynamic_cast<Irrational*>(expr1->getVector()[2])){
+						Number *newIrr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newInt, newIrr, new Operator("*"));
+					}
+					else if (dynamic_cast<Log*>(expr1->getVector()[2])){
+						Number *newLog = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newInt, newLog, new Operator("*"));
+					}
+					else if (dynamic_cast<Pi*>(expr1->getVector()[2])){
+						Number *newPi = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newInt, newPi, new Operator("*"));
+					}
+					else if (dynamic_cast<E*>(expr1->getVector()[2])){
+						Number *newE = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newInt, newE, new Operator("*"));
+					}
+				}
+				else if (dynamic_cast<Log*>(expr1->getVector()[0])){
+					Number *newLog = exponentiate(expr1->getVector()[0], int2);
+					if (dynamic_cast<Irrational*>(expr1->getVector()[2])){
+						Number *newIrr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newLog, newIrr, new Operator("*"));
+					}
+					else if (dynamic_cast<Pi*>(expr1->getVector()[2])){
+						Number *newPi = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newLog, newPi, new Operator("*"));
+					}
+					else if (dynamic_cast<E*>(expr1->getVector()[2])){
+						Number *newE = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newLog, newE, new Operator("*"));
+					}
+				}
+				else if (dynamic_cast<Pi*>(expr1->getVector()[0])){
+					Number *newPi = exponentiate(expr1->getVector()[0], int2);
+					if (dynamic_cast<Irrational*>(expr1->getVector()[2])){
+						Number *newIrr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newPi, newIrr, new Operator("*"));
+					}
+					else if (dynamic_cast<Log*>(expr1->getVector()[2])){
+						Number *newLog = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newPi, newLog, new Operator("*"));
+					}
+					else if (dynamic_cast<E*>(expr1->getVector()[2])){
+						Number *newE = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newPi, newE, new Operator("*"));
+					}
+				}
+				else if (dynamic_cast<E*>(expr1->getVector()[0])){
+					Number *newE = exponentiate(expr1->getVector()[0], int2);
+					if (dynamic_cast<Irrational*>(expr1->getVector()[2])){
+						Number *newIrr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newE, newIrr, new Operator("*"));
+					}
+					else if (dynamic_cast<Log*>(expr1->getVector()[2])){
+						Number *newLog = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newE, newLog, new Operator("*"));
+					}
+					else if (dynamic_cast<Pi*>(expr1->getVector()[2])){
+						Number *newPi = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newE, newPi, new Operator("*"));
+					}
+				}
+			}
+			else if (expr1->getVector()[1]->toString() == "/"){
+				if (dynamic_cast<Integer*>(expr1->getVector()[0])){
+					Number *newInt = exponentiate(expr1->getVector()[0], int2);
+					if (dynamic_cast<Irrational*>(expr1->getVector()[2])){
+						Number *newIrr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newInt, newIrr, new Operator("/"));
+					}
+					else if (dynamic_cast<Log*>(expr1->getVector()[2])){
+						Number *newLog = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newInt, newLog, new Operator("/"));
+					}
+					else if (dynamic_cast<Pi*>(expr1->getVector()[2])){
+						Number *newPi = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newInt, newPi, new Operator("/"));
+					}
+					else if (dynamic_cast<E*>(expr1->getVector()[2])){
+						Number *newE = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newInt, newE, new Operator("/"));
+					}
+					else if (dynamic_cast<Expression*>(expr1->getVector()[2])){
+						Number *newExpr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newInt, newExpr, new Operator("/"));
+					}
+				}
+				else if (dynamic_cast<Integer*>(expr1->getVector()[2])){
+					Number *newInt = exponentiate(expr1->getVector()[2], int2);
+					if (dynamic_cast<Irrational*>(expr1->getVector()[0])){
+						Number *newIrr = exponentiate(expr1->getVector()[0], int2);
+						return new Expression(newIrr, newInt, new Operator("/"));
+					}
+					else if (dynamic_cast<Log*>(expr1->getVector()[0])){
+						Number *newLog = exponentiate(expr1->getVector()[0], int2);
+						return new Expression(newLog, newInt, new Operator("/"));
+					}
+					else if (dynamic_cast<Pi*>(expr1->getVector()[0])){
+						Number *newPi = exponentiate(expr1->getVector()[0], int2);
+						return new Expression(newPi, newInt, new Operator("/"));
+					}
+					else if (dynamic_cast<E*>(expr1->getVector()[0])){
+						Number *newE = exponentiate(expr1->getVector()[0], int2);
+						return new Expression(newE, newInt, new Operator("/"));
+					}
+					else if (dynamic_cast<Expression*>(expr1->getVector()[0])){
+						Number *newExpr = exponentiate(expr1->getVector()[0], int2);
+						return new Expression(newExpr, newInt, new Operator("/"));
+					}
+				}
+				else if (dynamic_cast<Log*>(expr1->getVector()[0])){
+					Number *newLog = exponentiate(expr1->getVector()[0], int2);
+					if (dynamic_cast<Irrational*>(expr1->getVector()[2])){
+						Number *newIrr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newLog, newIrr, new Operator("/"));
+					}
+					else if (dynamic_cast<Pi*>(expr1->getVector()[2])){
+						Number *newPi = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newLog, newPi, new Operator("/"));
+					}
+					else if (dynamic_cast<E*>(expr1->getVector()[2])){
+						Number *newE = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newLog, newE, new Operator("/"));
+					}
+					else if (dynamic_cast<Expression*>(expr1->getVector()[2])){
+						Number *newExpr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newLog, newExpr, new Operator("/"));
+					}
+				}
+				else if (dynamic_cast<Pi*>(expr1->getVector()[0])){
+					Number *newPi = exponentiate(expr1->getVector()[0], int2);
+					if (dynamic_cast<Irrational*>(expr1->getVector()[2])){
+						Number *newIrr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newPi, newIrr, new Operator("/"));
+					}
+					else if (dynamic_cast<Log*>(expr1->getVector()[2])){
+						Number *newLog = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newPi, newLog, new Operator("/"));
+					}
+					else if (dynamic_cast<E*>(expr1->getVector()[2])){
+						Number *newE = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newPi, newE, new Operator("/"));
+					}
+					else if (dynamic_cast<Expression*>(expr1->getVector()[2])){
+						Number *newExpr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newPi, newExpr, new Operator("/"));
+					}
+				}
+				else if (dynamic_cast<E*>(expr1->getVector()[0])){
+					Number *newE = exponentiate(expr1->getVector()[0], int2);
+					if (dynamic_cast<Irrational*>(expr1->getVector()[2])){
+						Number *newIrr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newE, newIrr, new Operator("/"));
+					}
+					else if (dynamic_cast<Log*>(expr1->getVector()[2])){
+						Number *newLog = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newE, newLog, new Operator("/"));
+					}
+					else if (dynamic_cast<Pi*>(expr1->getVector()[2])){
+						Number *newPi = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newE, newPi, new Operator("/"));
+					}
+					else if (dynamic_cast<Expression*>(expr1->getVector()[2])){
+						Number *newExpr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newE, newExpr, new Operator("/"));
+					}
+				}
+				else if (dynamic_cast<Expression*>(expr1->getVector()[0])){
+					Number *newExpr = exponentiate(expr1->getVector()[0], int2);
+					if (dynamic_cast<Irrational*>(expr1->getVector()[2])){
+						Number *newIrr = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newExpr, newIrr, new Operator("/"));
+					}
+					else if (dynamic_cast<Log*>(expr1->getVector()[2])){
+						Number *newLog = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newExpr, newLog, new Operator("/"));
+					}
+					else if (dynamic_cast<Pi*>(expr1->getVector()[2])){
+						Number *newPi = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newExpr, newPi, new Operator("/"));
+					}
+					else if (dynamic_cast<E*>(expr1->getVector()[2])){
+						Number *newE = exponentiate(expr1->getVector()[2], int2);
+						return new Expression(newExpr, newE, new Operator("/"));
+					}
+				}
+			}
+		}
+	}
+	else if (expr2) {
 		string expr2op = expr2->getVector()[1]->toString();
 		if (expr2op == "+") {
 			return multiply(exponentiate(num1, expr2->getVector()[0]), exponentiate(num1, expr2->getVector()[2]));
@@ -1651,6 +1843,6 @@ int Calculate::gcd(int x, int y)
 		return x; //base case,return x when y equals 0
 	}
 	else {
-		return gcd(y, x % y);
+		return abs(gcd(y, x % y));
 	}
 }
